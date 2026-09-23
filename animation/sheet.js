@@ -1,0 +1,15 @@
+DEFS=document.getElementById('defs');
+const root=document.getElementById('root');
+el('rect',{width:1080,height:1920,fill:P('#F2C14E')},root);
+scribbleText(root,20,40,1040,300,'#7a4a10',.15,1);
+const k=makePrashant(G(root,{transform:'translate(250 700) scale(.8)'}),'kid','sit');
+k.pose({t:1,face:{lookX:.8,lookY:-.6,mouth:'o'}});
+const f=makeFather(G(root,{transform:'translate(760 800) scale(.8)'}));
+f.pose({t:1,phone:1,write:1,face:{lookX:-.5,mouth:'talk'}});
+const stages=['kid','teen','college','adult'];
+stages.forEach((s,i)=>{const p=makePrashant(G(root,{transform:`translate(${140+i*265} 1400) scale(.55)`}),s,'desk');p.pose({face:{mouth:'smile'}});});
+const crit=['paper','box','gear','coin','tag','person','machine'];
+crit.forEach((c,i)=>{const o=makeCritter(root,c);o.set({x:90+i*150,y:1700,t:1,smile:1});});
+const ph=makePhone(root);ph.x=700;ph.y=1850;ph.set(.1,true);
+const lg=makeLedger(root);tf(lg.g,{x:300,y:1830});
+window.renderAt=()=>{};

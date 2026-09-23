@@ -1,4 +1,11 @@
-# AlfaStack Founder Story: Pre-Production Package (v1, for approval)
+# AlfaStack Founder Story: Pre-Production Package
+
+> **v2 decisions (confirmed):** the father runs a shop; the father appears as a character; Prashant has no glasses
+> as a kid (they first appear in college); first-person narration; logo supplied (purple #996EFF stack icon with a
+> grey #C0C0C0 "Alfastack" wordmark).
+> **Choices I made without confirmation (easy to change):** the question line is "Why does Papa have to remember
+> everything?"; the ending is "He shouldn't have to." → "So we built" + logo; the "_" was dropped from the
+> tagline. The build lives in `animation/`.
 
 Working title: **"Papa's Memory"**
 Format: 9:16 vertical, 1080×1920, about 50 s, subtitled, built to work with the sound off.
