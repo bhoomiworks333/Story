@@ -52,7 +52,7 @@ function sceneOpacity(t, a, b, fin = 0, fout = 0) {
   return Math.min(fin ? seg(t, a, a + fin) : 1, fout ? 1 - seg(t, b - fout, b) : 1);
 }
 
-window.renderAt = function (t) {
+function renderStory(t) {
   TURB.setAttribute('seed', 1 + Math.floor(t * 12) % 7);
   // shop: 0–18.75 and callback 48.3–53.8
   const shopA = sceneOpacity(t, 0, 18.75) || sceneOpacity(t, 48.3, 53.8, .6, 0);
@@ -65,5 +65,15 @@ window.renderAt = function (t) {
   subEls.forEach(g => cardAnim(g, t, g.win[0], g.win[1], false));
   cardEls.forEach(g => cardAnim(g, t, g.win[0], g.win[1], true));
 };
-window.DURATION = DURATION;
+// video time -> story time (voiceover-driven stretch, see timing.py)
+function storyOf(T) {
+  const W = window.WARP || [[0, 0], [DURATION, DURATION]];
+  for (let i = 1; i < W.length; i++) {
+    const [s0, v0] = W[i - 1], [s1, v1] = W[i];
+    if (T <= v1) return s0 + (s1 - s0) * (T - v0) / (v1 - v0);
+  }
+  return W[W.length - 1][0];
+}
+window.renderAt = T => renderStory(Math.min(storyOf(T), DURATION - 1e-3));
+window.DURATION = window.VIDEO_DURATION || DURATION;
 renderAt(0);

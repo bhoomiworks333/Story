@@ -26,7 +26,8 @@ async def worker(p, frames, wid):
     await b.close()
 async def main():
     async with async_playwright() as p:
-        n = int(57.0 * FPS)
+        import json
+        n = int(json.load(open('warp.json'))['video_duration'] * FPS)
         allf = list(range(n))
         if ONLY:
             a, b = map(float, ONLY.split('-')); allf = [f for f in allf if a * FPS <= f < b * FPS]

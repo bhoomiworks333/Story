@@ -2,15 +2,19 @@
 # Output: soundtrack.wav (44.1 kHz stereo). Replace the music with a licensed track for the final cut if preferred.
 import numpy as np, wave
 
+import json
 SR = 44100
-DUR = 57.0
+WARP = json.load(open('warp.json'))
+DUR = WARP['video_duration']
+_S = np.array([p[0] for p in WARP['warp']]); _V = np.array([p[1] for p in WARP['warp']])
+def V(t): return float(np.interp(t, _S, _V))   # story time -> video time
 N = int(SR * DUR)
 music = np.zeros((N, 2))
 sfx = np.zeros((N, 2))
 rng = np.random.default_rng(1)
 
 def add(buf, t, sig, gain=1.0, pan=0.0):
-    i = int(t * SR)
+    i = int(V(t) * SR)
     if i >= N: return
     sig = sig[: N - i]
     l = np.cos((pan + 1) * np.pi / 4); r = np.sin((pan + 1) * np.pi / 4)
@@ -129,11 +133,11 @@ play_motif(53.9, .32)
 add(music, 55.6, pl(62, 1.4), .4); add(music, 55.6, bell(note(74), 1.4), .06)
 
 # music gain automation: duck out before the question, silence, back in
-tt = np.arange(N) / SR
+tt = np.interp(np.arange(N) / SR, _V, _S)  # story time of each sample
 g = np.ones(N)
 g *= np.where(tt < 12.6, 1, np.where(tt < 13.8, 1 - (tt - 12.6) / 1.2, 0)) + np.where(tt > 18.7, 1, 0) * np.where(tt < 13.8, 0, 1)
 g = np.clip(g, 0, 1)
-g *= np.clip((DUR - tt) / .5, 0, 1)
+g *= np.clip((57.0 - tt) / .5, 0, 1)
 music *= g[:, None]
 
 # ---------------- SFX ----------------
@@ -193,8 +197,27 @@ add(sfx, 45.7, bell(note(81), 1.0), .1)
 add(sfx, 48.3, sum(bell(note(m), 1.5) for m in [86, 90, 93]) * .3, .1)
 add(sfx, 54.1, sweep(80, 40, .7) * env(int(SR * .7), .01, .4), .35)
 
-mix = music * .9 + sfx * .8
-mix = np.tanh(mix * 1.1)
+# ---------------- VOICEOVER (Prashant, first person) ----------------
+import soundfile as sf
+from scipy.signal import resample_poly
+vo = np.zeros((N, 2))
+duck = np.ones(N)
+for i, st in enumerate(WARP['vo_starts']):
+    a, sr = sf.read(f'vo/vo_{i}.wav')
+    a = resample_poly(a, SR, sr) if sr != SR else a
+    a = a / (np.abs(a).max() + 1e-9) * .8
+    j = int((st + .12) * SR)
+    a = a[: N - j]
+    vo[j:j + len(a), 0] += a; vo[j:j + len(a), 1] += a
+    # duck music & sfx under the voice
+    k0, k1 = max(0, j - int(.25 * SR)), min(N, j + len(a) + int(.3 * SR))
+    duck[k0:k1] = np.minimum(duck[k0:k1], .38)
+# smooth the ducking envelope
+kern = np.hanning(int(.3 * SR)); kern /= kern.sum()
+duck = np.convolve(duck, kern, mode='same')
+music *= duck[:, None]; sfx *= (.5 + .5 * duck)[:, None]
+mix = music * .9 + sfx * .8 + vo * 1.0
+mix = np.tanh(mix * 1.05)
 mix /= np.abs(mix).max() / .89
 data = (mix * 32767).astype(np.int16)
 with wave.open('soundtrack.wav', 'wb') as w:
