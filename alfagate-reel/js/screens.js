@@ -163,76 +163,109 @@ export function drawLock(c, n, t, dim = 1) {
   if (dim < 1) { c.fillStyle = `rgba(0,0,0,${1 - dim})`; c.fillRect(0, 0, PH.W, PH.H); }
 }
 
-// ---------------- AlfaGate app (placeholder UI)
+// ---------------- AlfaGate app: recreation of the real Home screen (layout, colours, modules taken from the supplied
+// screenshots). Drawn in the screenshot's own 272 × 592 pt space and scaled up. Resident data is fictional.
+export const APP = { primary: '#8f5cff', primaryD: '#7a45f5', light: '#efe9ff', ink: '#14131a', grey: '#6b6f7b', bg: '#f5f7fa', red: '#ef4444' };
 export function drawApp(c, t, icon) {
   // t: seconds since the app shot started
-  c.fillStyle = '#f5f3fb'; c.fillRect(0, 0, PH.W, PH.H);
-  const hg = c.createLinearGradient(0, 0, PH.W, 330); hg.addColorStop(0, PURPLE); hg.addColorStop(1, PURPLE_D);
-  c.fillStyle = hg; rr(c, 0, -40, PH.W, 370, 48); c.fill();
-  statusBar(c, true, '9:41');
-  if (icon) { c.save(); rr(c, 44, 96, 72, 72, 18); c.clip(); c.drawImage(icon, 44, 96, 72, 72); c.restore(); }
-  text(c, 'Good morning, Aarav', 136, 128, '700 32px Manrope', '#fff');
-  text(c, 'Green Valley Residency · A-1204', 136, 166, '500 24px Inter', 'rgba(255,255,255,0.85)');
-  // quick tiles
-  const tiles = [['Visitors', '2 waiting'], ['Maintenance', '₹3,500 due'], ['Complaints', '1 open'], ['Payments', 'History']];
-  tiles.forEach(([a, b], i) => {
-    const x = 36 + i * 164, y = 216;
-    c.fillStyle = '#fff'; c.shadowColor = 'rgba(60,30,140,0.18)'; c.shadowBlur = 16; c.shadowOffsetY = 6; rr(c, x, y, 148, 150, 24); c.fill(); c.shadowColor = 'transparent';
-    c.fillStyle = 'rgba(117,72,230,0.12)'; c.beginPath(); c.arc(x + 44, y + 48, 26, 0, 7); c.fill();
-    drawIcon(c, i, x + 44, y + 48);
-    text(c, a, x + 18, y + 104, '600 21px Inter', '#1f1b2e'); text(c, b, x + 18, y + 132, '500 19px Inter', '#6f6a80');
-  });
-  // cards
-  const card = (y, h) => { c.fillStyle = '#fff'; c.shadowColor = 'rgba(40,20,90,0.12)'; c.shadowBlur = 18; c.shadowOffsetY = 6; rr(c, 36, y, PH.W - 72, h, 28); c.fill(); c.shadowColor = 'transparent'; };
-  const tap = (x, y, t0) => { const u = range(t, t0, t0 + 0.45); if (u > 0 && u < 1) { c.fillStyle = `rgba(117,72,230,${0.35 * (1 - u)})`; c.beginPath(); c.arc(x, y, 20 + u * 90, 0, 7); c.fill(); } };
-  const pill = (x, y, s, bg, fg) => { c.font = '600 21px Inter'; const w = c.measureText(s).width + 32; c.fillStyle = bg; rr(c, x, y, w, 40, 20); c.fill(); text(c, s, x + 16, y + 27, '600 21px Inter', fg); };
-  // 1 visitor approval
-  let y = 410; card(y, 250);
-  text(c, 'VISITOR AT MAIN GATE', 68, y + 52, '700 20px Inter', PURPLE);
-  c.fillStyle = '#d9cff7'; c.beginPath(); c.arc(106, y + 118, 38, 0, 7); c.fill(); text(c, 'RV', 106, y + 128, '700 26px Inter', PURPLE_D, 'center');
-  text(c, 'Rahul Verma', 164, y + 110, '700 30px Manrope', '#1f1b2e'); text(c, 'Guest · arrived 12:18', 164, y + 146, '500 22px Inter', '#6f6a80');
-  const ap = range(t, 0.95, 1.25);
-  if (ap < 1) {
-    c.globalAlpha = 1 - ap;
-    c.strokeStyle = '#d6d1e4'; c.lineWidth = 2; rr(c, 68, y + 178, 280, 52, 26); c.stroke(); text(c, 'Deny', 208, y + 212, '600 24px Inter', '#6f6a80', 'center');
-    c.fillStyle = PURPLE; rr(c, 368, y + 178, 280, 52, 26); c.fill(); text(c, 'Approve', 508, y + 212, '600 24px Inter', '#fff', 'center');
+  const S = PH.W / 272;
+  c.save(); c.scale(S, S);
+  c.fillStyle = APP.bg; c.fillRect(0, 0, 272, 592);
+  // status bar + Dynamic Island
+  text(c, '12:19', 34, 22, '600 10.5px Inter', APP.ink);
+  c.fillStyle = '#000'; rr(c, 94, 9, 84, 24, 12); c.fill();
+  c.fillStyle = APP.ink; for (let i = 0; i < 3; i++) { c.beginPath(); c.arc(222, 21, 1.6 + i * 2.2, Math.PI * 1.25, Math.PI * 1.75); c.lineWidth = 1.4; c.strokeStyle = APP.ink; c.stroke(); }
+  rr(c, 234, 14, 20, 10, 3); c.lineWidth = 1; c.stroke(); c.fillRect(236, 16, 15, 6);
+  // top buttons
+  const sq = (x) => { c.fillStyle = '#fff'; c.strokeStyle = '#e6e8ee'; c.lineWidth = 1; rr(c, x, 50, 26, 26, 8); c.fill(); c.stroke(); };
+  sq(11); c.fillStyle = APP.ink; for (let i = 0; i < 3; i++) c.fillRect(18, 58 + i * 4.5, 12, 1.5);
+  sq(236); c.fillStyle = APP.ink; c.beginPath(); c.moveTo(243, 69); c.quadraticCurveTo(243, 57, 249, 57); c.quadraticCurveTo(255, 57, 255, 69); c.closePath(); c.fill(); c.fillRect(247.5, 69.5, 3, 2);
+  const badge = t > 1.05 ? '2' : '3';
+  c.fillStyle = APP.red; c.beginPath(); c.arc(257, 53, 6, 0, 7); c.fill(); text(c, badge, 257, 56, '700 7.5px Inter', '#fff', 'center');
+  // greeting
+  text(c, 'Good Afternoon', 11, 94, '500 9.5px Inter', APP.grey);
+  text(c, 'Aarav Kapoor', 11, 115, '700 16px Inter', APP.ink);
+  text(c, 'Unit A-1204  -  Primary', 11, 131, '500 8.5px Inter', APP.grey);
+  c.fillStyle = APP.primary; c.beginPath(); c.arc(14, 142, 3.2, Math.PI, 0); c.lineTo(14, 148); c.closePath(); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.arc(14, 142, 1.2, 0, 7); c.fill();
+  text(c, 'Green Valley Residency', 21, 146, '600 8.5px Inter', APP.primary);
+  // illustration (building + trees) in light purple, as on the real screen
+  c.fillStyle = '#e8e0ff'; rr(c, 200, 134, 60, 8, 3); c.fill();
+  c.fillStyle = '#f3efff'; c.strokeStyle = '#d6c9ff'; c.lineWidth = 1.2; rr(c, 214, 92, 32, 44, 2); c.fill(); c.stroke();
+  c.fillStyle = '#ddd2ff'; for (const x of [206, 252]) { c.beginPath(); c.moveTo(x, 122); c.lineTo(x - 5, 134); c.lineTo(x + 5, 134); c.closePath(); c.fill(); c.fillRect(x - 0.6, 134, 1.2, 3); }
+  // maintenance card
+  const card = (x, y, w, h, r = 14) => { c.fillStyle = '#fff'; c.shadowColor = 'rgba(20,20,60,0.06)'; c.shadowBlur = 8; c.shadowOffsetY = 2; rr(c, x, y, w, h, r); c.fill(); c.shadowColor = 'transparent'; };
+  card(11, 172, 250, 74);
+  c.fillStyle = APP.light; c.beginPath(); c.arc(40, 209, 17, 0, 7); c.fill();
+  c.fillStyle = APP.primary; rr(c, 32, 202, 16, 13, 3); c.fill(); c.fillStyle = '#fff'; rr(c, 42, 206, 8, 5, 2); c.fill();
+  text(c, 'Maintenance Due', 66, 190, '500 8.5px Inter', APP.grey);
+  const paid = range(t, 2.05, 2.3);
+  text(c, '₹3,500', 66, 216, '800 20px Manrope', APP.primary);
+  text(c, 'Due Date: 15 Oct 2026', 66, 232, '500 7.5px Inter', APP.grey);
+  const btn = c.createLinearGradient(176, 0, 250, 0); btn.addColorStop(0, '#9d6bff'); btn.addColorStop(1, APP.primaryD);
+  const press = range(t, 1.75, 1.85) * (1 - range(t, 1.85, 2.0));
+  c.save(); c.translate(213, 207); c.scale(1 - press * 0.05, 1 - press * 0.05); c.translate(-213, -207);
+  c.fillStyle = btn; rr(c, 176, 194, 74, 26, 9); c.fill();
+  text(c, 'Pay Now  ›', 213, 210.5, '600 9px Inter', '#fff', 'center');
+  c.restore();
+  // pending visitor requests (horizontal cards)
+  text(c, 'Pending Visitor Requests', 11, 265, '700 11px Inter', APP.ink);
+  text(c, 'View All', 261, 265, '600 9px Inter', APP.primary, 'right');
+  const reqs = [['Rahul Verma', 'Gate 1', 'just now', 'guest'], ['Amazon Deli...', 'Gate 1', '2 min ago', 'deliv'], ['Courier Per...', 'Gate 1', '15 min ago', 'truck'], ['Blinkit Deli...', 'Gate 2', '45 min ago', 'deliv']];
+  const gone = easeOut(range(t, 1.0, 1.35)), shift = easeOut(range(t, 1.25, 1.65)) * 110;
+  reqs.forEach(([n, g, tm, kind], i) => {
+    let x = 11 + i * 110 - (i > 0 ? shift : 0);
+    if (i === 0) { if (gone >= 1) return; c.globalAlpha = 1 - gone; x -= gone * 20; }
+    card(x, 277, 100, 72, 12);
+    const ic = kind === 'truck' ? ['#fff1e0', '#f59e0b'] : kind === 'guest' ? ['#fde7f0', '#ec4899'] : [APP.light, APP.primary];
+    c.fillStyle = ic[0]; c.beginPath(); c.arc(x + 23, 297, 12, 0, 7); c.fill();
+    drawIcon(c, kind === 'guest' ? 6 : kind === 'truck' ? 8 : 7, x + 23, 297, ic[1], 0.42);
+    text(c, n, x + 39, 294, '700 8.5px Inter', APP.ink); text(c, g, x + 39, 305, '500 7px Inter', APP.grey);
+    text(c, tm, x + 8, 321, '500 7px Inter', APP.grey);
+    c.lineWidth = 0.8; c.strokeStyle = '#c9b6ff'; rr(c, x + 8, 327, 41, 15, 5); c.stroke(); text(c, '◎ Approve', x + 28.5, 337.5, '600 6.5px Inter', APP.primary, 'center');
+    c.strokeStyle = '#f5b3b3'; rr(c, x + 53, 327, 39, 15, 5); c.stroke(); text(c, '⊗ Reject', x + 72.5, 337.5, '600 6.5px Inter', APP.red, 'center');
     c.globalAlpha = 1;
+  });
+  // quick actions
+  card(11, 388, 250, 138);
+  text(c, 'Quick Actions', 23, 411, '700 11px Inter', APP.ink);
+  [['Visitors', '#ece6ff', APP.primary, 0], ['Complaints', '#fff3d6', '#f59e0b', 2], ['Notices', '#ece6ff', APP.primary, 3], ['Emergency', '#fde2e2', APP.red, 4]].forEach(([l, bg, fg, ic], i) => {
+    const x = 47 + i * 59;
+    c.fillStyle = bg; rr(c, x - 17, 458, 34, 34, 10); c.fill();
+    drawIcon(c, ic, x, 475, fg, 0.55);
+    text(c, l, x, 505, '500 8px Inter', APP.ink, 'center');
+  });
+  // bottom navigation
+  c.fillStyle = '#fff'; c.fillRect(0, 526, 272, 66); c.fillStyle = '#eceef2'; c.fillRect(0, 526, 272, 0.8);
+  [['Home', 5, 33], ['Visitors', 0, 102], ['Complaints', 2, 169], ['Profile', 6, 237]].forEach(([l, ic, x], i) => {
+    if (i === 0) { c.fillStyle = APP.light; rr(c, x - 17, 531, 34, 19, 9.5); c.fill(); }
+    drawIcon(c, ic, x, 541, i === 0 ? APP.primary : '#8e929c', 0.42);
+    text(c, l, x, 562, `${i === 0 ? 600 : 500} 7.5px Inter`, i === 0 ? APP.primary : '#8e929c', 'center');
+  });
+  // taps: Approve on the guest, Pay Now, then the Complaints quick action; payment confirmation toast
+  const tap = (x, y, t0) => { const u = range(t, t0, t0 + 0.45); if (u > 0 && u < 1) { c.fillStyle = `rgba(143,92,255,${0.35 * (1 - u)})`; c.beginPath(); c.arc(x, y, 6 + u * 30, 0, 7); c.fill(); } };
+  tap(39, 334, 0.7); tap(213, 207, 1.75); tap(106, 475, 2.95);
+  if (paid > 0) {
+    const k = paid * (1 - range(t, 3.3, 3.6)), y = 40 + (1 - easeOut(paid)) * -30;
+    c.globalAlpha = k; card(40, y, 192, 30, 15);
+    c.fillStyle = '#22c55e'; c.beginPath(); c.arc(56, y + 15, 7, 0, 7); c.fill();
+    c.strokeStyle = '#fff'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(52.5, y + 15); c.lineTo(55.5, y + 18); c.lineTo(60, y + 12); c.stroke();
+    text(c, 'Maintenance paid · ₹3,500', 70, y + 18.5, '600 8.5px Inter', APP.ink); c.globalAlpha = 1;
   }
-  if (ap > 0) { c.globalAlpha = ap; c.fillStyle = '#e7f6ec'; rr(c, 68, y + 178, 580, 52, 26); c.fill(); text(c, '✓  Approved · guard notified', 358, y + 212, '600 24px Inter', '#1e8e4a', 'center'); c.globalAlpha = 1; }
-  tap(508, y + 204, 0.7);
-  // 2 maintenance
-  y = 690; card(y, 190);
-  text(c, 'MAINTENANCE · SEPTEMBER', 68, y + 52, '700 20px Inter', PURPLE);
-  text(c, '₹3,500', 68, y + 116, '800 44px Manrope', '#1f1b2e'); text(c, 'Due 5 Oct', 68, y + 154, '500 22px Inter', '#6f6a80');
-  const pd = range(t, 1.95, 2.25);
-  if (pd < 1) { c.globalAlpha = 1 - pd; c.fillStyle = PURPLE; rr(c, 448, y + 94, 200, 56, 28); c.fill(); text(c, 'Pay now', 548, y + 130, '600 24px Inter', '#fff', 'center'); c.globalAlpha = 1; }
-  if (pd > 0) { c.globalAlpha = pd; pill(468, y + 102, '✓ Paid', '#e7f6ec', '#1e8e4a'); text(c, 'Receipt #AG-2291', 648, y + 170, '500 20px Inter', '#6f6a80', 'right'); c.globalAlpha = 1; }
-  tap(548, y + 122, 1.7);
-  // 3 complaint tracking
-  y = 910; card(y, 200);
-  text(c, 'COMPLAINT #118', 68, y + 52, '700 20px Inter', PURPLE);
-  text(c, 'Lift B not working', 68, y + 104, '700 30px Manrope', '#1f1b2e');
-  const steps = ['Raised', 'Assigned', 'In progress']; const prog = 1 + (t > 2.7 ? 1 : 0) + (t > 3.1 ? 0 : 0);
-  steps.forEach((s, i) => {
-    const x = 80 + i * 200, done = i <= prog, active = i === prog;
-    c.fillStyle = done ? PURPLE : '#ddd8ea'; c.beginPath(); c.arc(x, y + 150, active ? 13 : 10, 0, 7); c.fill();
-    if (i < 2) { c.fillStyle = i < prog ? PURPLE : '#ddd8ea'; c.fillRect(x + 14, y + 148, 172, 4); }
-    text(c, s, x - 12, y + 186, `${active ? 600 : 500} 20px Inter`, done ? '#1f1b2e' : '#9a95ab');
-  });
-  // bottom nav
-  c.fillStyle = '#fff'; c.fillRect(0, PH.H - 150, PH.W, 150); c.fillStyle = '#ece8f5'; c.fillRect(0, PH.H - 150, PH.W, 2);
-  ['Home', 'Visitors', 'Payments', 'Complaints', 'More'].forEach((s, i) => {
-    const x = 72 + i * 144; c.fillStyle = i === 0 ? PURPLE : '#b3aec2'; rr(c, x - 18, PH.H - 118, 36, 36, 10); c.fill();
-    text(c, s, x, PH.H - 50, `${i === 0 ? 600 : 500} 19px Inter`, i === 0 ? PURPLE : '#8c879c', 'center');
-  });
+  c.restore();
 }
-// simple line icons for the four modules
+// line icons: 0 visitors, 1 wallet, 2 complaint (warning), 3 notices (megaphone), 4 emergency (shield), 5 home, 6 person, 7 scooter, 8 truck
 export function drawIcon(c, i, x, y, col = PURPLE, s = 1) {
   c.save(); c.translate(x, y); c.scale(s, s); c.strokeStyle = col; c.fillStyle = col; c.lineWidth = 3.2; c.lineCap = 'round'; c.lineJoin = 'round';
-  if (i === 0) { c.beginPath(); c.arc(0, -6, 7, 0, 7); c.stroke(); c.beginPath(); c.arc(0, 16, 14, Math.PI * 1.1, Math.PI * 1.9); c.stroke(); }          // visitor
-  if (i === 1) { c.beginPath(); c.moveTo(-12, 12); c.lineTo(-12, -4); c.lineTo(0, -14); c.lineTo(12, -4); c.lineTo(12, 12); c.closePath(); c.stroke(); c.strokeRect(-4, 2, 8, 10); } // home / maintenance
-  if (i === 2) { c.beginPath(); c.moveTo(-12, -12); c.lineTo(12, -12); c.lineTo(12, 6); c.lineTo(0, 6); c.lineTo(-6, 13); c.lineTo(-6, 6); c.lineTo(-12, 6); c.closePath(); c.stroke(); c.beginPath(); c.moveTo(0, -6); c.lineTo(0, -1); c.stroke(); } // complaint
-  if (i === 3) { c.strokeRect(-13, -9, 26, 18); c.beginPath(); c.moveTo(-13, -3); c.lineTo(13, -3); c.stroke(); c.fillRect(4, 3, 5, 3); } // payment card
+  const circ = (cx, cy, r) => { c.beginPath(); c.arc(cx, cy, r, 0, 7); c.fill(); };
+  if (i === 0) { circ(0, -8, 6); circ(-12, -5, 4.5); circ(12, -5, 4.5); c.beginPath(); c.ellipse(0, 10, 12, 7, 0, Math.PI, 0); c.fill(); c.beginPath(); c.ellipse(-14, 9, 7, 5, 0, Math.PI, 0); c.fill(); c.beginPath(); c.ellipse(14, 9, 7, 5, 0, Math.PI, 0); c.fill(); }
+  if (i === 1) { c.beginPath(); c.roundRect(-14, -10, 28, 21, 4); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.roundRect(3, -3, 13, 8, 3); c.fill(); }
+  if (i === 2) { c.beginPath(); c.moveTo(0, -15); c.lineTo(15, 12); c.lineTo(-15, 12); c.closePath(); c.fill(); c.fillStyle = '#fff'; c.fillRect(-1.6, -5, 3.2, 9); circ(0, 8, 2); }
+  if (i === 3) { c.beginPath(); c.moveTo(-12, -4); c.lineTo(4, -12); c.lineTo(4, 12); c.lineTo(-12, 4); c.closePath(); c.fill(); c.fillRect(-15, -4, 4, 8); c.lineWidth = 2.6; c.beginPath(); c.arc(6, 0, 9, -0.7, 0.7); c.stroke(); c.fillRect(-10, 4, 4, 9); }
+  if (i === 4) { c.beginPath(); c.moveTo(0, -15); c.lineTo(13, -9); c.quadraticCurveTo(13, 8, 0, 15); c.quadraticCurveTo(-13, 8, -13, -9); c.closePath(); c.fill(); c.fillStyle = '#fff'; c.fillRect(-1.8, -7, 3.6, 12); c.fillRect(-6, -3, 12, 3.6); }
+  if (i === 5) { c.beginPath(); c.moveTo(-13, -1); c.lineTo(0, -13); c.lineTo(13, -1); c.lineTo(10, -1); c.lineTo(10, 12); c.lineTo(-10, 12); c.lineTo(-10, -1); c.closePath(); c.fill(); c.fillStyle = '#fff'; c.fillRect(-3, 4, 6, 8); }
+  if (i === 6) { circ(0, -6, 7); c.beginPath(); c.ellipse(0, 12, 12, 8, 0, Math.PI, 0); c.fill(); }
+  if (i === 7) { c.lineWidth = 3; c.beginPath(); c.arc(-9, 8, 4.5, 0, 7); c.stroke(); c.beginPath(); c.arc(10, 8, 4.5, 0, 7); c.stroke(); c.beginPath(); c.moveTo(-9, 8); c.lineTo(-2, 0); c.lineTo(8, 0); c.lineTo(10, 8); c.stroke(); c.fillRect(-14, -8, 10, 8); c.beginPath(); c.moveTo(6, -8); c.lineTo(8, 0); c.stroke(); }
+  if (i === 8) { c.fillRect(-15, -8, 18, 14); c.beginPath(); c.moveTo(4, -3); c.lineTo(11, -3); c.lineTo(15, 2); c.lineTo(15, 6); c.lineTo(4, 6); c.closePath(); c.fill(); c.fillStyle = '#fff'; circ(-9, 8, 3.5); circ(9, 8, 3.5); c.fillStyle = col; circ(-9, 8, 2); circ(9, 8, 2); }
   c.restore();
 }
 

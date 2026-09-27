@@ -72,7 +72,7 @@ export async function createOverlay(cv, world) {
     const words = cap.text.split(' '), lines = []; let line = '';
     for (const w of words) { const tst = line ? line + ' ' + w : w; if (c.measureText(tst).width > 880 && line) { lines.push(line); line = w; } else line = tst; }
     lines.push(line);
-    const y0 = (low ? 1660 : 1470) - (lines.length - 1) * 58;
+    const y0 = (low === 'app' ? 1600 : low ? 1660 : 1470) - (lines.length - 1) * 58;
     lines.forEach((l, i) => {
       const w = c.measureText(l).width;
       c.fillStyle = 'rgba(0,0,0,0.42)'; c.beginPath(); c.roundRect(W / 2 - w / 2 - 20, y0 + i * 58 - 44, w + 40, 58, 12); c.fill();
@@ -100,7 +100,9 @@ export async function createOverlay(cv, world) {
     const src = [[0, H / 2 - z2 + 24, W / 2 - gx, z2 - gz - 24], [W / 2 + gx, H / 2 - z2 + 24, W / 2 - gx, z2 - gz - 24],
       [0, H / 2 + gz, W / 2 - gx, z2 - gz - 24], [W / 2 + gx, H / 2 + gz, W / 2 - gx, z2 - gz - 24]];
     const T = 380, gap = 36, dst = [[W / 2 - gap / 2 - T, H / 2 - gap / 2 - T], [W / 2 + gap / 2, H / 2 - gap / 2 - T], [W / 2 - gap / 2 - T, H / 2 + gap / 2], [W / 2 + gap / 2, H / 2 + gap / 2]];
-    const labels = ['Visitors', 'Maintenance', 'Complaints', 'Payments'], iconOrder = [0, 1, 2, 3];
+    // the four modules from the real app: Visitors, Maintenance, Complaints, Notices
+    const labels = ['Visitors', 'Maintenance', 'Complaints', 'Notices'], iconOrder = [0, 1, 2, 3];
+    const tint = [['rgba(143,92,255,0.14)', '#8f5cff'], ['rgba(143,92,255,0.14)', '#8f5cff'], ['rgba(245,158,11,0.16)', '#f59e0b'], ['rgba(143,92,255,0.14)', '#8f5cff']];
     src.forEach(([sx, sy, sw, sh], i) => {
       const [dx, dy] = dst[i];
       const x = lerp(sx, dx, e), y = lerp(sy, dy, e), w = lerp(sw, T, e), h = lerp(sh, T, e), r = lerp(0, 56, e);
@@ -111,8 +113,8 @@ export async function createOverlay(cv, world) {
       c.restore();
       if (f0(t) > 0) {
         c.save(); c.globalAlpha = f0(t);
-        c.fillStyle = 'rgba(117,72,230,0.12)'; c.beginPath(); c.arc(x + w / 2, y + h / 2 - 40, 70, 0, 7); c.fill();
-        drawIcon(c, iconOrder[i], x + w / 2, y + h / 2 - 40, PURPLE, 2.6);
+        c.fillStyle = tint[i][0]; c.beginPath(); c.roundRect(x + w / 2 - 70, y + h / 2 - 110, 140, 140, 40); c.fill();
+        drawIcon(c, iconOrder[i], x + w / 2, y + h / 2 - 40, tint[i][1], 2.6);
         c.font = '700 40px Manrope'; c.fillStyle = '#1f1b2e'; c.textAlign = 'center'; c.fillText(labels[i], x + w / 2, y + h / 2 + 90);
         c.restore();
       }
@@ -141,15 +143,16 @@ export async function createOverlay(cv, world) {
     const w1 = easeOut(range(t, 38.2, 38.9));
     c.save(); c.globalAlpha = w1; c.textAlign = 'center'; c.font = '800 118px Manrope'; c.fillStyle = '#fff'; c.fillText('AlfaGate', W / 2, 1060 + (1 - w1) * 24); c.restore();
     const w2 = easeOut(range(t, 38.7, 39.4));
-    c.save(); c.globalAlpha = w2 * 0.92; c.textAlign = 'center'; c.font = '500 44px Inter'; c.fillStyle = '#fff'; c.fillText('Society Management. Simplified.', W / 2, 1140 + (1 - w2) * 16); c.restore();
+    c.save(); c.globalAlpha = w2 * 0.95; c.textAlign = 'center'; c.font = '500 50px Inter'; c.fillStyle = '#fff';
+    c.fillText('Run your society', W / 2, 1150 + (1 - w2) * 16); c.fillText('like it’s audited.', W / 2, 1214 + (1 - w2) * 16); c.restore();
     const w3 = easeOut(range(t, 40.2, 40.9));
     if (w3 > 0) {
       c.save(); c.globalAlpha = w3; c.textAlign = 'center';
       c.font = '600 38px Inter'; const txt = 'Comment “ALFAGATE” for a demo'; const tw = c.measureText(txt).width;
       c.fillStyle = 'rgba(255,255,255,0.14)'; c.strokeStyle = 'rgba(255,255,255,0.6)'; c.lineWidth = 2;
-      c.beginPath(); c.roundRect(W / 2 - tw / 2 - 40, 1262, tw + 80, 84, 42); c.fill(); c.stroke();
-      c.fillStyle = '#fff'; c.fillText(txt, W / 2, 1316);
-      c.font = '500 34px Inter'; c.fillStyle = 'rgba(255,255,255,0.8)'; c.fillText('alfagate.in', W / 2, 1420);
+      c.beginPath(); c.roundRect(W / 2 - tw / 2 - 40, 1310, tw + 80, 84, 42); c.fill(); c.stroke();
+      c.fillStyle = '#fff'; c.fillText(txt, W / 2, 1364);
+      c.font = '500 34px Inter'; c.fillStyle = 'rgba(255,255,255,0.8)'; c.fillText('alfagate.in', W / 2, 1466);
       c.restore();
     }
   }
@@ -161,7 +164,7 @@ export async function createOverlay(cv, world) {
     if (s.id === 'gridA') { c.fillStyle = `rgba(20,10,5,${0.25 * smooth(range(t, 29.8, 31.0))})`; c.fillRect(0, 0, W, H); streetLines(t, u, gridH(u), 1); }
     if (s.id === 'app') { const k = range(t, 37.25, 37.6); if (k > 0) { c.fillStyle = `rgba(90,51,196,${smooth(k)})`; c.fillRect(0, 0, W, H); } }
     for (const sp of SUPERS) superText(t, sp);
-    captions(t, s.id === 'brand');
+    captions(t, s.id === 'brand' ? true : s.id === 'app' ? 'app' : false);
     // grain
     const ancient = t < 15.2 || s.id === 'gridA';
     c.save(); c.globalCompositeOperation = 'overlay'; c.globalAlpha = ancient ? 0.11 : 0.07;

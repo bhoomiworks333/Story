@@ -25,9 +25,9 @@ to present-day society chaos, asks the question, and resolves into AlfaGate.
 | 22.8–23.8 | Lock-screen notifications pile up → everything stops | — | — |
 | 23.8–29.6 | Slow push on the phone lying on the register; it lights once | Technology itni aage aa gayi… toh society management kyun nahi? | MAYBE IT'S TIME TO UPGRADE. |
 | 29.6–31.8 | Top-down city again; golden lines trace the street system | Organized rehna humein hamesha se aata tha. Bas tools badal gaye. | — |
-| 31.8–33.9 | The four city blocks become four app tiles: Visitors, Maintenance, Complaints, Payments | (cont.) | — |
-| 33.9–37.6 | AlfaGate app: visitor approved, maintenance paid, complaint tracked | Visitors, maintenance, complaints… sab ek app mein. | — |
-| 37.6–43.8 | Logo, "Society Management. Simplified.", CTA | AlfaGate. Apni society ko smarter tareeke se manage kijiye. | Comment "ALFAGATE" for a demo · alfagate.in |
+| 31.8–33.9 | The four city blocks become four app tiles: Visitors, Maintenance, Complaints, Notices | (cont.) | — |
+| 33.9–37.6 | AlfaGate Home screen: guest at the gate approved, maintenance paid, Complaints opened | Visitors, maintenance, complaints… sab ek app mein. | — |
+| 37.6–43.8 | Logo, "Run your society like it's audited.", CTA | AlfaGate. Apni society ko smarter tareeke se manage kijiye. | Comment "ALFAGATE" for a demo · alfagate.in |
 
 The central device is the grid. The street system of an ancient city becomes the four connected modules of a modern one.
 The ancient past is never framed as "better": the line *"Organized rehna humein hamesha se aata tha. Bas tools badal gaye"*
@@ -50,15 +50,18 @@ These are deliberately left out: temples, palaces, horses, iron, and the Buddhis
 One simplification: the "Harappa" shot reuses the same generic Indus street model. It is labelled
 *illustrative reconstruction* on screen.
 
-## Needs your input before publishing
+## Product screens and data
 
-1. **The AlfaGate app screens are placeholders.** I couldn't reach alfagate.in from this environment, and no screenshots
-   were supplied. The UI in `js/screens.js` (`drawApp`) uses your brand purple (#7548E6, taken from the icon) and only the
-   features your brief lists: visitors, maintenance, complaints, payments. Send real screens and I'll recreate them exactly.
-2. **The voice is AI-generated.** For a premium cut, record a voice artist to the same script. Each line has to fit its slot
-   in the table above. Otherwise, send the recording and I'll re-time the edit to it.
-3. **The CTA needs someone behind it.** "Comment ALFAGATE" only works if someone, or an auto-DM, answers those comments.
-4. **The tagline** is "Society Management. Simplified." Your brief also suggested "Smart Society Management".
+- The app shot recreates the real AlfaGate **Home** screen from the supplied screenshots (`drawApp` in `js/screens.js`,
+  drawn in the screenshot's own 272 × 592 pt layout). It keeps the layout, colours and modules: Maintenance Due with
+  Pay Now, Pending Visitor Requests with Approve/Reject, Quick Actions (Visitors, Complaints, Notices, Emergency), and
+  bottom navigation. No feature outside those screenshots is shown.
+- **All resident data is fictional:** Aarav Kapoor, A-1204, Green Valley Residency. The Profile screenshot contains a
+  real name and mobile number, so it is deliberately not used anywhere in the film.
+- The one invented detail is the "Maintenance paid" confirmation toast after Pay Now. The real post-payment screen
+  wasn't supplied. Replace it if AlfaGate shows something different.
+- The voiceover is the AI voice (Kokoro `hm_psi`), which is the final choice.
+- The CTA "Comment ALFAGATE" only works if someone, or an auto-DM, answers those comments.
 
 ## Re-render
 
