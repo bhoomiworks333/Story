@@ -116,6 +116,10 @@ export async function createWorld(canvas) {
     const g = { ...p.grade, ...(shot.grade || {}) };
     grade.uniforms.lift.value.set(...g.lift); grade.uniforms.gain.value.set(...g.gain);
     grade.uniforms.sat.value = g.sat; grade.uniforms.contrast.value = g.contrast; grade.uniforms.vig.value = shot.vig ?? 0.38;
+    // draw only the set this shot uses: hidden sets skip both the camera and the shadow pass
+    const set = shot.preset === 'modern' ? 'modern' : shot.preset.startsWith('studio') ? (shot.id === 'app' ? 'app' : 'desk') : shot.id === 'reservoir' ? 'dhola' : 'city';
+    ancient.group.visible = set === 'city'; ancient.dhola.group.visible = set === 'dhola'; modern.group.visible = set === 'modern';
+    studio.desk.visible = set === 'desk'; studio.appSet.visible = set === 'app';
     for (const w of ancient.waters) w.userData.time.value = shot.t;
     ancient.people.update(shot.t); ancient.carts.update(shot.t); modern.update(shot.t); studio.update(shot.t, shot.id);
     composer.render();

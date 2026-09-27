@@ -295,5 +295,5 @@ function buildDholavira(scene, T) {
     { at: () => ({ x: -L - 4, z: W + 3, yaw: 0.3, moving: false }), variant: 2, carry: true, cloth: 0xd9c8a8, scale: 0.95 },
     { at: () => ({ x: -L - 3.2, z: W + 3.6, yaw: 2.6, moving: false }), variant: 1, carry: false, cloth: 0xc9a77c, scale: 1 },
   ]);
-  return { waters: [w1, w2], update: updateFigs };
+  return { waters: [w1, w2], update: updateFigs, group: G };
 }

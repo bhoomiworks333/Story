@@ -129,5 +129,5 @@ export function buildStudio(scene, icon) {
     phoneTex.needsUpdate = true;
     if (id === 'app') { drawApp(actx, t - 33.9, icon); appTex.needsUpdate = true; }
   }
-  return { update, phone, phone2 };
+  return { update, phone, phone2, desk: G, appSet: A };
 }
