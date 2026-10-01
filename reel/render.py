@@ -1,26 +1,40 @@
-"""Frame compositor: reframe + asset cards + punch-ins + captions, encoded with the final mix.
+"""Frame compositor (v3): untouched talking head + top images + comment stack + captions.
 
 usage: python3 render.py [--preview]   (preview = fast low-quality encode)
 """
 import numpy as np, subprocess, os, sys, glob
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import timeline as T
-from card7 import placeholder
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 B = os.path.join(HERE, "build")
 W, H = 1080, 1920
-DY = 470                                # top of the speaker layer while cards are up
-SCALE = 0.82                            # speaker scale while cards are up (keeps chin clear of captions)
-CARD_BOX = (65, 72, 1015, DY - 26)      # area the card is fitted into
+CARD_BOX = (65, 70, 1015, 510)          # top area images are fitted into
 CAP_CY = int(0.865 * H)                 # caption box centre, measured from reference
 FONT = ImageFont.truetype(os.path.join(HERE, "fonts", "Figtree-Medium.ttf"), 78)
+POP_IN, POP_OUT = 0.23, 0.13            # seconds
 
 
 def ease(x): x = min(1, max(0, x)); return x * x * (3 - 2 * x)
 
 
-def ease_out(x): x = min(1, max(0, x)); return 1 - (1 - x) ** 3
+def ease_out_back(x, k=1.4):
+    x = min(1, max(0, x)) - 1
+    return 1 + (k + 1) * x ** 3 + k * x ** 2
+
+
+def asset(key):
+    return Image.open(glob.glob(os.path.join(HERE, "assets", key + ".*"))[0]).convert("RGBA")
+
+
+def with_shadow(im, blur=18, off=8, op=0.55, pad=40):
+    """soft drop shadow so screenshots separate from the video behind them"""
+    w, h = im.width + 2 * pad, im.height + 2 * pad
+    sh = Image.new("L", (w, h), 0); sh.paste(int(255 * op), (pad, pad + off, pad + im.width, pad + off + im.height))
+    sh = sh.filter(ImageFilter.GaussianBlur(blur))
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0)); out.putalpha(sh)
+    out.alpha_composite(im, (pad, pad))
+    return out
 
 
 # ---------- captions: white rounded box, black medium text (reference geometry @1080x1920) ----------
@@ -38,28 +52,24 @@ def caption_img(text):
 
 
 def load_cards():
+    bx0, by0, bx1, by1 = CARD_BOX
     cards = []
-    for i, c in enumerate(T.CARDS):
-        f = sorted(glob.glob(os.path.join(HERE, "assets", c["key"] + ".*")))
-        if not f:
-            p = os.path.join(B, c["key"] + "_placeholder.png"); placeholder(p, c["label"]); f = [p]
-            print("  missing asset ->", c["key"], "(placeholder)")
-        im = Image.open(f[0]).convert("RGBA")
-        bx0, by0, bx1, by1 = CARD_BOX
+    for c in T.CARDS:
+        im = asset(c["key"])
         s = min((bx1 - bx0) / im.width, (by1 - by0) / im.height)
         im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
-        e = T.CARDS[i + 1]["s"] if i + 1 < len(T.CARDS) else T.CARDS_END
-        e = min([e] + [f["s"] for f in T.FULLS if f["s"] > c["s"]])  # a full-screen asset ends the card
-        cards.append(dict(img=im, s=c["s"], e=e))
+        cards.append(dict(c, img=with_shadow(im)))
     return cards
 
 
-def load_fulls():
-    out = []
-    for f in T.FULLS:
-        im = Image.open(glob.glob(os.path.join(HERE, "assets", f["key"] + ".*"))[0]).convert("RGBA")
-        s = min(1000 / im.width, 1700 / im.height)
-        out.append(dict(f, img=im, base=s))
+def load_comments():
+    C = T.COMMENTS; out = []
+    for i, (k, s, tilt) in enumerate(zip(C["keys"], C["starts"], C["tilt"])):
+        im = asset(k); sc = 900 / im.width
+        im = im.resize((900, round(im.height * sc)), Image.LANCZOS)
+        im = with_shadow(im, blur=14, off=6, op=0.6).rotate(tilt, Image.BICUBIC, expand=True)
+        cy = 150 + i * 112                      # overlapping stack, like the reference
+        out.append(dict(img=im, s=s, e=C["e"], cx=W // 2 + (-14 if i % 2 else 14), cy=cy))
     return out
 
 
@@ -73,25 +83,25 @@ def paste(dst, im, x, y, alpha=1.0):
     dst[y0:y1, x0:x1] = dst[y0:y1, x0:x1] * (1 - al) + sub[..., :3] * 255 * al
 
 
-def zoom(frame, z, ay=0.36):
-    if z == 1: return frame
-    cw, ch = W / z, H / z; cx, cy = W / 2, H * ay
-    box = (cx - cw / 2, max(0, cy - ch * ay), cx + cw / 2, max(0, cy - ch * ay) + ch)
-    return frame.resize((W, H), Image.LANCZOS, box=box)
-
-
-def edge_mask(w, h, r, f=60):
-    """soft alpha on left/right/top edges so the scaled speaker melts into the blurred backdrop"""
-    fx = max(1, int(f * r)); m = np.ones((h, w), np.float32)
-    ramp = np.linspace(0, 1, fx, dtype=np.float32)
-    m[:, :fx] *= ramp; m[:, w - fx:] *= ramp[::-1]; m[:fx, :] *= ramp[:, None]
-    return m[..., None]
+def pop(dst, im, cx, cy, t, s, e):
+    """pop in (slight overshoot), quick fade/shrink out; (cx, cy) is the centre"""
+    if not (s <= t < e + POP_OUT): return
+    k_in = (t - s) / POP_IN
+    a = min(1, k_in * 2.5)
+    sc = 0.88 + 0.12 * ease_out_back(k_in)
+    if t >= e:
+        k = ease((t - e) / POP_OUT); a *= 1 - k; sc *= 1 - 0.04 * k
+    if a <= 0: return
+    if abs(sc - 1) > 0.002:
+        im = im.resize((max(1, round(im.width * sc)), max(1, round(im.height * sc))), Image.BILINEAR)
+    paste(dst, im, int(cx - im.width / 2), int(cy - im.height / 2), a)
 
 
 def main():
     preview = "--preview" in sys.argv
     caps = T.captions(); cap_imgs = [caption_img(c["text"]) for c in caps]
-    cards = load_cards(); fulls = load_fulls()
+    cards = load_cards(); comments = load_comments()
+    bx0, by0, bx1, by1 = CARD_BOX
 
     dec = subprocess.Popen(
         f"ffmpeg -v error -i {B}/src.mp4 -vf scale={W}:{H}:flags=lanczos -f rawvideo -pix_fmt rgb24 -",
@@ -109,74 +119,22 @@ def main():
         raw = dec.stdout.read(fb)
         if len(raw) < fb: break
         t = i / T.FPS; i += 1
-        if T.CUT[0] <= t < T.CUT[1]: continue
-        frame = Image.frombuffer("RGB", (W, H), raw)
+        canvas = np.frombuffer(raw, np.uint8).reshape(H, W, 3).astype(np.float32)
 
-        # reframe progress
-        r = ease((t - T.REFRAME_IN[0]) / (T.REFRAME_IN[1] - T.REFRAME_IN[0])) * \
-            (1 - ease((t - T.REFRAME_OUT[0]) / (T.REFRAME_OUT[1] - T.REFRAME_OUT[0])))
-        z = 1.0
-        for p in T.PUNCH:
-            if p["s"] <= t < p["e"]:
-                z = p["z"]
-                if p["e"] == T.REFRAME_OUT[1]:  # ease this one back out with the reframe
-                    z = 1 + (p["z"] - 1) * (1 - ease((t - T.REFRAME_OUT[0]) / (T.REFRAME_OUT[1] - T.REFRAME_OUT[0])))
-        zf = zoom(frame, z)
-        if r > 0:
-            sc = 1 - (1 - SCALE) * r                     # speaker shrinks a little and slides down
-            dy = int(round(DY * r)); sw, shh = round(W * sc), round(H * sc)
-            layer = np.asarray(zf.resize((sw, shh), Image.BILINEAR if r < 1 else Image.LANCZOS), np.float32)
-            x0 = (W - sw) // 2
-            bg = np.asarray(frame.resize((54, 96), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3))
-                            .resize((W, H), Image.BICUBIC), np.float32)
-            dark = (1 - 0.55 * r) * np.ones((H, 1, 1), np.float32)
-            dark[dy:] = 1 - 0.25 * r                     # backdrop: darker behind cards, lighter at the sides
-            canvas = bg * dark
-            m = edge_mask(sw, shh, r)
-            h = min(shh, H - dy)
-            reg = canvas[dy:dy + h, x0:x0 + sw]
-            canvas[dy:dy + h, x0:x0 + sw] = layer[:h] * m[:h] + reg * (1 - m[:h])
-        else:
-            canvas = np.asarray(zf, np.float32).copy()
+        for c in comments:
+            pop(canvas, c["img"], c["cx"], c["cy"], t, c["s"], c["e"])
+        for c in cards:  # vertically centred in the top area
+            pop(canvas, c["img"], W // 2, (by0 + by1) // 2, t, c["s"], c["e"])
 
-        # cards
-        bx0, by0, bx1, by1 = CARD_BOX
-        for c in cards:
-            if c["s"] <= t < c["e"] + 0.17:
-                a_in = ease_out((t - c["s"]) / 0.27)
-                a_out = 1 - ease((t - c["e"]) / 0.17) if t >= c["e"] else 1
-                a = a_in * a_out
-                if a <= 0: continue
-                im = c["img"]
-                sc = 0.965 + 0.035 * a_in
-                if sc < 0.999:
-                    im = im.resize((round(im.width * sc), round(im.height * sc)), Image.BILINEAR)
-                x = (W - im.width) // 2
-                y = by0 + ((by1 - by0) - im.height) // 2 + int(16 * (1 - a_in))
-                paste(canvas, im, x, y, a)
-
-        # full-screen assets: 4-frame fade in, slow 3.5% push, hard cut out
-        full_on = False
-        for f in fulls:
-            if f["s"] <= t < f["e"]:
-                a = ease((t - f["s"]) * T.FPS / 4)
-                k = (t - f["s"]) / (f["e"] - f["s"])
-                sc = f["base"] * (1 + 0.035 * k)
-                im = f["img"].resize((round(f["img"].width * sc), round(f["img"].height * sc)), Image.LANCZOS)
-                layer = np.empty_like(canvas); layer[:] = f["bg"]
-                paste(layer, im, (W - im.width) // 2, (H - im.height) // 2)
-                canvas = canvas * (1 - a) + layer * a
-                full_on = a >= 0.5
-
-        # caption (2-frame fade-in, cut out); hidden under full-screen assets
-        for c, im in zip(caps if not full_on else [], cap_imgs):
+        # caption (2-frame fade-in, cut out)
+        for c, im in zip(caps, cap_imgs):
             if c["s"] <= t < c["show_e"]:
                 a = min(1, (t - c["s"]) * T.FPS / 2 + 0.5)
                 paste(canvas, im, (W - im.width) // 2, CAP_CY - im.height // 2, a)
                 break
 
         enc.stdin.write(np.clip(canvas, 0, 255).astype(np.uint8).tobytes())
-        if i % 150 == 0: print(f"  {t:5.1f}s", flush=True)
+        if i % 300 == 0: print(f"  {t:5.1f}s", flush=True)
     enc.stdin.close(); enc.wait(); dec.wait()
     print("wrote", out)
 

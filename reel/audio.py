@@ -1,7 +1,7 @@
 """Voice cleanup, synthesized ambient bed, soft pop, ducking and final mix (48 kHz)."""
 import numpy as np, subprocess, os, wave
 from scipy.signal import butter, sosfilt, fftconvolve
-from timeline import CUT, POPS, src_to_out, SRC_DUR
+from timeline import POPS, SRC_DUR
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 B = os.path.join(HERE, "build")
@@ -33,63 +33,65 @@ def voice():
        "deesser=i=0.25,"
        "acompressor=threshold=-21dB:ratio=2.2:attack=12:release=140:makeup=1\" "
        f"{B}/voice_raw.wav")
-    v = read_wav(f"{B}/voice_raw.wav")[:, 0]
-    # dead-air trim with a 20 ms equal-power crossfade
-    a, b = int(CUT[0] * SR), int(CUT[1] * SR); x = int(0.02 * SR)
-    t = np.linspace(0, np.pi / 2, x)
-    seam = v[a:a + x] * np.cos(t) + v[b:b + x] * np.sin(t)
-    return np.concatenate([v[:a], seam, v[b + x:]])
+    return read_wav(f"{B}/voice_raw.wav")[:, 0]   # untouched timing: no trims (keeps picture as shot)
 
 
-# ---------- 2. music: minimal cinematic pad, D minor, i-VI-III-VII ----------
+# ---------- 2. music: soft lo-fi piano, steady, no build (Fmaj7 - Em7 - Dm7 - Cmaj7, 76 bpm) ----------
 def note(m): return 440 * 2 ** ((m - 69) / 12)
 
 
+def epiano(f, L):
+    """mellow electric-piano tone: sine + soft bell partial, quick attack, long decay"""
+    t = np.arange(L) / SR
+    env = np.minimum(1, t / 0.006) * np.exp(-t * 1.6)
+    tone = np.sin(2 * np.pi * f * t) + 0.22 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t * 4) \
+        + 0.06 * np.sin(2 * np.pi * 3.01 * f * t) * np.exp(-t * 9)
+    trem = 1 + 0.08 * np.sin(2 * np.pi * 4.2 * t)
+    return tone * env * trem
+
+
 def pad(dur):
-    n = int(dur * SR); t = np.arange(n) / SR
-    chords = [[50, 57, 62, 65, 69], [46, 53, 58, 62, 65], [41, 53, 57, 60, 64], [48, 55, 60, 62, 67]]
-    bar = 4 * 60 / 72 * 2  # two bars of 4/4 at 72 bpm per chord (~6.67 s)
-    out = np.zeros(n)
-    for k in range(int(dur / bar) + 2):
-        ch = chords[k % 4]; s0 = int(k * bar * SR); L = int(bar * 1.35 * SR)
-        if s0 >= n: break
-        L = min(L, n - s0); tt = np.arange(L) / SR
-        env = np.minimum(1, tt / 1.8) * np.minimum(1, (L / SR - tt) / 2.2)
-        seg = np.zeros(L)
-        for m in ch:
-            for det in (-0.06, 0.06):  # gently detuned triangle-ish voices
-                f = note(m) * 2 ** (det / 12)
-                ph = 2 * np.pi * f * tt + rng.uniform(0, 6.28)
-                seg += (np.sin(ph) + 0.18 * np.sin(3 * ph) / 3) * (0.55 if m < 52 else 0.35)
-        out[s0:s0 + L] += seg * env
-    out = sosfilt(butter(2, 1400, "low", fs=SR, output="sos"), out)
-    # slow filter-like breathing
-    out *= 0.85 + 0.15 * np.sin(2 * np.pi * t / 9.0)
-    # soft felt pluck pulse on 8ths, very quiet, only after the hook
-    beat = 60 / 72 / 2
-    arp = [74, 69, 77, 72]
-    pl = np.zeros(n)
-    for i in range(int(dur / beat)):
-        s0 = int(i * beat * SR)
-        if s0 / SR < 6.5: continue
-        L = int(0.5 * SR); L = min(L, n - s0); tt = np.arange(L) / SR
-        m = arp[i % 4] - (0 if (i // 16) % 2 == 0 else 2)
-        pl[s0:s0 + L] += np.sin(2 * np.pi * note(m) * tt) * np.exp(-tt * 9) * (1 if i % 2 == 0 else 0.6)
-    pl = sosfilt(butter(2, 2500, "low", fs=SR, output="sos"), pl)
-    out = out / np.abs(out).max() + 0.22 * pl / max(1e-9, np.abs(pl).max())
-    # sub swell under the chord root
-    out += 0.25 * np.sin(2 * np.pi * note(38) * t) * (0.5 + 0.5 * np.sin(2 * np.pi * t / (bar * 4)))
-    # simple stereo reverb
-    ir_len = int(2.4 * SR); it = np.arange(ir_len) / SR
+    n = int(dur * SR); out = np.zeros(n)
+    beat = 60 / 76; bar = 4 * beat
+    chords = [[53, 57, 60, 64], [52, 55, 59, 62], [50, 53, 57, 60], [48, 52, 55, 59]]
+    bass = [41, 40, 38, 36]
+    k = 0
+    while k * bar < dur:
+        ch = chords[k % 4]; s0 = int(k * bar * SR)
+        for j, m in enumerate(ch):        # gently rolled chord on beat 1, soft re-hit on beat 3
+            for hit, vel in ((0, 0.9), (2, 0.45)):
+                st = s0 + int((hit * beat + j * 0.018) * SR); L = min(int(bar * SR), n - st)
+                if L > 0: out[st:st + L] += epiano(note(m), L) * vel * 0.25
+        st = s0; L = min(int(bar * SR), n - st)
+        if L > 0: out[st:st + L] += np.sin(2 * np.pi * note(bass[k % 4]) * np.arange(L) / SR) * \
+            np.exp(-np.arange(L) / SR * 0.9) * 0.35
+        k += 1
+    # very soft lo-fi kick + brushed hat, steady from the top
+    drums = np.zeros(n); i = 0
+    while i * beat < dur:
+        st = int(i * beat * SR)
+        if i % 2 == 0:
+            L = min(int(0.25 * SR), n - st); t = np.arange(L) / SR
+            drums[st:st + L] += np.sin(2 * np.pi * (48 + 60 * np.exp(-t * 30)) * t) * np.exp(-t * 14) * 0.5
+        for off in (0, 0.5):
+            st2 = int((i + off) * beat * SR); L = min(int(0.05 * SR), n - st2)
+            if L > 0:
+                t = np.arange(L) / SR
+                drums[st2:st2 + L] += rng.standard_normal(L) * np.exp(-t * 90) * (0.10 if off else 0.06)
+        i += 1
+    drums = sosfilt(butter(2, 6000, "low", fs=SR, output="sos"), drums)
+    x = sosfilt(butter(2, 3200, "low", fs=SR, output="sos"), out) + 0.5 * drums
+    x += rng.standard_normal(n) * 0.004   # faint vinyl-ish air
+    ir_len = int(1.6 * SR); it = np.arange(ir_len) / SR
     st = []
     for ch in range(2):
-        ir = rng.standard_normal(ir_len) * np.exp(-it * 2.6); ir[0] = 0
-        ir = sosfilt(butter(1, 3000, "low", fs=SR, output="sos"), ir)
-        st.append(0.7 * out + 0.3 * fftconvolve(out, ir)[:n] / np.abs(ir).sum() * 40)
+        ir = rng.standard_normal(ir_len) * np.exp(-it * 3.5); ir[0] = 0
+        ir = sosfilt(butter(1, 2500, "low", fs=SR, output="sos"), ir)
+        st.append(0.8 * x + 0.2 * fftconvolve(x, ir)[:n] / np.abs(ir).sum() * 40)
     m = np.stack(st, 1)
-    fade_in, fade_out = int(1.5 * SR), int(2.5 * SR)
-    m[:fade_in] *= np.linspace(0, 1, fade_in)[:, None]
-    m[-fade_out:] *= np.linspace(1, 0, fade_out)[:, None] ** 2
+    fi, fo = int(0.8 * SR), int(2.0 * SR)
+    m[:fi] *= np.linspace(0, 1, fi)[:, None]
+    m[-fo:] *= np.linspace(1, 0, fo)[:, None] ** 2
     return m / np.abs(m).max()
 
 
@@ -144,7 +146,7 @@ def main():
 
     p = pop(); sfx = np.zeros(n)
     for t in POPS:
-        i = int(src_to_out(t) * SR) - int(0.01 * SR)
+        i = int(t * SR) - int(0.01 * SR)
         sfx[i:i + len(p)] += p[:max(0, min(len(p), n - i))]
     sfx *= 10 ** (-21 / 20)            # peaks ~-21 dBFS: audible but well under the voice
 
