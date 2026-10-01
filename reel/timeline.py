@@ -13,14 +13,17 @@ CUT = (37.00, 38.10)
 ONSETS = [14.42, 17.67, 23.91, 25.73, 28.81, 36.12, 38.32, 41.14, 45.55, 48.76]
 OFFSETS = [14.17, 17.35, 23.53, 25.35, 28.42, 35.80, 36.82, 40.64, 45.22, 48.43, 58.54]
 
-# Asset cards (top of frame, reference layout). file -> shown from `s` until next card.
+# Asset cards (top of frame, reference layout). Each shows from `s` until the next card/full-screen starts.
 CARDS = [
-    dict(key="02_hf_model",   s=15.78, label="Hugging Face model page"),      # "a model that already exists"
-    dict(key="03_dataset",    s=23.91, label="Dataset viewer (alpaca)"),      # "You need a dataset"
-    dict(key="04_unsloth_gh", s=28.19, label="unslothai / unsloth on GitHub"),# "Unsloth"
-    dict(key="06_rtx4090",    s=31.30, label="GeForce RTX 4090"),             # "an RTX 4090"
-    dict(key="05_colab",      s=34.65, label="Unsloth Colab notebook"),       # "Google Colab"
-    dict(key="07_before_after", s=39.63, label="Before / after"),             # "you test it"
+    dict(key="02_hf_model",     s=15.78, label="Hugging Face model page"),  # "a model that already exists"
+    dict(key="04_unsloth_gh",   s=27.36, label="unsloth on GitHub"),        # "a tool like Unsloth"
+    dict(key="06_rtx4090",      s=31.30, label="GeForce RTX 4090"),         # "an RTX 4090"
+    dict(key="07_before_after", s=38.32, label="Before / after"),           # "and after training you test it"
+]
+# Full-screen assets: hide the speaker and captions entirely (voice continues).
+FULLS = [
+    dict(key="03_dataset_full", s=23.91, e=27.36, bg=(11, 15, 25)),  # "You need a dataset. Once that's ready, you can use"
+    dict(key="05_colab_full",   s=34.65, e=CUT[0], bg=(19, 19, 20)), # "Google Colab GPUs. Then you train it" -> cut hides the jump
 ]
 CARDS_END = 43.00          # cards leave as "no cinematic" starts
 REFRAME_IN = (15.30, 15.70)  # speaker slides down to make room for the card
@@ -33,8 +36,8 @@ PUNCH = [
     dict(s=57.24, e=SRC_DUR, z=1.07),  # CTA "Comment TRAIN"
 ]
 
-# Pops: every card entrance + the CTA keyword.
-POPS = [c["s"] for c in CARDS] + [57.24 + 0.33]  # on "TRAIN"
+# Pops: every asset entrance + the CTA keyword.
+POPS = sorted([c["s"] for c in CARDS] + [f["s"] for f in FULLS]) + [57.24 + 0.33]  # entrances + "TRAIN"
 
 
 def captions():

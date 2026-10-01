@@ -49,8 +49,18 @@ def load_cards():
         s = min((bx1 - bx0) / im.width, (by1 - by0) / im.height)
         im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
         e = T.CARDS[i + 1]["s"] if i + 1 < len(T.CARDS) else T.CARDS_END
+        e = min([e] + [f["s"] for f in T.FULLS if f["s"] > c["s"]])  # a full-screen asset ends the card
         cards.append(dict(img=im, s=c["s"], e=e))
     return cards
+
+
+def load_fulls():
+    out = []
+    for f in T.FULLS:
+        im = Image.open(glob.glob(os.path.join(HERE, "assets", f["key"] + ".*"))[0]).convert("RGBA")
+        s = min(1000 / im.width, 1700 / im.height)
+        out.append(dict(f, img=im, base=s))
+    return out
 
 
 def paste(dst, im, x, y, alpha=1.0):
@@ -81,7 +91,7 @@ def edge_mask(w, h, r, f=60):
 def main():
     preview = "--preview" in sys.argv
     caps = T.captions(); cap_imgs = [caption_img(c["text"]) for c in caps]
-    cards = load_cards()
+    cards = load_cards(); fulls = load_fulls()
 
     dec = subprocess.Popen(
         f"ffmpeg -v error -i {B}/src.mp4 -vf scale={W}:{H}:flags=lanczos -f rawvideo -pix_fmt rgb24 -",
@@ -145,8 +155,21 @@ def main():
                 y = by0 + ((by1 - by0) - im.height) // 2 + int(16 * (1 - a_in))
                 paste(canvas, im, x, y, a)
 
-        # caption (2-frame fade-in, cut out)
-        for c, im in zip(caps, cap_imgs):
+        # full-screen assets: 4-frame fade in, slow 3.5% push, hard cut out
+        full_on = False
+        for f in fulls:
+            if f["s"] <= t < f["e"]:
+                a = ease((t - f["s"]) * T.FPS / 4)
+                k = (t - f["s"]) / (f["e"] - f["s"])
+                sc = f["base"] * (1 + 0.035 * k)
+                im = f["img"].resize((round(f["img"].width * sc), round(f["img"].height * sc)), Image.LANCZOS)
+                layer = np.empty_like(canvas); layer[:] = f["bg"]
+                paste(layer, im, (W - im.width) // 2, (H - im.height) // 2)
+                canvas = canvas * (1 - a) + layer * a
+                full_on = a >= 0.5
+
+        # caption (2-frame fade-in, cut out); hidden under full-screen assets
+        for c, im in zip(caps if not full_on else [], cap_imgs):
             if c["s"] <= t < c["show_e"]:
                 a = min(1, (t - c["s"]) * T.FPS / 2 + 0.5)
                 paste(canvas, im, (W - im.width) // 2, CAP_CY - im.height // 2, a)

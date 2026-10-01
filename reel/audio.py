@@ -138,9 +138,9 @@ def main():
         s = c * s + (1 - c) * x; out[i] = s
     sm = np.interp(np.arange(n), np.arange(len(out)) * dec, out)
     duck = 10 ** (-9 * sm / 20)
-    gm, Im = lufs_gain(music, -27.0)   # bed ~13 LU under voice in gaps, ~21 LU under it while ducked
+    gm, Im = lufs_gain(music, -24.0)   # low bed: ~18 LU under the voice while ducked
     music = music * gm * duck[:, None]
-    print(f"music in {Im:.1f} LUFS -> -27 (pre-duck)")
+    print(f"music in {Im:.1f} LUFS -> -24 (pre-duck)")
 
     p = pop(); sfx = np.zeros(n)
     for t in POPS:
