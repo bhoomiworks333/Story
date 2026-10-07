@@ -45,6 +45,18 @@ for gi, g in enumerate(groups):
         end = last_end + 0.6
     caps.append((round(start, 3), round(end - start, 3), text, is_full(start)))
 
+# A caption that straddles a layout cut is split there, so it never sits in the wrong position.
+CUTS = [5.92, 35.68, 37.76]
+split_caps = []
+for s0, d, t, full in caps:
+    e0 = s0 + d
+    for c in CUTS:
+        if s0 < c < e0:
+            split_caps.append((s0, round(c - s0, 3), t, full))
+            s0, full = c, is_full(c)
+    split_caps.append((s0, round(e0 - s0, 3), t, full))
+caps = split_caps
+
 cap_html = "\n".join(
     f'      <div id="cap{i}" class="clip cap {"cap-full" if full else "cap-split"}" '
     f'data-start="{s}" data-duration="{d}" data-track-index="10">'
@@ -75,8 +87,14 @@ HTML = r"""<!doctype html>
       .asset { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; overflow: hidden;
                background: #111111; z-index: 2; }
       .center { display: flex; align-items: center; justify-content: center; flex-direction: column; }
-      #typing { position: absolute; left: 40px; top: 63px; width: 1000px; height: 834px; z-index: 2;
-                border-radius: 18px; object-fit: cover; }
+      #typing { position: absolute; left: 40px; top: 170px; width: 1000px; height: 600px; z-index: 2;
+                border-radius: 18px; border: 2px solid #2c2c2c; object-fit: cover; }
+      /* header bar + asset label (reference: logo bar on top, label under the asset) */
+      .hdr { position: absolute; left: 0; top: 0; width: 1080px; height: 120px; background: #111111; z-index: 5; }
+      .hdr .t { position: absolute; left: 60px; top: 50px; font-size: 28px; font-weight: 600; letter-spacing: .14em; color: #9a9a9a; }
+      .hdr .dot { position: absolute; left: 1004px; top: 58px; width: 14px; height: 14px; border-radius: 7px; background: #e5e5e5; }
+      .hdr .rule { position: absolute; left: 60px; right: 60px; top: 112px; height: 2px; background: #262626; }
+      .alabel { position: absolute; left: 0; right: 0; text-align: center; font-size: 40px; font-weight: 600; color: #fff; z-index: 3; }
       .page { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
       .page img { display: block; width: 100%; height: auto; }
       .foot { position: absolute; left: 0; right: 0; bottom: 78px; text-align: center; font-size: 26px;
@@ -88,7 +106,7 @@ HTML = r"""<!doctype html>
       .lbl { font-size: 44px; font-weight: 600; color: #9b9b9b; letter-spacing: .12em; white-space: nowrap; }
 
       /* bars */
-      .chart-title { position: absolute; top: 64px; left: 0; right: 0; text-align: center; font-size: 40px;
+      .chart-title { position: absolute; top: 150px; left: 0; right: 0; text-align: center; font-size: 40px;
                      font-weight: 600; color: #cfcfcf; }
       .baseline { position: absolute; left: 140px; right: 140px; top: 720px; height: 3px; background: #444; }
       .col { position: absolute; top: 0; width: 300px; height: 960px; }
@@ -119,10 +137,15 @@ HTML = r"""<!doctype html>
     <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="__DUR__">
       <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="__DUR__" data-track-index="0"></video>
 
+      <div id="h-typing" class="clip hdr" data-start="5.92" data-duration="1.92" data-track-index="2"><div class="t">WHAT MOST PEOPLE DO</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="l-typing" class="clip alabel" data-start="5.92" data-duration="1.92" data-track-index="3" style="top: 800px;">Asking AI to write the skill</div>
+      <div id="h-paper1" class="clip hdr" data-start="7.84" data-duration="27.84" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-paper2" class="clip hdr" data-start="37.76" data-duration="__CTADUR__" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
       <video id="typing" class="clip" src="assets/typing.mp4" muted playsinline data-start="5.92" data-duration="1.92" data-track-index="1"></video>
 
       <div id="a-title" class="clip asset center" data-start="7.84" data-duration="2.72" data-track-index="1">
-        <div id="title-card" class="page" style="width: 980px;"><img src="assets/title.png" alt="" /></div>
+        <div id="title-card" class="page" style="width: 1000px; margin-top: 40px;"><img src="assets/title.png" alt="" /></div>
+        <div class="alabel" style="top: 836px;">The research paper</div>
       </div>
 
       <div id="a-nums" class="clip asset center" data-start="10.56" data-duration="6.16" data-track-index="1">
@@ -135,8 +158,8 @@ HTML = r"""<!doctype html>
         <div class="chart-title">Avg. pass-rate change vs. no skills</div>
         <div class="baseline"></div>
         <div id="col-h" class="col" style="left: 170px;">
-          <div id="bar-h" class="bar" style="height: 480px; background: #f2f2f2;"></div>
-          <div class="val" style="top: 130px;">+16.2</div>
+          <div id="bar-h" class="bar" style="height: 400px; background: #f2f2f2;"></div>
+          <div class="val" style="top: 228px;">+16.2</div>
           <div class="cat">Human-written skill</div>
         </div>
         <div id="col-a" class="col" style="left: 610px;">
@@ -144,12 +167,11 @@ HTML = r"""<!doctype html>
           <div class="val" style="top: 610px; color: #9b9b9b;">≈ 0</div>
           <div class="cat">AI-written skill</div>
         </div>
-        <div class="foot">SkillsBench · arXiv:2602.12670</div>
       </div>
 
       <div id="a-sl" class="clip asset" data-start="25.36" data-duration="4.72" data-track-index="1">
         <div id="sl-short">
-          <div class="doc" style="left: 110px; top: 300px; width: 380px; height: 250px;">
+          <div class="doc" style="left: 110px; top: 330px; width: 380px; height: 250px;">
             <div class="hd">SKILL.md</div>
             <div class="ln" style="width: 260px;"></div><div class="ln" style="width: 300px;"></div><div class="ln" style="width: 200px;"></div>
           </div>
@@ -159,7 +181,7 @@ HTML = r"""<!doctype html>
           <div class="tag" style="left: 70px; width: 460px; top: 700px;">Short, focused</div>
         </div>
         <div id="sl-long">
-          <div class="doc" style="left: 590px; top: 70px; width: 380px; height: 600px;">
+          <div class="doc" style="left: 590px; top: 150px; width: 380px; height: 480px;">
             <div id="long-scroll">
               <div class="hd">SKILL.md</div>
               __LONGLINES__
@@ -173,14 +195,14 @@ HTML = r"""<!doctype html>
         <div class="foot">Focused skills (2–3 modules) beat comprehensive docs</div>
       </div>
 
-      <div id="a-abs" class="clip asset center" data-start="30.08" data-duration="5.6" data-track-index="1">
-        <div id="abs-card" class="page" style="width: 660px;"><img src="assets/abstract.png" alt="" /></div>
+      <div id="a-abs" class="clip asset" data-start="30.08" data-duration="5.6" data-track-index="1">
+        <div id="abs-card" class="page" style="position: absolute; left: 40px; top: -440px; width: 1000px;"><img src="assets/abstract.png" alt="" /></div>
       </div>
 
-      <div id="a-cta" class="clip asset center" data-start="37.76" data-duration="__CTADUR__" data-track-index="1">
-        <div class="page" style="width: 940px;"><img src="assets/title.png" alt="" /></div>
-        <div class="cta-kick">Comment</div>
-        <div class="cta-word">SKILLS</div>
+      <div id="a-cta" class="clip asset" data-start="37.76" data-duration="__CTADUR__" data-track-index="1">
+        <div class="page" style="position: absolute; left: 110px; top: 150px; width: 860px;"><img src="assets/title.png" alt="" /></div>
+        <div class="cta-kick" style="position: absolute; left: 0; right: 0; top: 690px; margin: 0; text-align: center;">Comment</div>
+        <div class="cta-word" style="position: absolute; left: 0; right: 0; top: 742px; text-align: center;">SKILLS</div>
       </div>
 
 __CAPS__
@@ -199,7 +221,7 @@ __CAPS__
       pop("#sl-long", 28.48);
       tl.fromTo("#long-scroll", { y: 0 }, { y: -900, duration: 4.0, ease: "none" }, 28.48);
       rise("#abs-card", 30.08);
-      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.55, duration: 5.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
+      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.12, duration: 5.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
       window.__timelines["main"] = tl;
     </script>
   </body>
