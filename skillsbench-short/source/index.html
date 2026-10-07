@@ -28,6 +28,7 @@
       .hdr .t { position: absolute; left: 60px; top: 50px; font-size: 28px; font-weight: 600; letter-spacing: .14em; color: #9a9a9a; }
       .hdr .dot { position: absolute; left: 1004px; top: 58px; width: 14px; height: 14px; border-radius: 7px; background: #e5e5e5; }
       .hdr .rule { position: absolute; left: 60px; right: 60px; top: 112px; height: 2px; background: #262626; }
+      .hl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 3px; transform-origin: 0 50%; }
       .alabel { position: absolute; left: 0; right: 0; text-align: center; font-size: 40px; font-weight: 600; color: #fff; z-index: 3; }
       .page { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
       .page img { display: block; width: 100%; height: auto; }
@@ -71,21 +72,26 @@
     <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="41.2667">
       <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="41.2667" data-track-index="0"></video>
 
-      <div id="h-typing" class="clip hdr" data-start="5.92" data-duration="1.92" data-track-index="2"><div class="t">WHAT MOST PEOPLE DO</div><div class="dot"></div><div class="rule"></div></div>
-      <div id="l-typing" class="clip alabel" data-start="5.92" data-duration="1.92" data-track-index="3" style="top: 800px;">Asking AI to write the skill</div>
-      <div id="h-paper1" class="clip hdr" data-start="7.84" data-duration="27.84" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
-      <div id="h-paper2" class="clip hdr" data-start="37.76" data-duration="3.5067" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
-      <video id="typing" class="clip" src="assets/typing.mp4" muted playsinline data-start="5.92" data-duration="1.92" data-track-index="1"></video>
+      <div id="h-typing" class="clip hdr" data-start="2.2" data-duration="5.64" data-track-index="2"><div class="t">WHAT MOST PEOPLE DO</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="l-typing" class="clip alabel" data-start="2.2" data-duration="5.64" data-track-index="3" style="top: 800px;">Asking AI to write the skill</div>
+      <div id="h-paper1" class="clip hdr" data-start="7.84" data-duration="33.4267" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
+      <video id="typing" class="clip" src="assets/typing.mp4" muted playsinline data-start="2.2" data-duration="5.64" data-track-index="1"></video>
 
       <div id="a-title" class="clip asset center" data-start="7.84" data-duration="2.72" data-track-index="1">
         <div id="title-card" class="page" style="width: 1000px; margin-top: 40px;"><img src="assets/title.png" alt="" /></div>
         <div class="alabel" style="top: 836px;">The research paper</div>
       </div>
 
-      <div id="a-nums" class="clip asset center" data-start="10.56" data-duration="6.16" data-track-index="1">
-        <div id="n1" class="num-row"><div class="num">84</div><div class="lbl">REAL TASKS</div></div>
-        <div id="n2" class="num-row"><div class="num">11</div><div class="lbl">FIELDS</div></div>
-        <div id="n3" class="num-row"><div class="num">7,000+</div><div class="lbl">RUNS</div></div>
+      <div id="a-nums" class="clip asset" data-start="10.56" data-duration="6.16" data-track-index="1">
+        <div id="np-cam" style="position: absolute; left: 0; top: 0; width: 1080px; height: 960px; transform-origin: 0 0;">
+          <div id="np-page" class="page" style="position: absolute; left: 40px; top: 200px; width: 1000px;">
+            <img src="assets/page.png" alt="" />
+            <div id="hl-84" class="hl" style="left: 674.7px; top: 557.2px; width: 62.6px; height: 22.1px;"></div>
+            <div id="hl-11" class="hl" style="left: 181.6px; top: 183.7px; width: 92.4px; height: 24.3px;"></div>
+            <div id="hl-73a" class="hl" style="left: 312.9px; top: 268.0px; width: 99.9px; height: 23.2px;"></div>
+            <div id="hl-73b" class="hl" style="left: 58.9px; top: 288.3px; width: 48.7px; height: 23.2px;"></div>
+          </div>
+        </div>
       </div>
 
       <div id="a-bars" class="clip asset" data-start="16.72" data-duration="8.64" data-track-index="1">
@@ -200,7 +206,7 @@
         <div class="foot">Focused skills (2–3 modules) beat comprehensive docs</div>
       </div>
 
-      <div id="a-abs" class="clip asset" data-start="30.08" data-duration="5.6" data-track-index="1">
+      <div id="a-abs" class="clip asset" data-start="30.08" data-duration="7.68" data-track-index="1">
         <div id="abs-card" class="page" style="position: absolute; left: 40px; top: -440px; width: 1000px;"><img src="assets/abstract.png" alt="" /></div>
       </div>
 
@@ -210,45 +216,44 @@
         <div class="cta-word" style="position: absolute; left: 0; right: 0; top: 742px; text-align: center;">SKILLS</div>
       </div>
 
-      <div id="cap0" class="clip cap cap-full" data-start="2.24" data-duration="1.44" data-track-index="10"><span class="box">The biggest mistake</span></div>
-      <div id="cap1" class="clip cap cap-full" data-start="3.68" data-duration="0.8" data-track-index="10"><span class="box">people make</span></div>
-      <div id="cap2" class="clip cap cap-full" data-start="4.48" data-duration="1.2" data-track-index="10"><span class="box">with AI skills</span></div>
-      <div id="cap3" class="clip cap cap-full" data-start="5.68" data-duration="0.24" data-track-index="10"><span class="box">is letting</span></div>
-      <div id="cap4" class="clip cap cap-split" data-start="5.92" data-duration="0.32" data-track-index="10"><span class="box">is letting</span></div>
-      <div id="cap5" class="clip cap cap-split" data-start="6.24" data-duration="1.6" data-track-index="10"><span class="box">the AI write them.</span></div>
-      <div id="cap6" class="clip cap cap-split" data-start="7.84" data-duration="0.66" data-track-index="10"><span class="box">There's actually</span></div>
-      <div id="cap7" class="clip cap cap-split" data-start="8.5" data-duration="1.34" data-track-index="10"><span class="box">a research paper</span></div>
-      <div id="cap8" class="clip cap cap-split" data-start="9.84" data-duration="0.72" data-track-index="10"><span class="box">on this.</span></div>
-      <div id="cap9" class="clip cap cap-split" data-start="10.56" data-duration="1.6" data-track-index="10"><span class="box">They ran 84</span></div>
-      <div id="cap10" class="clip cap cap-split" data-start="12.16" data-duration="0.8" data-track-index="10"><span class="box">real tasks</span></div>
-      <div id="cap11" class="clip cap cap-split" data-start="12.96" data-duration="0.88" data-track-index="10"><span class="box">across 11</span></div>
-      <div id="cap12" class="clip cap cap-split" data-start="13.84" data-duration="0.88" data-track-index="10"><span class="box">different fields,</span></div>
-      <div id="cap13" class="clip cap cap-split" data-start="14.72" data-duration="0.48" data-track-index="10"><span class="box">more than</span></div>
-      <div id="cap14" class="clip cap cap-split" data-start="15.2" data-duration="1.52" data-track-index="10"><span class="box">7,000 times.</span></div>
-      <div id="cap15" class="clip cap cap-split" data-start="16.72" data-duration="0.72" data-track-index="10"><span class="box">When a human</span></div>
-      <div id="cap16" class="clip cap cap-split" data-start="17.44" data-duration="0.96" data-track-index="10"><span class="box">wrote the skill,</span></div>
-      <div id="cap17" class="clip cap cap-split" data-start="18.4" data-duration="0.88" data-track-index="10"><span class="box">results went up</span></div>
-      <div id="cap18" class="clip cap cap-split" data-start="19.28" data-duration="1.76" data-track-index="10"><span class="box">by 16 points.</span></div>
-      <div id="cap19" class="clip cap cap-split" data-start="21.04" data-duration="0.72" data-track-index="10"><span class="box">When the AI</span></div>
-      <div id="cap20" class="clip cap cap-split" data-start="21.76" data-duration="1.52" data-track-index="10"><span class="box">wrote its own skill,</span></div>
-      <div id="cap21" class="clip cap cap-split" data-start="23.28" data-duration="0.96" data-track-index="10"><span class="box">it made basically</span></div>
-      <div id="cap22" class="clip cap cap-split" data-start="24.24" data-duration="1.05" data-track-index="10"><span class="box">no difference.</span></div>
-      <div id="cap23" class="clip cap cap-split" data-start="25.36" data-duration="0.72" data-track-index="10"><span class="box">And the short,</span></div>
-      <div id="cap24" class="clip cap cap-split" data-start="26.08" data-duration="1.2" data-track-index="10"><span class="box">focused skills</span></div>
-      <div id="cap25" class="clip cap cap-split" data-start="27.28" data-duration="0.64" data-track-index="10"><span class="box">did better</span></div>
-      <div id="cap26" class="clip cap cap-split" data-start="27.92" data-duration="0.96" data-track-index="10"><span class="box">than the long,</span></div>
-      <div id="cap27" class="clip cap cap-split" data-start="28.88" data-duration="1.2" data-track-index="10"><span class="box">detailed ones.</span></div>
-      <div id="cap28" class="clip cap cap-split" data-start="30.08" data-duration="0.88" data-track-index="10"><span class="box">So AI can</span></div>
-      <div id="cap29" class="clip cap cap-split" data-start="30.96" data-duration="1.2" data-track-index="10"><span class="box">follow your process</span></div>
-      <div id="cap30" class="clip cap cap-split" data-start="32.16" data-duration="0.72" data-track-index="10"><span class="box">really well,</span></div>
-      <div id="cap31" class="clip cap cap-split" data-start="32.88" data-duration="0.72" data-track-index="10"><span class="box">but it can't</span></div>
-      <div id="cap32" class="clip cap cap-split" data-start="33.6" data-duration="0.64" data-track-index="10"><span class="box">figure out</span></div>
-      <div id="cap33" class="clip cap cap-split" data-start="34.24" data-duration="1.44" data-track-index="10"><span class="box">your process for you.</span></div>
-      <div id="cap34" class="clip cap cap-full" data-start="35.68" data-duration="0.96" data-track-index="10"><span class="box">That part is</span></div>
-      <div id="cap35" class="clip cap cap-full" data-start="36.64" data-duration="1.12" data-track-index="10"><span class="box">still your job.</span></div>
-      <div id="cap36" class="clip cap cap-split" data-start="37.76" data-duration="1.04" data-track-index="10"><span class="box">Comment "SKILLS"</span></div>
-      <div id="cap37" class="clip cap cap-split" data-start="38.8" data-duration="0.64" data-track-index="10"><span class="box">and I'll send</span></div>
-      <div id="cap38" class="clip cap cap-split" data-start="39.44" data-duration="1.4" data-track-index="10"><span class="box">you the paper.</span></div>
+      <div id="cap0" class="clip cap cap-split" data-start="2.24" data-duration="1.44" data-track-index="10"><span class="box">The biggest mistake</span></div>
+      <div id="cap1" class="clip cap cap-split" data-start="3.68" data-duration="0.8" data-track-index="10"><span class="box">people make</span></div>
+      <div id="cap2" class="clip cap cap-split" data-start="4.48" data-duration="1.2" data-track-index="10"><span class="box">with AI skills</span></div>
+      <div id="cap3" class="clip cap cap-split" data-start="5.68" data-duration="0.56" data-track-index="10"><span class="box">is letting</span></div>
+      <div id="cap4" class="clip cap cap-split" data-start="6.24" data-duration="1.6" data-track-index="10"><span class="box">the AI write them.</span></div>
+      <div id="cap5" class="clip cap cap-split" data-start="7.84" data-duration="0.66" data-track-index="10"><span class="box">There's actually</span></div>
+      <div id="cap6" class="clip cap cap-split" data-start="8.5" data-duration="1.34" data-track-index="10"><span class="box">a research paper</span></div>
+      <div id="cap7" class="clip cap cap-split" data-start="9.84" data-duration="0.72" data-track-index="10"><span class="box">on this.</span></div>
+      <div id="cap8" class="clip cap cap-split" data-start="10.56" data-duration="1.6" data-track-index="10"><span class="box">They ran 84</span></div>
+      <div id="cap9" class="clip cap cap-split" data-start="12.16" data-duration="0.8" data-track-index="10"><span class="box">real tasks</span></div>
+      <div id="cap10" class="clip cap cap-split" data-start="12.96" data-duration="0.88" data-track-index="10"><span class="box">across 11</span></div>
+      <div id="cap11" class="clip cap cap-split" data-start="13.84" data-duration="0.88" data-track-index="10"><span class="box">different fields,</span></div>
+      <div id="cap12" class="clip cap cap-split" data-start="14.72" data-duration="0.48" data-track-index="10"><span class="box">more than</span></div>
+      <div id="cap13" class="clip cap cap-split" data-start="15.2" data-duration="1.52" data-track-index="10"><span class="box">7,000 times.</span></div>
+      <div id="cap14" class="clip cap cap-split" data-start="16.72" data-duration="0.72" data-track-index="10"><span class="box">When a human</span></div>
+      <div id="cap15" class="clip cap cap-split" data-start="17.44" data-duration="0.96" data-track-index="10"><span class="box">wrote the skill,</span></div>
+      <div id="cap16" class="clip cap cap-split" data-start="18.4" data-duration="0.88" data-track-index="10"><span class="box">results went up</span></div>
+      <div id="cap17" class="clip cap cap-split" data-start="19.28" data-duration="1.76" data-track-index="10"><span class="box">by 16 points.</span></div>
+      <div id="cap18" class="clip cap cap-split" data-start="21.04" data-duration="0.72" data-track-index="10"><span class="box">When the AI</span></div>
+      <div id="cap19" class="clip cap cap-split" data-start="21.76" data-duration="1.52" data-track-index="10"><span class="box">wrote its own skill,</span></div>
+      <div id="cap20" class="clip cap cap-split" data-start="23.28" data-duration="0.96" data-track-index="10"><span class="box">it made basically</span></div>
+      <div id="cap21" class="clip cap cap-split" data-start="24.24" data-duration="1.05" data-track-index="10"><span class="box">no difference.</span></div>
+      <div id="cap22" class="clip cap cap-split" data-start="25.36" data-duration="0.72" data-track-index="10"><span class="box">And the short,</span></div>
+      <div id="cap23" class="clip cap cap-split" data-start="26.08" data-duration="1.2" data-track-index="10"><span class="box">focused skills</span></div>
+      <div id="cap24" class="clip cap cap-split" data-start="27.28" data-duration="0.64" data-track-index="10"><span class="box">did better</span></div>
+      <div id="cap25" class="clip cap cap-split" data-start="27.92" data-duration="0.96" data-track-index="10"><span class="box">than the long,</span></div>
+      <div id="cap26" class="clip cap cap-split" data-start="28.88" data-duration="1.2" data-track-index="10"><span class="box">detailed ones.</span></div>
+      <div id="cap27" class="clip cap cap-split" data-start="30.08" data-duration="0.88" data-track-index="10"><span class="box">So AI can</span></div>
+      <div id="cap28" class="clip cap cap-split" data-start="30.96" data-duration="1.2" data-track-index="10"><span class="box">follow your process</span></div>
+      <div id="cap29" class="clip cap cap-split" data-start="32.16" data-duration="0.72" data-track-index="10"><span class="box">really well,</span></div>
+      <div id="cap30" class="clip cap cap-split" data-start="32.88" data-duration="0.72" data-track-index="10"><span class="box">but it can't</span></div>
+      <div id="cap31" class="clip cap cap-split" data-start="33.6" data-duration="0.64" data-track-index="10"><span class="box">figure out</span></div>
+      <div id="cap32" class="clip cap cap-split" data-start="34.24" data-duration="1.44" data-track-index="10"><span class="box">your process for you.</span></div>
+      <div id="cap33" class="clip cap cap-split" data-start="35.68" data-duration="0.96" data-track-index="10"><span class="box">That part is</span></div>
+      <div id="cap34" class="clip cap cap-split" data-start="36.64" data-duration="1.12" data-track-index="10"><span class="box">still your job.</span></div>
+      <div id="cap35" class="clip cap cap-split" data-start="37.76" data-duration="1.04" data-track-index="10"><span class="box">Comment "SKILLS"</span></div>
+      <div id="cap36" class="clip cap cap-split" data-start="38.8" data-duration="0.64" data-track-index="10"><span class="box">and I'll send</span></div>
+      <div id="cap37" class="clip cap cap-split" data-start="39.44" data-duration="1.4" data-track-index="10"><span class="box">you the paper.</span></div>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
@@ -256,7 +261,14 @@
       const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
 
       rise("#title-card", 7.84);
-      pop("#n1", 11.28); pop("#n2", 13.36); pop("#n3", 15.20);
+      rise("#np-page", 10.56);
+      // focus (page px) -> camera transform; k = display / source width
+      const K = 1000 / 937, SC = 1.7;
+      const cam = (px, py, t) => tl.to("#np-cam", { x: 540 - SC * (40 + K * px), y: 540 - SC * (200 + K * py), scale: SC, duration: 0.5, ease: "power2.inOut" }, t);
+      const mark = (sel, t) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power2.out" }, t);
+      cam(653, 532, 11.28); mark("#hl-84", 11.5);
+      cam(213, 183, 13.36); mark("#hl-11", 13.58);
+      cam(340, 270, 15.20); mark("#hl-73a", 15.42); mark("#hl-73b", 15.7);
       tl.fromTo("#col-h", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 19.52);
       tl.fromTo("#bar-h", { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out" }, 19.52);
       tl.fromTo("#col-a", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 24.48);
@@ -264,7 +276,7 @@
       pop("#sl-long", 28.48);
       tl.fromTo("#long-scroll", { y: 0 }, { y: -900, duration: 4.0, ease: "none" }, 28.48);
       rise("#abs-card", 30.08);
-      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.12, duration: 5.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
+      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.1, duration: 7.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
       window.__timelines["main"] = tl;
     </script>
   </body>

@@ -29,7 +29,7 @@ groups = [
 words[16]["start"] = 8.50
 
 # Layout states: (start, mode)
-FULL_WINDOWS = [(0, 5.92), (35.68, 37.76)]
+FULL_WINDOWS = [(0, 2.20)]
 def is_full(t):
     return any(a <= t < b for a, b in FULL_WINDOWS)
 
@@ -46,7 +46,7 @@ for gi, g in enumerate(groups):
     caps.append((round(start, 3), round(end - start, 3), text, is_full(start)))
 
 # A caption that straddles a layout cut is split there, so it never sits in the wrong position.
-CUTS = [5.92, 35.68, 37.76]
+CUTS = [2.20]
 split_caps = []
 for s0, d, t, full in caps:
     e0 = s0 + d
@@ -94,6 +94,7 @@ HTML = r"""<!doctype html>
       .hdr .t { position: absolute; left: 60px; top: 50px; font-size: 28px; font-weight: 600; letter-spacing: .14em; color: #9a9a9a; }
       .hdr .dot { position: absolute; left: 1004px; top: 58px; width: 14px; height: 14px; border-radius: 7px; background: #e5e5e5; }
       .hdr .rule { position: absolute; left: 60px; right: 60px; top: 112px; height: 2px; background: #262626; }
+      .hl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 3px; transform-origin: 0 50%; }
       .alabel { position: absolute; left: 0; right: 0; text-align: center; font-size: 40px; font-weight: 600; color: #fff; z-index: 3; }
       .page { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
       .page img { display: block; width: 100%; height: auto; }
@@ -137,21 +138,23 @@ HTML = r"""<!doctype html>
     <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="__DUR__">
       <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="__DUR__" data-track-index="0"></video>
 
-      <div id="h-typing" class="clip hdr" data-start="5.92" data-duration="1.92" data-track-index="2"><div class="t">WHAT MOST PEOPLE DO</div><div class="dot"></div><div class="rule"></div></div>
-      <div id="l-typing" class="clip alabel" data-start="5.92" data-duration="1.92" data-track-index="3" style="top: 800px;">Asking AI to write the skill</div>
-      <div id="h-paper1" class="clip hdr" data-start="7.84" data-duration="27.84" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
-      <div id="h-paper2" class="clip hdr" data-start="37.76" data-duration="__CTADUR__" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
-      <video id="typing" class="clip" src="assets/typing.mp4" muted playsinline data-start="5.92" data-duration="1.92" data-track-index="1"></video>
+      <div id="h-typing" class="clip hdr" data-start="2.2" data-duration="5.64" data-track-index="2"><div class="t">WHAT MOST PEOPLE DO</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="l-typing" class="clip alabel" data-start="2.2" data-duration="5.64" data-track-index="3" style="top: 800px;">Asking AI to write the skill</div>
+      <div id="h-paper1" class="clip hdr" data-start="7.84" data-duration="__HDRDUR__" data-track-index="2"><div class="t">SKILLSBENCH · ARXIV:2602.12670</div><div class="dot"></div><div class="rule"></div></div>
+      <video id="typing" class="clip" src="assets/typing.mp4" muted playsinline data-start="2.2" data-duration="5.64" data-track-index="1"></video>
 
       <div id="a-title" class="clip asset center" data-start="7.84" data-duration="2.72" data-track-index="1">
         <div id="title-card" class="page" style="width: 1000px; margin-top: 40px;"><img src="assets/title.png" alt="" /></div>
         <div class="alabel" style="top: 836px;">The research paper</div>
       </div>
 
-      <div id="a-nums" class="clip asset center" data-start="10.56" data-duration="6.16" data-track-index="1">
-        <div id="n1" class="num-row"><div class="num">84</div><div class="lbl">REAL TASKS</div></div>
-        <div id="n2" class="num-row"><div class="num">11</div><div class="lbl">FIELDS</div></div>
-        <div id="n3" class="num-row"><div class="num">7,000+</div><div class="lbl">RUNS</div></div>
+      <div id="a-nums" class="clip asset" data-start="10.56" data-duration="6.16" data-track-index="1">
+        <div id="np-cam" style="position: absolute; left: 0; top: 0; width: 1080px; height: 960px; transform-origin: 0 0;">
+          <div id="np-page" class="page" style="position: absolute; left: 40px; top: 200px; width: 1000px;">
+            <img src="assets/page.png" alt="" />
+__HL__
+          </div>
+        </div>
       </div>
 
       <div id="a-bars" class="clip asset" data-start="16.72" data-duration="8.64" data-track-index="1">
@@ -195,7 +198,7 @@ HTML = r"""<!doctype html>
         <div class="foot">Focused skills (2–3 modules) beat comprehensive docs</div>
       </div>
 
-      <div id="a-abs" class="clip asset" data-start="30.08" data-duration="5.6" data-track-index="1">
+      <div id="a-abs" class="clip asset" data-start="30.08" data-duration="7.68" data-track-index="1">
         <div id="abs-card" class="page" style="position: absolute; left: 40px; top: -440px; width: 1000px;"><img src="assets/abstract.png" alt="" /></div>
       </div>
 
@@ -213,7 +216,14 @@ __CAPS__
       const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
 
       rise("#title-card", 7.84);
-      pop("#n1", 11.28); pop("#n2", 13.36); pop("#n3", 15.20);
+      rise("#np-page", 10.56);
+      // focus (page px) -> camera transform; k = display / source width
+      const K = 1000 / 937, SC = 1.7;
+      const cam = (px, py, t) => tl.to("#np-cam", { x: 540 - SC * (40 + K * px), y: 540 - SC * (200 + K * py), scale: SC, duration: 0.5, ease: "power2.inOut" }, t);
+      const mark = (sel, t) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power2.out" }, t);
+      cam(653, 532, 11.28); mark("#hl-84", 11.5);
+      cam(213, 183, 13.36); mark("#hl-11", 13.58);
+      cam(340, 270, 15.20); mark("#hl-73a", 15.42); mark("#hl-73b", 15.7);
       tl.fromTo("#col-h", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 19.52);
       tl.fromTo("#bar-h", { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out" }, 19.52);
       tl.fromTo("#col-a", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 24.48);
@@ -221,18 +231,25 @@ __CAPS__
       pop("#sl-long", 28.48);
       tl.fromTo("#long-scroll", { y: 0 }, { y: -900, duration: 4.0, ease: "none" }, 28.48);
       rise("#abs-card", 30.08);
-      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.12, duration: 5.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
+      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.1, duration: 7.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
       window.__timelines["main"] = tl;
     </script>
   </body>
 </html>
 """
 
+K = 1000 / 937
+def hl(i, x0, y0, x1, y1):
+    return (f'            <div id="{i}" class="hl" style="left: {K*x0-3:.1f}px; top: {K*y0-2:.1f}px; '
+            f'width: {K*(x1-x0)+6:.1f}px; height: {K*(y1-y0)+4:.1f}px;"></div>')
+hl_html = "\n".join([hl("hl-84", 635, 524, 688, 541), hl("hl-11", 173, 174, 254, 193),
+                      hl("hl-73a", 296, 253, 384, 271), hl("hl-73b", 58, 272, 98, 290)])
 long_lines = "\n".join(
     f'<div class="ln" style="width: {w}px;"></div>' for w in ([300, 320, 250, 310, 280, 200, 320, 290, 260, 315, 240, 300] * 6)
 )
 html = (HTML.replace("__DUR__", str(DUR)).replace("__CTADUR__", str(round(DUR - 37.76, 4)))
-        .replace("__CAPS__", cap_html).replace("__LONGLINES__", long_lines))
+        .replace("__CAPS__", cap_html).replace("__HL__", hl_html)
+        .replace("__HDRDUR__", str(round(DUR - 7.84, 4))).replace("__LONGLINES__", long_lines))
 open(out, "w").write(html)
 for s, d, t, full in caps:
     print(f"{s:6.2f} +{d:4.2f} {'F' if full else 'S'} {t}")
