@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>SkillsBench short</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Regular.otf"); font-weight: 400; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Medium.otf"); font-weight: 500; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-SemiBold.otf"); font-weight: 600; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Bold.otf"); font-weight: 700; }
+      html, body { margin: 0; background: #111111; }
+      body { font-family: "InterHF", system-ui, sans-serif; color: #fff; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111111; }
+
+      /* speaker layout (full / split) is pre-built into base.mp4 */
+      #base { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 1; }
+
+      /* top-half assets */
+      .asset { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; overflow: hidden;
+               background: #111111; z-index: 2; }
+      .center { display: flex; align-items: center; justify-content: center; flex-direction: column; }
+      #typing { position: absolute; left: 40px; top: 63px; width: 1000px; height: 834px; z-index: 2;
+                border-radius: 18px; object-fit: cover; }
+      .page { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
+      .page img { display: block; width: 100%; height: auto; }
+      .foot { position: absolute; left: 0; right: 0; bottom: 78px; text-align: center; font-size: 26px;
+              font-weight: 500; color: #7a7a7a; letter-spacing: .01em; }
+
+      /* numbers */
+      .num-row { display: flex; align-items: baseline; gap: 30px; width: 980px; margin: 8px 0; }
+      .num { font-size: 168px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; width: 600px; text-align: right; flex: none; }
+      .lbl { font-size: 44px; font-weight: 600; color: #9b9b9b; letter-spacing: .12em; white-space: nowrap; }
+
+      /* bars */
+      .chart-title { position: absolute; top: 64px; left: 0; right: 0; text-align: center; font-size: 40px;
+                     font-weight: 600; color: #cfcfcf; }
+      .baseline { position: absolute; left: 140px; right: 140px; top: 720px; height: 3px; background: #444; }
+      .col { position: absolute; top: 0; width: 300px; height: 960px; }
+      .col .bar { position: absolute; left: 50px; width: 200px; bottom: 240px; border-radius: 10px 10px 0 0; transform-origin: 50% 100%; }
+      .col .val { position: absolute; left: 0; right: 0; text-align: center; font-size: 72px; font-weight: 700; letter-spacing: -0.02em; }
+      .col .cat { position: absolute; left: -20px; right: -20px; top: 748px; text-align: center; font-size: 36px; font-weight: 600; color: #cfcfcf; }
+
+      /* short vs long */
+      .doc { position: absolute; background: #1d1d1d; border: 2px solid #333; border-radius: 18px; overflow: hidden; }
+      .doc .hd { font-family: "InterHF", monospace; font-size: 26px; font-weight: 600; color: #bdbdbd; padding: 22px 26px 8px; }
+      .ln { height: 14px; border-radius: 7px; background: #3a3a3a; margin: 16px 26px; }
+      .badge { position: absolute; width: 84px; height: 84px; border-radius: 42px; display: flex; align-items: center; justify-content: center; }
+      .tag { position: absolute; text-align: center; font-size: 40px; font-weight: 600; }
+
+      /* CTA */
+      .cta-kick { font-size: 44px; font-weight: 500; color: #a8a8a8; margin-top: 44px; }
+      .cta-word { font-size: 112px; font-weight: 700; letter-spacing: .04em; line-height: 1.05; }
+
+      /* captions */
+      .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
+      .cap .box { position: absolute; left: 50%; top: 960px; transform: translate(-50%, -50%); background: #fff; color: #000;
+                  font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
+                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
+      .cap-full .box { top: 1720px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="41.2667">
+      <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="41.2667" data-track-index="0"></video>
+
+      <video id="typing" class="clip" src="assets/typing.mp4" muted playsinline data-start="5.92" data-duration="1.92" data-track-index="1"></video>
+
+      <div id="a-title" class="clip asset center" data-start="7.84" data-duration="2.72" data-track-index="1">
+        <div id="title-card" class="page" style="width: 980px;"><img src="assets/title.png" alt="" /></div>
+      </div>
+
+      <div id="a-nums" class="clip asset center" data-start="10.56" data-duration="6.16" data-track-index="1">
+        <div id="n1" class="num-row"><div class="num">84</div><div class="lbl">REAL TASKS</div></div>
+        <div id="n2" class="num-row"><div class="num">11</div><div class="lbl">FIELDS</div></div>
+        <div id="n3" class="num-row"><div class="num">7,000+</div><div class="lbl">RUNS</div></div>
+      </div>
+
+      <div id="a-bars" class="clip asset" data-start="16.72" data-duration="8.64" data-track-index="1">
+        <div class="chart-title">Avg. pass-rate change vs. no skills</div>
+        <div class="baseline"></div>
+        <div id="col-h" class="col" style="left: 170px;">
+          <div id="bar-h" class="bar" style="height: 480px; background: #f2f2f2;"></div>
+          <div class="val" style="top: 130px;">+16.2</div>
+          <div class="cat">Human-written skill</div>
+        </div>
+        <div id="col-a" class="col" style="left: 610px;">
+          <div id="bar-a" class="bar" style="height: 8px; background: #6b6b6b;"></div>
+          <div class="val" style="top: 610px; color: #9b9b9b;">≈ 0</div>
+          <div class="cat">AI-written skill</div>
+        </div>
+        <div class="foot">SkillsBench · arXiv:2602.12670</div>
+      </div>
+
+      <div id="a-sl" class="clip asset" data-start="25.36" data-duration="4.72" data-track-index="1">
+        <div id="sl-short">
+          <div class="doc" style="left: 110px; top: 300px; width: 380px; height: 250px;">
+            <div class="hd">SKILL.md</div>
+            <div class="ln" style="width: 260px;"></div><div class="ln" style="width: 300px;"></div><div class="ln" style="width: 200px;"></div>
+          </div>
+          <div class="badge" style="left: 258px; top: 590px; background: #1f9d55;">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+          </div>
+          <div class="tag" style="left: 70px; width: 460px; top: 700px;">Short, focused</div>
+        </div>
+        <div id="sl-long">
+          <div class="doc" style="left: 590px; top: 70px; width: 380px; height: 600px;">
+            <div id="long-scroll">
+              <div class="hd">SKILL.md</div>
+              <div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 250px;"></div>
+<div class="ln" style="width: 310px;"></div>
+<div class="ln" style="width: 280px;"></div>
+<div class="ln" style="width: 200px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 290px;"></div>
+<div class="ln" style="width: 260px;"></div>
+<div class="ln" style="width: 315px;"></div>
+<div class="ln" style="width: 240px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 250px;"></div>
+<div class="ln" style="width: 310px;"></div>
+<div class="ln" style="width: 280px;"></div>
+<div class="ln" style="width: 200px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 290px;"></div>
+<div class="ln" style="width: 260px;"></div>
+<div class="ln" style="width: 315px;"></div>
+<div class="ln" style="width: 240px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 250px;"></div>
+<div class="ln" style="width: 310px;"></div>
+<div class="ln" style="width: 280px;"></div>
+<div class="ln" style="width: 200px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 290px;"></div>
+<div class="ln" style="width: 260px;"></div>
+<div class="ln" style="width: 315px;"></div>
+<div class="ln" style="width: 240px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 250px;"></div>
+<div class="ln" style="width: 310px;"></div>
+<div class="ln" style="width: 280px;"></div>
+<div class="ln" style="width: 200px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 290px;"></div>
+<div class="ln" style="width: 260px;"></div>
+<div class="ln" style="width: 315px;"></div>
+<div class="ln" style="width: 240px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 250px;"></div>
+<div class="ln" style="width: 310px;"></div>
+<div class="ln" style="width: 280px;"></div>
+<div class="ln" style="width: 200px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 290px;"></div>
+<div class="ln" style="width: 260px;"></div>
+<div class="ln" style="width: 315px;"></div>
+<div class="ln" style="width: 240px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 300px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 250px;"></div>
+<div class="ln" style="width: 310px;"></div>
+<div class="ln" style="width: 280px;"></div>
+<div class="ln" style="width: 200px;"></div>
+<div class="ln" style="width: 320px;"></div>
+<div class="ln" style="width: 290px;"></div>
+<div class="ln" style="width: 260px;"></div>
+<div class="ln" style="width: 315px;"></div>
+<div class="ln" style="width: 240px;"></div>
+<div class="ln" style="width: 300px;"></div>
+            </div>
+          </div>
+          <div class="badge" style="left: 738px; top: 590px; background: #c0392b; box-shadow: 0 0 0 10px #111;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </div>
+          <div class="tag" style="left: 550px; width: 460px; top: 700px;">Long, detailed</div>
+        </div>
+        <div class="foot">Focused skills (2–3 modules) beat comprehensive docs</div>
+      </div>
+
+      <div id="a-abs" class="clip asset center" data-start="30.08" data-duration="5.6" data-track-index="1">
+        <div id="abs-card" class="page" style="width: 660px;"><img src="assets/abstract.png" alt="" /></div>
+      </div>
+
+      <div id="a-cta" class="clip asset center" data-start="37.76" data-duration="3.5067" data-track-index="1">
+        <div class="page" style="width: 940px;"><img src="assets/title.png" alt="" /></div>
+        <div class="cta-kick">Comment</div>
+        <div class="cta-word">SKILLS</div>
+      </div>
+
+      <div id="cap0" class="clip cap cap-full" data-start="2.24" data-duration="1.44" data-track-index="10"><span class="box">The biggest mistake</span></div>
+      <div id="cap1" class="clip cap cap-full" data-start="3.68" data-duration="0.8" data-track-index="10"><span class="box">people make</span></div>
+      <div id="cap2" class="clip cap cap-full" data-start="4.48" data-duration="1.2" data-track-index="10"><span class="box">with AI skills</span></div>
+      <div id="cap3" class="clip cap cap-full" data-start="5.68" data-duration="0.56" data-track-index="10"><span class="box">is letting</span></div>
+      <div id="cap4" class="clip cap cap-split" data-start="6.24" data-duration="1.6" data-track-index="10"><span class="box">the AI write them.</span></div>
+      <div id="cap5" class="clip cap cap-split" data-start="7.84" data-duration="0.66" data-track-index="10"><span class="box">There's actually</span></div>
+      <div id="cap6" class="clip cap cap-split" data-start="8.5" data-duration="1.34" data-track-index="10"><span class="box">a research paper</span></div>
+      <div id="cap7" class="clip cap cap-split" data-start="9.84" data-duration="0.72" data-track-index="10"><span class="box">on this.</span></div>
+      <div id="cap8" class="clip cap cap-split" data-start="10.56" data-duration="1.6" data-track-index="10"><span class="box">They ran 84</span></div>
+      <div id="cap9" class="clip cap cap-split" data-start="12.16" data-duration="0.8" data-track-index="10"><span class="box">real tasks</span></div>
+      <div id="cap10" class="clip cap cap-split" data-start="12.96" data-duration="0.88" data-track-index="10"><span class="box">across 11</span></div>
+      <div id="cap11" class="clip cap cap-split" data-start="13.84" data-duration="0.88" data-track-index="10"><span class="box">different fields,</span></div>
+      <div id="cap12" class="clip cap cap-split" data-start="14.72" data-duration="0.48" data-track-index="10"><span class="box">more than</span></div>
+      <div id="cap13" class="clip cap cap-split" data-start="15.2" data-duration="1.52" data-track-index="10"><span class="box">7,000 times.</span></div>
+      <div id="cap14" class="clip cap cap-split" data-start="16.72" data-duration="0.72" data-track-index="10"><span class="box">When a human</span></div>
+      <div id="cap15" class="clip cap cap-split" data-start="17.44" data-duration="0.96" data-track-index="10"><span class="box">wrote the skill,</span></div>
+      <div id="cap16" class="clip cap cap-split" data-start="18.4" data-duration="0.88" data-track-index="10"><span class="box">results went up</span></div>
+      <div id="cap17" class="clip cap cap-split" data-start="19.28" data-duration="1.76" data-track-index="10"><span class="box">by 16 points.</span></div>
+      <div id="cap18" class="clip cap cap-split" data-start="21.04" data-duration="0.72" data-track-index="10"><span class="box">When the AI</span></div>
+      <div id="cap19" class="clip cap cap-split" data-start="21.76" data-duration="1.52" data-track-index="10"><span class="box">wrote its own skill,</span></div>
+      <div id="cap20" class="clip cap cap-split" data-start="23.28" data-duration="0.96" data-track-index="10"><span class="box">it made basically</span></div>
+      <div id="cap21" class="clip cap cap-split" data-start="24.24" data-duration="1.05" data-track-index="10"><span class="box">no difference.</span></div>
+      <div id="cap22" class="clip cap cap-split" data-start="25.36" data-duration="0.72" data-track-index="10"><span class="box">And the short,</span></div>
+      <div id="cap23" class="clip cap cap-split" data-start="26.08" data-duration="1.2" data-track-index="10"><span class="box">focused skills</span></div>
+      <div id="cap24" class="clip cap cap-split" data-start="27.28" data-duration="0.64" data-track-index="10"><span class="box">did better</span></div>
+      <div id="cap25" class="clip cap cap-split" data-start="27.92" data-duration="0.96" data-track-index="10"><span class="box">than the long,</span></div>
+      <div id="cap26" class="clip cap cap-split" data-start="28.88" data-duration="1.2" data-track-index="10"><span class="box">detailed ones.</span></div>
+      <div id="cap27" class="clip cap cap-split" data-start="30.08" data-duration="0.88" data-track-index="10"><span class="box">So AI can</span></div>
+      <div id="cap28" class="clip cap cap-split" data-start="30.96" data-duration="1.2" data-track-index="10"><span class="box">follow your process</span></div>
+      <div id="cap29" class="clip cap cap-split" data-start="32.16" data-duration="0.72" data-track-index="10"><span class="box">really well,</span></div>
+      <div id="cap30" class="clip cap cap-split" data-start="32.88" data-duration="0.72" data-track-index="10"><span class="box">but it can't</span></div>
+      <div id="cap31" class="clip cap cap-split" data-start="33.6" data-duration="0.64" data-track-index="10"><span class="box">figure out</span></div>
+      <div id="cap32" class="clip cap cap-split" data-start="34.24" data-duration="1.44" data-track-index="10"><span class="box">your process for you.</span></div>
+      <div id="cap33" class="clip cap cap-full" data-start="35.68" data-duration="0.96" data-track-index="10"><span class="box">That part is</span></div>
+      <div id="cap34" class="clip cap cap-full" data-start="36.64" data-duration="1.12" data-track-index="10"><span class="box">still your job.</span></div>
+      <div id="cap35" class="clip cap cap-split" data-start="37.76" data-duration="1.04" data-track-index="10"><span class="box">Comment "SKILLS"</span></div>
+      <div id="cap36" class="clip cap cap-split" data-start="38.8" data-duration="0.64" data-track-index="10"><span class="box">and I'll send</span></div>
+      <div id="cap37" class="clip cap cap-split" data-start="39.44" data-duration="1.4" data-track-index="10"><span class="box">you the paper.</span></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power3.out" }, t);
+      const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
+
+      rise("#title-card", 7.84);
+      pop("#n1", 11.28); pop("#n2", 13.36); pop("#n3", 15.20);
+      tl.fromTo("#col-h", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 19.52);
+      tl.fromTo("#bar-h", { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out" }, 19.52);
+      tl.fromTo("#col-a", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 24.48);
+      pop("#sl-short", 25.68);
+      pop("#sl-long", 28.48);
+      tl.fromTo("#long-scroll", { y: 0 }, { y: -900, duration: 4.0, ease: "none" }, 28.48);
+      rise("#abs-card", 30.08);
+      tl.fromTo("#abs-card", { scale: 1 }, { scale: 1.55, duration: 5.3, ease: "sine.inOut", transformOrigin: "50% 73%" }, 30.38);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

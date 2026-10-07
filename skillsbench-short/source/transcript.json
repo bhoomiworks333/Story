@@ -1,0 +1,502 @@
+[
+{
+"text": "The",
+"start": 2.24,
+"end": 2.48
+},
+{
+"text": "biggest",
+"start": 2.48,
+"end": 2.96
+},
+{
+"text": "mistake",
+"start": 2.96,
+"end": 3.68
+},
+{
+"text": "people",
+"start": 3.68,
+"end": 4.0
+},
+{
+"text": "make",
+"start": 4.0,
+"end": 4.24
+},
+{
+"text": "with",
+"start": 4.48,
+"end": 4.8
+},
+{
+"text": "AI",
+"start": 4.8,
+"end": 5.28
+},
+{
+"text": "skill",
+"start": 5.28,
+"end": 5.6
+},
+{
+"text": "is",
+"start": 5.68,
+"end": 5.92
+},
+{
+"text": "letting",
+"start": 5.92,
+"end": 6.24
+},
+{
+"text": "the",
+"start": 6.24,
+"end": 6.48
+},
+{
+"text": "AI",
+"start": 6.48,
+"end": 6.96
+},
+{
+"text": "write",
+"start": 7.12,
+"end": 7.44
+},
+{
+"text": "them.",
+"start": 7.44,
+"end": 7.84
+},
+{
+"text": "This",
+"start": 7.84,
+"end": 8.0
+},
+{
+"text": "actually",
+"start": 8.24,
+"end": 8.48
+},
+{
+"text": "research",
+"start": 8.96,
+"end": 9.44
+},
+{
+"text": "paper",
+"start": 9.44,
+"end": 9.84
+},
+{
+"text": "on",
+"start": 9.84,
+"end": 10.0
+},
+{
+"text": "this.",
+"start": 10.0,
+"end": 10.56
+},
+{
+"text": "They",
+"start": 10.56,
+"end": 10.8
+},
+{
+"text": "ran",
+"start": 10.8,
+"end": 11.28
+},
+{
+"text": "84",
+"start": 11.28,
+"end": 12.0
+},
+{
+"text": "real",
+"start": 12.16,
+"end": 12.48
+},
+{
+"text": "tasks",
+"start": 12.48,
+"end": 12.96
+},
+{
+"text": "across",
+"start": 12.96,
+"end": 13.36
+},
+{
+"text": "11",
+"start": 13.36,
+"end": 13.84
+},
+{
+"text": "different",
+"start": 13.84,
+"end": 14.08
+},
+{
+"text": "fields",
+"start": 14.08,
+"end": 14.56
+},
+{
+"text": "more",
+"start": 14.72,
+"end": 14.96
+},
+{
+"text": "than",
+"start": 14.96,
+"end": 15.2
+},
+{
+"text": "7,000",
+"start": 15.2,
+"end": 16.16
+},
+{
+"text": "times.",
+"start": 16.16,
+"end": 16.72
+},
+{
+"text": "When",
+"start": 16.72,
+"end": 16.96
+},
+{
+"text": "a",
+"start": 16.96,
+"end": 17.04
+},
+{
+"text": "human",
+"start": 17.04,
+"end": 17.44
+},
+{
+"text": "wrote",
+"start": 17.44,
+"end": 17.68
+},
+{
+"text": "the",
+"start": 17.68,
+"end": 17.84
+},
+{
+"text": "skill,",
+"start": 17.84,
+"end": 18.32
+},
+{
+"text": "results",
+"start": 18.4,
+"end": 18.8
+},
+{
+"text": "went",
+"start": 18.8,
+"end": 19.04
+},
+{
+"text": "up",
+"start": 19.04,
+"end": 19.28
+},
+{
+"text": "by",
+"start": 19.28,
+"end": 19.52
+},
+{
+"text": "16",
+"start": 19.52,
+"end": 20.24
+},
+{
+"text": "points.",
+"start": 20.32,
+"end": 21.04
+},
+{
+"text": "When",
+"start": 21.04,
+"end": 21.28
+},
+{
+"text": "the",
+"start": 21.2,
+"end": 21.36
+},
+{
+"text": "AI",
+"start": 21.36,
+"end": 21.76
+},
+{
+"text": "wrote",
+"start": 21.76,
+"end": 22.08
+},
+{
+"text": "its",
+"start": 22.08,
+"end": 22.32
+},
+{
+"text": "own",
+"start": 22.32,
+"end": 22.64
+},
+{
+"text": "skill,",
+"start": 22.64,
+"end": 23.28
+},
+{
+"text": "it",
+"start": 23.28,
+"end": 23.44
+},
+{
+"text": "made",
+"start": 23.44,
+"end": 23.76
+},
+{
+"text": "basically",
+"start": 23.76,
+"end": 24.24
+},
+{
+"text": "no",
+"start": 24.24,
+"end": 24.48
+},
+{
+"text": "difference",
+"start": 24.48,
+"end": 25.04
+},
+{
+"text": "and",
+"start": 25.36,
+"end": 25.52
+},
+{
+"text": "the",
+"start": 25.52,
+"end": 25.68
+},
+{
+"text": "short",
+"start": 25.68,
+"end": 26.0
+},
+{
+"text": "focus",
+"start": 26.08,
+"end": 26.4
+},
+{
+"text": "skills",
+"start": 26.56,
+"end": 27.28
+},
+{
+"text": "did",
+"start": 27.28,
+"end": 27.6
+},
+{
+"text": "better",
+"start": 27.6,
+"end": 27.92
+},
+{
+"text": "than",
+"start": 27.92,
+"end": 28.24
+},
+{
+"text": "the",
+"start": 28.24,
+"end": 28.48
+},
+{
+"text": "long",
+"start": 28.48,
+"end": 28.72
+},
+{
+"text": "detailed",
+"start": 28.88,
+"end": 29.44
+},
+{
+"text": "ones.",
+"start": 29.44,
+"end": 30.08
+},
+{
+"text": "So",
+"start": 30.08,
+"end": 30.24
+},
+{
+"text": "AI",
+"start": 30.4,
+"end": 30.8
+},
+{
+"text": "can",
+"start": 30.8,
+"end": 30.96
+},
+{
+"text": "follow",
+"start": 30.96,
+"end": 31.28
+},
+{
+"text": "your",
+"start": 31.28,
+"end": 31.52
+},
+{
+"text": "process",
+"start": 31.52,
+"end": 32.16
+},
+{
+"text": "really",
+"start": 32.16,
+"end": 32.4
+},
+{
+"text": "well,",
+"start": 32.4,
+"end": 32.88
+},
+{
+"text": "but",
+"start": 32.88,
+"end": 33.12
+},
+{
+"text": "it",
+"start": 33.12,
+"end": 33.28
+},
+{
+"text": "can't",
+"start": 33.28,
+"end": 33.68
+},
+{
+"text": "figure",
+"start": 33.6,
+"end": 34.0
+},
+{
+"text": "out",
+"start": 34.0,
+"end": 34.24
+},
+{
+"text": "your",
+"start": 34.24,
+"end": 34.48
+},
+{
+"text": "process",
+"start": 34.48,
+"end": 35.04
+},
+{
+"text": "for",
+"start": 35.04,
+"end": 35.2
+},
+{
+"text": "you.",
+"start": 35.2,
+"end": 35.68
+},
+{
+"text": "That",
+"start": 35.68,
+"end": 35.92
+},
+{
+"text": "part",
+"start": 36.16,
+"end": 36.4
+},
+{
+"text": "is",
+"start": 36.4,
+"end": 36.64
+},
+{
+"text": "still",
+"start": 36.64,
+"end": 36.8
+},
+{
+"text": "your",
+"start": 36.96,
+"end": 37.12
+},
+{
+"text": "job.",
+"start": 37.12,
+"end": 37.76
+},
+{
+"text": "Comment",
+"start": 37.76,
+"end": 38.08
+},
+{
+"text": "skills",
+"start": 38.24,
+"end": 38.8
+},
+{
+"text": "and",
+"start": 38.8,
+"end": 38.96
+},
+{
+"text": "I'll",
+"start": 38.96,
+"end": 39.36
+},
+{
+"text": "send",
+"start": 39.28,
+"end": 39.44
+},
+{
+"text": "you",
+"start": 39.44,
+"end": 39.6
+},
+{
+"text": "the",
+"start": 39.6,
+"end": 39.68
+},
+{
+"text": "paper.",
+"start": 39.68,
+"end": 40.24
+}
+]
