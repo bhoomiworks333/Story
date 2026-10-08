@@ -97,7 +97,7 @@ HTML = r"""<!doctype html>
       .cap .box { position: absolute; left: 50%; top: 960px; transform: translate(-50%, -50%); background: #fff; color: #000;
                   font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
                   padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
-      .cap-full .box { top: 1720px; }
+      .cap-full .box { top: 1500px; }
     </style>
   </head>
   <body>
@@ -124,6 +124,11 @@ __HDRS__
       <div id="a-nums" class="clip asset" data-start="11.04" data-duration="4.4" data-track-index="1">
         <div id="n1" class="numcol" style="top: 200px;"><div class="num">6M</div><div class="lbl">SUSPECTED FAKE STARS</div></div>
         <div id="n2" class="numcol" style="top: 540px;"><div class="num">18,000+</div><div class="lbl">REPOS</div></div>
+      </div>
+
+      <div id="a-google" class="clip asset" data-start="12.64" data-duration="1.52" data-track-index="3" style="z-index: 3;">
+        <div id="g-shot" class="shot" style="left: 40px; top: 230px; width: 1000px;"><img src="assets/google.png" alt="" /></div>
+        <div class="alabel" style="top: 790px;">Fake stars are for sale</div>
       </div>
 
       <div id="a-rank" class="clip asset" data-start="15.44" data-duration="2.42" data-track-index="1">
@@ -171,6 +176,7 @@ __CAPS__
       rise("#iss", 6.0);
       rise("#title-card", 8.56);
       pop("#n1", 11.28); pop("#n2", 14.16);
+      tl.fromTo("#g-shot", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 12.64);
       tl.fromTo("#rk-mal", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.92);
       pop("#rk-ai", 16.56);
       tl.fromTo("#rk-rest", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.9);
@@ -187,6 +193,7 @@ hdrs = "\n".join([
     hdr("h-star", 4.88, 1.12, "THE USUAL SIGNAL"),
     hdr("h-iss", 6.0, 2.56, "GITHUB · UNSLOTHAI/UNSLOTH"),
     hdr("h-paper", 8.56, 9.3, "ICSE 2026 · CARNEGIE MELLON"),
+    hdr("h-google", 12.64, 1.52, "GOOGLE · &quot;BUY GITHUB STARS&quot;"),
     hdr("h-paper2", 22.2, 4.28, "ICSE 2026 · CARNEGIE MELLON"),
     hdr("h-rec", 26.48, 5.12, "CHECK THE ISSUES"),
     hdr("h-cta", 31.6, round(DUR - 31.6, 3), "ICSE 2026 · CARNEGIE MELLON"),

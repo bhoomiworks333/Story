@@ -54,7 +54,7 @@
       .cap .box { position: absolute; left: 50%; top: 960px; transform: translate(-50%, -50%); background: #fff; color: #000;
                   font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
                   padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
-      .cap-full .box { top: 1720px; }
+      .cap-full .box { top: 1500px; }
     </style>
   </head>
   <body>
@@ -64,6 +64,7 @@
       <div id="h-star" class="clip hdr" data-start="4.88" data-duration="1.12" data-track-index="2"><div class="t">THE USUAL SIGNAL</div><div class="dot"></div><div class="rule"></div></div>
       <div id="h-iss" class="clip hdr" data-start="6.0" data-duration="2.56" data-track-index="2"><div class="t">GITHUB · UNSLOTHAI/UNSLOTH</div><div class="dot"></div><div class="rule"></div></div>
       <div id="h-paper" class="clip hdr" data-start="8.56" data-duration="9.3" data-track-index="2"><div class="t">ICSE 2026 · CARNEGIE MELLON</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-google" class="clip hdr" data-start="12.64" data-duration="1.52" data-track-index="2"><div class="t">GOOGLE · &quot;BUY GITHUB STARS&quot;</div><div class="dot"></div><div class="rule"></div></div>
       <div id="h-paper2" class="clip hdr" data-start="22.2" data-duration="4.28" data-track-index="2"><div class="t">ICSE 2026 · CARNEGIE MELLON</div><div class="dot"></div><div class="rule"></div></div>
       <div id="h-rec" class="clip hdr" data-start="26.48" data-duration="5.12" data-track-index="2"><div class="t">CHECK THE ISSUES</div><div class="dot"></div><div class="rule"></div></div>
       <div id="h-cta" class="clip hdr" data-start="31.6" data-duration="2.4" data-track-index="2"><div class="t">ICSE 2026 · CARNEGIE MELLON</div><div class="dot"></div><div class="rule"></div></div>
@@ -86,6 +87,11 @@
       <div id="a-nums" class="clip asset" data-start="11.04" data-duration="4.4" data-track-index="1">
         <div id="n1" class="numcol" style="top: 200px;"><div class="num">6M</div><div class="lbl">SUSPECTED FAKE STARS</div></div>
         <div id="n2" class="numcol" style="top: 540px;"><div class="num">18,000+</div><div class="lbl">REPOS</div></div>
+      </div>
+
+      <div id="a-google" class="clip asset" data-start="12.64" data-duration="1.52" data-track-index="3" style="z-index: 3;">
+        <div id="g-shot" class="shot" style="left: 40px; top: 230px; width: 1000px;"><img src="assets/google.png" alt="" /></div>
+        <div class="alabel" style="top: 790px;">Fake stars are for sale</div>
       </div>
 
       <div id="a-rank" class="clip asset" data-start="15.44" data-duration="2.42" data-track-index="1">
@@ -171,6 +177,7 @@
       rise("#iss", 6.0);
       rise("#title-card", 8.56);
       pop("#n1", 11.28); pop("#n2", 14.16);
+      tl.fromTo("#g-shot", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 12.64);
       tl.fromTo("#rk-mal", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.92);
       pop("#rk-ai", 16.56);
       tl.fromTo("#rk-rest", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.9);
