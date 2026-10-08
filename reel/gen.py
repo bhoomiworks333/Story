@@ -65,7 +65,6 @@ SFX = [
     (0.00, "pop", 0.40),
     (0.38, "hit_main", 0.55),        # the one blue dot lands on "one percent"
     (3.78, "whoosh_short", 0.28),
-    (4.15, "tick", 0.30),
     (5.01, "data_whoosh", 0.40),     # counter rolls on "seventy"
     (6.22, "tick", 0.35),
     (7.30, "pop", 0.28),
@@ -172,6 +171,8 @@ def inset(box):
 def video_to(t, box, dur=.6, pip=True):
     # a clip-path window instead of moving/resizing the wrapper: sub-pixel smooth, face stays put
     js(f"tl.to('#video-wrap', {json.dumps(dict(clipPath=inset(box), duration=dur, ease='power3.inOut'))}, {q(t):.4f});")
+    # inside the window, slide the frame so the face (~62%, 36% of frame) sits centred
+    js(f"tl.to('#video-inner', {json.dumps(dict(x=-100 if pip else 0, y=-230 if pip else 0, scale=1.12 if pip else 1, duration=dur, ease='power3.inOut'))}, {q(t):.4f});")
     js(f"tl.to('#pip-shadow', {json.dumps(dict(opacity=1 if pip else 0, duration=dur, ease='power2.inOut'))}, {q(t):.4f});")
 
 # ---- 1. HOOK  (0 – 4.05): 100 dots, one lights up --------------------------------
@@ -194,15 +195,6 @@ js(f"tl.fromTo('#d45', {{scale:1}}, {{immediateRender:false, scale:1.75, duratio
 enter("#hook-num", 0.60, {"opacity": 0, "scale": .5}, dur=.42, ease="back.out(2)")
 enter("#hook-sub", 1.05, {"opacity": 0, "y": 20}, dur=.4)
 to("#hook-panel", 3.80, {"opacity": 0, "y": 60}, dur=.25)
-
-# ---- name tag (4.1 – 7.2) ------------------------------------------------------
-layer("name", 4.1, 7.25, f"""
-<div class="chip" id="name-chip" style="left:48px;top:120px;background:rgba(14,14,16,.82);color:#fff;
-  padding:16px 28px 16px 18px;font-size:30px;font-weight:800;">
-  <span style="width:18px;height:18px;border-radius:50%;background:{ACCENT};display:inline-block"></span>
-  Prashant Agrawal <span style="font-weight:600;color:#C9C9CF">· Your factory ERP guy</span></div>""", track=4)
-enter("#name-chip", 4.12, {"opacity": 0, "x": -60}, dur=.45)
-to("#name-chip", 6.95, {"opacity": 0, "x": -40}, dur=.25)
 
 # ---- 2. SMEs counter (4.1 – 7.85) ----------------------------------------------
 layer("smes", 4.1, 7.88, f"""
@@ -385,7 +377,7 @@ doc = f"""<!doctype html>
 <div id="stage" data-composition-id="reel" data-start="0" data-duration="{DUR:.4f}" data-fps="{FPS}" data-width="{W}" data-height="{H}">
   <div id="pip-shadow" style="position:absolute;left:{PIP['left']}px;top:{PIP['top']}px;width:{PIP['width']}px;height:{PIP['height']}px;border-radius:40px;box-shadow:0 26px 60px rgba(14,14,16,.32);opacity:0;"></div>
   <div class="video-wrapper" id="video-wrap" style="clip-path:{inset(FULL)};">
-    <video id="bg-video" src="input-video.mp4" playsinline data-has-audio="true" data-start="0" data-duration="{vd:.4f}" data-track-index="1"></video>
+    <div id="video-inner" style="width:100%;height:100%;"><video id="bg-video" src="input-video.mp4" playsinline data-has-audio="true" data-start="0" data-duration="{vd:.4f}" data-track-index="1"></video></div>
   </div>
   {''.join(L)}
   {''.join(audio)}
