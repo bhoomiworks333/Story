@@ -1,0 +1,99 @@
+1
+00:00:00,000 --> 00:00:01,150
+Only 1%
+
+2
+00:00:01,160 --> 00:00:03,010
+of the organizations
+
+3
+00:00:03,020 --> 00:00:04,079
+use an ERP system
+
+4
+00:00:04,080 --> 00:00:05,250
+India has more than
+
+5
+00:00:05,460 --> 00:00:07,249
+70–80 lakh
+
+6
+00:00:07,250 --> 00:00:08,559
+SMEs right now
+
+7
+00:00:08,560 --> 00:00:10,729
+And Zoho is betting big on it
+
+8
+00:00:10,730 --> 00:00:13,110
+When ERP is implemented
+
+9
+00:00:13,120 --> 00:00:14,089
+at any organization
+
+10
+00:00:14,090 --> 00:00:15,689
+it becomes a data foundation
+
+11
+00:00:15,690 --> 00:00:16,549
+they can actually
+
+12
+00:00:16,550 --> 00:00:18,209
+implement any AI solution
+
+13
+00:00:18,210 --> 00:00:19,109
+based on their data
+
+14
+00:00:19,110 --> 00:00:20,649
+ERP is the foundation
+
+15
+00:00:20,650 --> 00:00:22,889
+Zoho ERP is proprietary
+
+16
+00:00:22,890 --> 00:00:24,619
+subscription-based
+
+17
+00:00:24,620 --> 00:00:25,239
+But the future
+
+18
+00:00:25,240 --> 00:00:26,090
+from what I see
+
+19
+00:00:26,190 --> 00:00:27,309
+is open source
+
+20
+00:00:27,310 --> 00:00:29,020
+Now that AI is so powerful
+
+21
+00:00:29,030 --> 00:00:30,270
+you can take it
+
+22
+00:00:30,280 --> 00:00:31,509
+to any level you want
+
+23
+00:00:31,510 --> 00:00:32,770
+SMEs of India
+
+24
+00:00:32,780 --> 00:00:33,920
+need to digitally
+
+25
+00:00:33,930 --> 00:00:34,980
+transform themselves
