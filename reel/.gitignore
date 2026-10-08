@@ -1,3 +1,4 @@
 # derived from the uploaded source clip; rebuild with shorts/build_erp_short.py (NOCAPS=1) + ffmpeg -g 30
 public/input-video.mp4
 public/snapshots/
+renders/reel_v1.mp4
