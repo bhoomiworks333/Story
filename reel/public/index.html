@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><style>
+@font-face { font-family: "Inter"; src: url("fonts/Inter-SemiBold.otf") format("opentype"); font-weight: 600; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Bold.otf") format("opentype"); font-weight: 700; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-ExtraBold.otf") format("opentype"); font-weight: 800; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Black.otf") format("opentype"); font-weight: 900; font-display: block; }
+:root { --accent: #2F6BFF; --ink: #0E0E10; --paper: #F3F2EE; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+  background: #F3F2EE; font-family: "Inter", ui-sans-serif, system-ui, sans-serif; color: #0E0E10; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  background-color: #F3F2EE;
+  background-image: radial-gradient(rgba(14,14,16,.10) 1.6px, transparent 1.6px);
+  background-size: 36px 36px; }
+.video-wrapper { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; border-radius: 0; }
+.video-wrapper video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
+.video-wrapper.pip { box-shadow: 0 24px 60px rgba(14,14,16,.28); }
+.layer { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; pointer-events: none; overflow: hidden; }
+.panel { position: absolute; background: #fff; border-radius: 36px;
+  box-shadow: 0 18px 50px rgba(14,14,16,.22); }
+.kicker { font-weight: 800; font-size: 26px; letter-spacing: .16em; color: var(--accent); text-transform: uppercase; }
+/* captions */
+.cap { position: absolute; left: 0; top: 1440px; width: 1080px; display: flex; justify-content: center; }
+.cap span.box { display: inline-block; background: #fff; color: #0E0E10; font-weight: 800; font-size: 66px;
+  line-height: 1.12; padding: 14px 30px 18px; border-radius: 22px; box-shadow: 0 10px 28px rgba(0,0,0,.18);
+  white-space: nowrap; }
+.cap .hl, .hl { color: var(--accent); }
+/* hook */
+.grid { position: absolute; left: 56px; top: 56px; width: 380px; height: 380px; display: grid;
+  grid-template-columns: repeat(10, 1fr); gap: 10px; }
+.dot { width: 29px; height: 29px; border-radius: 50%; background: #D5D5DB; }
+.big { font-weight: 900; letter-spacing: -.04em; line-height: .9; }
+/* blocks */
+.block { position: absolute; border-radius: 26px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; color: #fff; }
+.erp { background: linear-gradient(135deg, #2F6BFF, #1C47C9); box-shadow: 0 20px 44px rgba(47,107,255,.40); }
+.ai { background: #0E0E10; box-shadow: 0 14px 30px rgba(14,14,16,.28); }
+.chip { position: absolute; display: inline-flex; align-items: center; gap: 16px; border-radius: 999px;
+  font-weight: 900; white-space: nowrap; }
+.col { position: absolute; top: 0; width: 470px; height: 470px; border-radius: 32px; padding: 40px 36px;
+  display: flex; flex-direction: column; justify-content: space-between; }
+.bar { position: absolute; bottom: 0; width: 120px; border-radius: 18px 18px 8px 8px; background: #0E0E10; }
+.kin { position: absolute; left: 64px; display: inline-block; white-space: nowrap; font-weight: 900;
+  border-radius: 18px; }
+</style></head>
+<body>
+<div id="stage" data-composition-id="reel" data-start="0" data-duration="11.0000" data-fps="30" data-width="1080" data-height="1920">
+  <div id="pip-shadow" style="position:absolute;left:40px;top:96px;width:1000px;height:720px;border-radius:40px;box-shadow:0 26px 60px rgba(14,14,16,.32);opacity:0;"></div>
+  <div class="video-wrapper" id="video-wrap" style="clip-path:inset(0px 0px 0px 0px round 0px);">
+    <video id="bg-video" src="input-video.mp4" playsinline data-has-audio="true" data-start="0" data-duration="11.0000" data-track-index="1"></video>
+  </div>
+  <div class="layer clip" id="hook" data-start="0.0000" data-duration="4.0667" data-track-index="3" style="">
+<div class="panel" id="hook-panel" style="left:60px;top:880px;width:960px;height:492px;">
+  <div class="grid"><div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div><div class="dot" id="d4"></div><div class="dot" id="d5"></div><div class="dot" id="d6"></div><div class="dot" id="d7"></div><div class="dot" id="d8"></div><div class="dot" id="d9"></div><div class="dot" id="d10"></div><div class="dot" id="d11"></div><div class="dot" id="d12"></div><div class="dot" id="d13"></div><div class="dot" id="d14"></div><div class="dot" id="d15"></div><div class="dot" id="d16"></div><div class="dot" id="d17"></div><div class="dot" id="d18"></div><div class="dot" id="d19"></div><div class="dot" id="d20"></div><div class="dot" id="d21"></div><div class="dot" id="d22"></div><div class="dot" id="d23"></div><div class="dot" id="d24"></div><div class="dot" id="d25"></div><div class="dot" id="d26"></div><div class="dot" id="d27"></div><div class="dot" id="d28"></div><div class="dot" id="d29"></div><div class="dot" id="d30"></div><div class="dot" id="d31"></div><div class="dot" id="d32"></div><div class="dot" id="d33"></div><div class="dot" id="d34"></div><div class="dot" id="d35"></div><div class="dot" id="d36"></div><div class="dot" id="d37"></div><div class="dot" id="d38"></div><div class="dot" id="d39"></div><div class="dot" id="d40"></div><div class="dot" id="d41"></div><div class="dot" id="d42"></div><div class="dot" id="d43"></div><div class="dot" id="d44"></div><div class="dot one" id="d45"></div><div class="dot" id="d46"></div><div class="dot" id="d47"></div><div class="dot" id="d48"></div><div class="dot" id="d49"></div><div class="dot" id="d50"></div><div class="dot" id="d51"></div><div class="dot" id="d52"></div><div class="dot" id="d53"></div><div class="dot" id="d54"></div><div class="dot" id="d55"></div><div class="dot" id="d56"></div><div class="dot" id="d57"></div><div class="dot" id="d58"></div><div class="dot" id="d59"></div><div class="dot" id="d60"></div><div class="dot" id="d61"></div><div class="dot" id="d62"></div><div class="dot" id="d63"></div><div class="dot" id="d64"></div><div class="dot" id="d65"></div><div class="dot" id="d66"></div><div class="dot" id="d67"></div><div class="dot" id="d68"></div><div class="dot" id="d69"></div><div class="dot" id="d70"></div><div class="dot" id="d71"></div><div class="dot" id="d72"></div><div class="dot" id="d73"></div><div class="dot" id="d74"></div><div class="dot" id="d75"></div><div class="dot" id="d76"></div><div class="dot" id="d77"></div><div class="dot" id="d78"></div><div class="dot" id="d79"></div><div class="dot" id="d80"></div><div class="dot" id="d81"></div><div class="dot" id="d82"></div><div class="dot" id="d83"></div><div class="dot" id="d84"></div><div class="dot" id="d85"></div><div class="dot" id="d86"></div><div class="dot" id="d87"></div><div class="dot" id="d88"></div><div class="dot" id="d89"></div><div class="dot" id="d90"></div><div class="dot" id="d91"></div><div class="dot" id="d92"></div><div class="dot" id="d93"></div><div class="dot" id="d94"></div><div class="dot" id="d95"></div><div class="dot" id="d96"></div><div class="dot" id="d97"></div><div class="dot" id="d98"></div><div class="dot" id="d99"></div></div>
+  <div style="position:absolute;left:480px;top:44px;width:440px;">
+    <div class="kicker">Indian SMEs on ERP</div>
+    <div class="big" id="hook-num" style="font-size:250px;margin-top:6px;color:#0E0E10;">1<span style="color:#2F6BFF">%</span></div>
+    <div id="hook-sub" style="font-weight:700;font-size:38px;line-height:1.25;color:#55555C;margin-top:12px;">
+      use a real ERP —<br>not just Tally or Busy</div>
+  </div>
+</div></div><div class="layer clip" id="name" data-start="4.1000" data-duration="3.1667" data-track-index="4" style="">
+<div class="chip" id="name-chip" style="left:48px;top:120px;background:rgba(14,14,16,.82);color:#fff;
+  padding:16px 28px 16px 18px;font-size:30px;font-weight:800;">
+  <span style="width:18px;height:18px;border-radius:50%;background:#2F6BFF;display:inline-block"></span>
+  Prashant Agrawal <span style="font-weight:600;color:#C9C9CF">· Your factory ERP guy</span></div></div><div class="layer clip" id="smes" data-start="4.1000" data-duration="3.7667" data-track-index="3" style="">
+<div class="panel" id="sme-panel" style="left:60px;top:930px;width:960px;height:430px;padding:46px 56px;">
+  <div class="kicker">Small & medium businesses · India</div>
+  <div class="big" style="font-size:180px;margin-top:10px;">
+    <span id="sme-a" style="display:inline-block">0</span><span style="font-size:84px;letter-spacing:-.02em"> lakh</span></div>
+  <div style="position:absolute;left:56px;right:56px;bottom:52px;">
+    <div style="display:flex;justify-content:space-between;font-weight:800;font-size:28px;color:#55555C;">
+      <span>Using an ERP</span><span id="sme-pct" style="color:#2F6BFF">~1%</span></div>
+    <div style="margin-top:14px;height:22px;border-radius:11px;background:#E7E7EB;overflow:hidden;">
+      <div id="sme-fill" style="width:0;height:100%;background:#2F6BFF;border-radius:11px;"></div></div>
+  </div>
+</div></div><div class="layer clip" id="bb-tag" data-start="8.6000" data-duration="2.1000" data-track-index="3" style="">
+<div class="chip" id="bb-chip" style="left:300px;top:760px;background:#0E0E10;color:#fff;padding:22px 40px;
+  font-size:60px;transform-origin:50% 50%;">BETTING BIG <span style="color:#2F6BFF;font-size:64px">↗</span></div></div><div class="layer clip" id="found" data-start="10.7333" data-duration="0.2667" data-track-index="3" style="">
+<div id="f-kick" class="kicker" style="position:absolute;left:90px;top:880px;font-size:30px;color:#0E0E10">What AI actually needs</div>
+<div id="f-ai-kick" class="kicker" style="position:absolute;left:90px;top:1022px;">AI on top</div>
+<div class="block ai" id="ai0" style="left:90px;top:1080px;width:280px;height:130px;"><div style="font-weight:800;font-size:38px">Analytics</div></div><div class="block ai" id="ai1" style="left:400px;top:1080px;width:280px;height:130px;"><div style="font-weight:800;font-size:38px">Predictions</div></div><div class="block ai" id="ai2" style="left:710px;top:1080px;width:280px;height:130px;"><div style="font-weight:800;font-size:38px">GenAI</div></div>
+<div class="pt" id="pt0" style="position:absolute;left:170px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt1" style="position:absolute;left:267px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt2" style="position:absolute;left:364px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt3" style="position:absolute;left:461px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt4" style="position:absolute;left:558px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt5" style="position:absolute;left:655px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt6" style="position:absolute;left:752px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt7" style="position:absolute;left:849px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt8" style="position:absolute;left:186px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt9" style="position:absolute;left:283px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt10" style="position:absolute;left:380px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt11" style="position:absolute;left:477px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt12" style="position:absolute;left:574px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div><div class="pt" id="pt13" style="position:absolute;left:671px;top:1250px;width:14px;height:14px;border-radius:50%;background:#9DB8FF;"></div>
+<div class="block erp" id="erp" style="left:90px;top:1232px;width:900px;height:150px;">
+  <div style="font-weight:900;font-size:76px;letter-spacing:-.02em;line-height:1">ERP</div>
+  <div id="erp-sub" style="font-weight:700;font-size:28px;letter-spacing:.14em;opacity:.9;margin-top:6px">ALL YOUR BUSINESS DATA</div>
+</div>
+<div id="f-found" class="kicker" style="position:absolute;left:0;width:1080px;text-align:center;top:1396px;color:#0E0E10;font-size:28px">▲ the data foundation</div>
+</div><div class="layer clip" id="cap0" data-start="0.0000" data-duration="2.0000" data-track-index="7" style=""><div class="cap"><span class="box" id="capb0">Only <b class="hl">1%</b></span></div></div><div class="layer clip" id="cap1" data-start="2.0000" data-duration="1.0000" data-track-index="7" style=""><div class="cap"><span class="box" id="capb1">of the organizations</span></div></div><div class="layer clip" id="cap2" data-start="3.0000" data-duration="1.0667" data-track-index="7" style=""><div class="cap"><span class="box" id="capb2">use an <b class="hl">ERP</b> system</span></div></div><div class="layer clip" id="cap3" data-start="4.0667" data-duration="1.4000" data-track-index="7" style=""><div class="cap"><span class="box" id="capb3">India has more than</span></div></div><div class="layer clip" id="cap4" data-start="5.4667" data-duration="1.8000" data-track-index="7" style=""><div class="cap"><span class="box" id="capb4"><b class="hl">70–80 lakh</b></span></div></div><div class="layer clip" id="cap5" data-start="7.2667" data-duration="1.3000" data-track-index="7" style=""><div class="cap"><span class="box" id="capb5">SMEs right now</span></div></div><div class="layer clip" id="cap6" data-start="8.5667" data-duration="2.1667" data-track-index="7" style=""><div class="cap"><span class="box" id="capb6">And <b class="hl">Zoho</b> is betting big on it</span></div></div><div class="layer clip" id="cap7" data-start="10.7333" data-duration="0.2667" data-track-index="7" style=""><div class="cap"><span class="box" id="capb7">When <b class="hl">ERP</b> is implemented</span></div></div>
+  <audio id="sfx0" src="sfx/pop.wav" data-start="0.0000" data-duration="0.0900" data-track-index="20" data-volume="0.4"></audio><audio id="sfx1" src="sfx/hit_main.wav" data-start="0.3667" data-duration="1.9500" data-track-index="21" data-volume="0.55"></audio><audio id="sfx2" src="sfx/whoosh_short.wav" data-start="3.7667" data-duration="1.3600" data-track-index="22" data-volume="0.28"></audio><audio id="sfx3" src="sfx/tick.wav" data-start="4.1667" data-duration="0.0300" data-track-index="23" data-volume="0.3"></audio><audio id="sfx4" src="sfx/data_whoosh.wav" data-start="5.0000" data-duration="1.0600" data-track-index="24" data-volume="0.4"></audio><audio id="sfx5" src="sfx/tick.wav" data-start="6.2333" data-duration="0.0300" data-track-index="25" data-volume="0.35"></audio><audio id="sfx6" src="sfx/pop.wav" data-start="7.3000" data-duration="0.0900" data-track-index="26" data-volume="0.28"></audio><audio id="sfx7" src="sfx/whoosh_mid.wav" data-start="7.3333" data-duration="1.1200" data-track-index="27" data-volume="0.4"></audio><audio id="sfx8" src="sfx/hit_short.wav" data-start="9.8667" data-duration="0.8100" data-track-index="28" data-volume="0.45"></audio><audio id="sfx9" src="sfx/whoosh_short.wav" data-start="10.4667" data-duration="0.5500" data-track-index="29" data-volume="0.32"></audio>
+  <script src="vendor/gsap.min.js"></script>
+  <script>
+  (function () {
+    const tl = window.gsap.timeline({ paused: true });
+        tl.fromTo("#hook-panel", {"opacity": 0, "y": 80, "scale": 0.94}, {"opacity": 1, "y": 0, "scale": 1, "duration": 0.45, "ease": "back.out(1.4)"}, 0.0000);
+    tl.from('#hook .dot', {opacity:0, scale:.2, duration:.28, ease:'power2.out', stagger:{each:.0045, from:'center', grid:[10,10]}}, 0.10);
+    tl.to('#hook .dot:not(.one)', {backgroundColor:'#E7E7EB', duration:.25}, 0.6);
+    tl.to('#d45', {backgroundColor:'#2F6BFF', duration:.12}, 0.6);
+    tl.fromTo('#d45', {scale:1}, {immediateRender:false, scale:1.75, duration:.18, ease:'power2.out', yoyo:true, repeat:1}, 0.6);
+    tl.fromTo("#hook-num", {"opacity": 0, "scale": 0.5}, {"opacity": 1, "scale": 1, "duration": 0.42, "ease": "back.out(2)"}, 0.6000);
+    tl.fromTo("#hook-sub", {"opacity": 0, "y": 20}, {"opacity": 1, "y": 0, "duration": 0.4, "ease": "power3.out"}, 1.0667);
+    tl.to("#hook-panel", {"opacity": 0, "y": 60, "duration": 0.25, "ease": "power2.in"}, 3.8000);
+    tl.fromTo("#name-chip", {"opacity": 0, "x": -60}, {"opacity": 1, "x": 0, "duration": 0.45, "ease": "power3.out"}, 4.1333);
+    tl.to("#name-chip", {"opacity": 0, "x": -40, "duration": 0.25, "ease": "power2.in"}, 6.9333);
+    tl.fromTo("#sme-panel", {"opacity": 0, "y": 80, "scale": 0.95}, {"opacity": 1, "y": 0, "scale": 1, "duration": 0.45, "ease": "back.out(1.3)"}, 4.1000);
+    (function(){const o={v:0};tl.to(o,{v:1,duration:2.3000,ease:'none',onUpdate:function(){const e=document.querySelector('#sme-a');if(!e)return;const t=tl.time();if(t<6.233333333333333){const p=Math.min(1,Math.max(0,(t-5.466666666666667)/.7));e.innerHTML=String(Math.round(70*(1-Math.pow(1-p,3))));}else{e.innerHTML='70<span style=\'color:#2F6BFF\'>–80</span>';}}},4.1);})();
+    tl.fromTo('#sme-a', {scale:1}, {immediateRender:false, scale:1.06, duration:.12, yoyo:true, repeat:1, transformOrigin:'0% 70%'}, 6.233333333333333);
+    tl.fromTo('#sme-pct', {opacity:0}, {opacity:1, duration:.2}, 7.3);
+    tl.fromTo('#sme-fill', {width:'0%'}, {width:'1.5%', duration:.35, ease:'power2.out'}, 7.3);
+    tl.to("#sme-panel", {"opacity": 0, "y": 60, "duration": 0.25, "ease": "power2.in"}, 7.6333);
+    tl.fromTo("#bb-chip", {"opacity": 0, "scale": 1.8, "rotation": -10}, {"opacity": 1, "scale": 1, "rotation": -4, "duration": 0.32, "ease": "back.out(2.2)"}, 9.9000);
+    tl.to("#bb-chip", {"opacity": 0, "y": -30, "duration": 0.2, "ease": "power2.in"}, 10.4667);
+    tl.to('#video-wrap', {"clipPath": "inset(96px 40px 1104px 40px round 40px)", "duration": 0.6, "ease": "power3.inOut"}, 10.5333);
+    tl.to('#pip-shadow', {"opacity": 1, "duration": 0.6, "ease": "power2.inOut"}, 10.5333);
+    tl.fromTo("#f-kick", {"opacity": 0, "y": 20}, {"opacity": 1, "y": 0, "duration": 0.35, "ease": "power3.out"}, 10.8667);
+    tl.fromTo("#erp", {"opacity": 0, "y": -420}, {"opacity": 1, "y": 0, "duration": 0.5, "ease": "bounce.out"}, 12.5000);
+    tl.fromTo('#erp-sub', {opacity:0}, {opacity:.9, duration:.3}, 12.933333333333334);
+    tl.fromTo("#f-found", {"opacity": 0, "y": 16}, {"opacity": 1, "y": 0, "duration": 0.3, "ease": "power3.out"}, 15.1333);
+    tl.fromTo('#erp', {boxShadow:'0 20px 44px rgba(47,107,255,.40)'}, {immediateRender:false, boxShadow:'0 0 0 18px rgba(47,107,255,.22)', duration:.35, yoyo:true, repeat:1}, 15.133333333333333);
+    tl.fromTo("#f-ai-kick", {"opacity": 0, "x": -30}, {"opacity": 1, "x": 0, "duration": 0.3, "ease": "power3.out"}, 16.8000);
+    tl.fromTo("#ai0", {"opacity": 0, "y": -260}, {"opacity": 1, "y": 0, "duration": 0.42, "ease": "back.out(1.6)"}, 16.9000);
+    tl.fromTo("#ai1", {"opacity": 0, "y": -260}, {"opacity": 1, "y": 0, "duration": 0.42, "ease": "back.out(1.6)"}, 17.3000);
+    tl.fromTo("#ai2", {"opacity": 0, "y": -260}, {"opacity": 1, "y": 0, "duration": 0.42, "ease": "back.out(1.6)"}, 17.7000);
+    tl.fromTo('#found .pt', {opacity:0, y:0}, {opacity:1, y:-150, duration:.55, ease:'power1.in', stagger:.05}, 18.266666666666666);
+    tl.to('#found .pt', {opacity:0, duration:.15, stagger:.05}, 18.7);
+    tl.fromTo('#erp', {scale:1}, {immediateRender:false, scale:1.05, duration:.14, yoyo:true, repeat:1, ease:'power2.out'}, 19.966666666666665);
+    tl.to('#found .ai', {y:-26, duration:.14, yoyo:true, repeat:1, ease:'power2.out', stagger:.05}, 19.966666666666665);
+    tl.to("#found", {"opacity": 0, "duration": 0.2, "ease": "power2.in"}, 20.4000);
+    tl.to('#video-wrap', {"clipPath": "inset(0px 0px 0px 0px round 0px)", "duration": 0.5, "ease": "power3.inOut"}, 20.4667);
+    tl.to('#pip-shadow', {"opacity": 0, "duration": 0.5, "ease": "power2.inOut"}, 20.4667);
+    tl.fromTo("#prop-panel", {"opacity": 0, "y": 60, "scale": 0.92}, {"opacity": 1, "y": 0, "scale": 1, "duration": 0.4, "ease": "back.out(1.5)"}, 22.0333);
+    tl.fromTo('#prop-sub', {opacity:0, y:14}, {opacity:1, y:0, duration:.3}, 23.566666666666666);
+    tl.to("#prop-panel", {"opacity": 0, "y": 40, "duration": 0.2, "ease": "power2.in"}, 24.4000);
+    tl.to('#video-wrap', {"clipPath": "inset(96px 40px 1104px 40px round 40px)", "duration": 0.6, "ease": "power3.inOut"}, 24.5333);
+    tl.to('#pip-shadow', {"opacity": 1, "duration": 0.6, "ease": "power2.inOut"}, 24.5333);
+    tl.fromTo("#vs-l", {"opacity": 0, "x": -80}, {"opacity": 1, "x": 0, "duration": 0.4, "ease": "power3.out"}, 24.7000);
+    tl.fromTo("#vs-x", {"opacity": 0, "scale": 0.3}, {"opacity": 1, "scale": 1, "duration": 0.3, "ease": "back.out(2)"}, 25.3000);
+    tl.fromTo("#vs-r", {"opacity": 0, "scale": 0.7, "x": 60}, {"opacity": 1, "scale": 1, "x": 0, "duration": 0.42, "ease": "back.out(1.7)"}, 26.7000);
+    tl.to('#vs-l', {opacity:.45, scale:.94, duration:.35}, 26.7);
+    tl.to("#vs", {"opacity": 0, "y": 30, "duration": 0.2, "ease": "power2.in"}, 27.1333);
+    tl.fromTo("#lvl", {"opacity": 0, "y": 30}, {"opacity": 1, "y": 0, "duration": 0.35, "ease": "power3.out"}, 27.4000);
+    tl.fromTo('#level .bar', {scaleY:0, transformOrigin:'50% 100%'}, {scaleY:1, duration:.32, ease:'back.out(1.6)', stagger:.18}, 28.4);
+    tl.fromTo('#lvl-lbl', {opacity:0, y:20}, {opacity:1, y:0, duration:.35}, 29.1);
+    tl.fromTo("#lvl-arrow", {"opacity": 0, "y": 40}, {"opacity": 1, "y": 0, "duration": 0.4, "ease": "back.out(2)"}, 30.7000);
+    tl.to("#lvl", {"opacity": 0, "duration": 0.2, "ease": "power2.in"}, 31.2000);
+    tl.to('#video-wrap', {"clipPath": "inset(0px 0px 0px 0px round 0px)", "duration": 0.5, "ease": "power3.inOut"}, 31.2667);
+    tl.to('#pip-shadow', {"opacity": 0, "duration": 0.5, "ease": "power2.inOut"}, 31.2667);
+    tl.fromTo('#k1', {clipPath:'inset(0 100% 0 0)'}, {clipPath:'inset(0 0% 0 0)', duration:.32, ease:'power3.out'}, 31.566666666666666);
+    tl.fromTo('#k2', {clipPath:'inset(0 100% 0 0)'}, {clipPath:'inset(0 0% 0 0)', duration:.32, ease:'power3.out'}, 32.766666666666666);
+    tl.fromTo('#k5', {clipPath:'inset(0 100% 0 0)'}, {clipPath:'inset(0 0% 0 0)', duration:.32, ease:'power3.out'}, 34.36666666666667);
+    tl.fromTo("#k3", {"opacity": 0, "scale": 1.35, "y": 20}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.3, "ease": "power4.out"}, 33.6000);
+    tl.fromTo("#k4", {"opacity": 0, "scale": 1.35, "y": 20}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.3, "ease": "power4.out"}, 33.9333);
+    tl.to('#video-wrap', {opacity:0, scale:.92, duration:.35, ease:'power2.in'}, 34.666666666666664);
+    tl.fromTo("#e-face", {"opacity": 0, "scale": 0.4}, {"opacity": 1, "scale": 1, "duration": 0.5, "ease": "back.out(1.8)"}, 35.1333);
+    tl.fromTo("#e-name", {"opacity": 0, "y": 30}, {"opacity": 1, "y": 0, "duration": 0.4, "ease": "power3.out"}, 35.3333);
+    tl.fromTo("#e-role", {"opacity": 0, "y": 20}, {"opacity": 1, "y": 0, "duration": 0.4, "ease": "power3.out"}, 35.5000);
+    tl.fromTo("#e-btn", {"opacity": 0, "scale": 0.6}, {"opacity": 1, "scale": 1, "duration": 0.4, "ease": "back.out(2)"}, 35.8667);
+    tl.fromTo("#e-sub", {"opacity": 0}, {"opacity": 1, "duration": 0.4, "ease": "power3.out"}, 36.1000);
+    tl.fromTo("#capb0", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 0.0000);
+    tl.fromTo("#capb1", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 2.0000);
+    tl.fromTo("#capb2", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 3.0000);
+    tl.fromTo("#capb3", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 4.0667);
+    tl.fromTo("#capb4", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 5.4667);
+    tl.fromTo("#capb5", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 7.2667);
+    tl.fromTo("#capb6", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 8.5667);
+    tl.fromTo("#capb7", {"opacity": 0, "scale": 0.86, "y": 14}, {"opacity": 1, "scale": 1, "y": 0, "duration": 0.16, "ease": "back.out(2)"}, 10.7333);
+    tl.set({}, {}, 11.0000);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["reel"] = tl;
+  })();
+  </script>
+</div>
+</body>
+</html>
