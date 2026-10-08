@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Fake stars short</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Regular.otf"); font-weight: 400; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Medium.otf"); font-weight: 500; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-SemiBold.otf"); font-weight: 600; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Bold.otf"); font-weight: 700; }
+      html, body { margin: 0; background: #111111; }
+      body { font-family: "InterHF", system-ui, sans-serif; color: #fff; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111111; }
+      #base { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 1; }
+      .asset { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; overflow: hidden; background: #111111; z-index: 2; }
+      .hdr { position: absolute; left: 0; top: 0; width: 1080px; height: 120px; background: #111111; z-index: 5; }
+      .hdr .t { position: absolute; left: 60px; top: 50px; font-size: 28px; font-weight: 600; letter-spacing: .14em; color: #9a9a9a; }
+      .hdr .dot { position: absolute; left: 1004px; top: 58px; width: 14px; height: 14px; border-radius: 7px; background: #e5e5e5; }
+      .hdr .rule { position: absolute; left: 60px; right: 60px; top: 112px; height: 2px; background: #262626; }
+      .alabel { position: absolute; left: 0; right: 0; text-align: center; font-size: 40px; font-weight: 600; color: #fff; }
+      .page { position: absolute; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
+      .page img { display: block; width: 100%; height: auto; }
+      .shot { position: absolute; border-radius: 16px; overflow: hidden; border: 2px solid #2c2c2c; }
+      .shot img { display: block; width: 100%; height: auto; }
+      #rec { position: absolute; left: 90px; top: 150px; width: 900px; height: 770px; z-index: 2; border-radius: 16px; border: 2px solid #2c2c2c; object-fit: cover; }
+
+      /* star button */
+      .ghbtn { position: absolute; left: 160px; top: 330px; width: 760px; height: 190px; border-radius: 28px; background: #21262d;
+               border: 3px solid #3d444d; display: flex; align-items: center; }
+      .ghbtn .l { display: flex; align-items: center; gap: 26px; padding: 0 44px; font-size: 76px; font-weight: 600; color: #e6edf3; }
+      .ghbtn .sep { width: 3px; height: 190px; background: #3d444d; }
+      .ghbtn .n { padding: 0 48px; font-size: 76px; font-weight: 700; color: #e6edf3; }
+      #strike { position: absolute; left: 130px; top: 418px; width: 820px; height: 14px; border-radius: 7px; background: #e5484d;
+                transform-origin: 0 50%; rotate: -8deg; }
+
+      /* numbers */
+      .numcol { position: absolute; left: 0; right: 0; text-align: center; }
+      .numcol .num { font-size: 190px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+      .numcol .lbl { font-size: 40px; font-weight: 600; color: #9b9b9b; letter-spacing: .12em; margin-top: 10px; }
+
+      /* ranking */
+      .rk-title { position: absolute; left: 0; right: 0; top: 160px; text-align: center; font-size: 46px; font-weight: 700; }
+      .rk { position: absolute; left: 190px; width: 700px; height: 96px; border-radius: 16px; display: flex; align-items: center;
+            padding: 0 34px; box-sizing: border-box; font-size: 46px; font-weight: 600; }
+      .rk .tag { margin-left: auto; font-size: 26px; font-weight: 600; letter-spacing: .1em; color: #8a8a8a; border: 2px solid #444;
+                 border-radius: 10px; padding: 6px 14px; }
+
+      /* two-month line */
+      #line-path { stroke-dasharray: 1400; stroke-dashoffset: 1400; }
+
+      .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
+      .cap .box { position: absolute; left: 50%; top: 960px; transform: translate(-50%, -50%); background: #fff; color: #000;
+                  font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
+                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
+      .cap-full .box { top: 1720px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="34.0">
+      <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="34.0" data-track-index="0"></video>
+
+      <div id="h-star" class="clip hdr" data-start="4.88" data-duration="1.12" data-track-index="2"><div class="t">THE USUAL SIGNAL</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-iss" class="clip hdr" data-start="6.0" data-duration="2.56" data-track-index="2"><div class="t">GITHUB · UNSLOTHAI/UNSLOTH</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-paper" class="clip hdr" data-start="8.56" data-duration="9.3" data-track-index="2"><div class="t">ICSE 2026 · CARNEGIE MELLON</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-paper2" class="clip hdr" data-start="22.2" data-duration="4.28" data-track-index="2"><div class="t">ICSE 2026 · CARNEGIE MELLON</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-rec" class="clip hdr" data-start="26.48" data-duration="5.12" data-track-index="2"><div class="t">CHECK THE ISSUES</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h-cta" class="clip hdr" data-start="31.6" data-duration="2.4" data-track-index="2"><div class="t">ICSE 2026 · CARNEGIE MELLON</div><div class="dot"></div><div class="rule"></div></div>
+
+      <div id="a-star" class="clip asset" data-start="4.88" data-duration="1.12" data-track-index="1">
+        <div id="star-btn" class="ghbtn"><div class="l"><svg width="64" height="64" viewBox="0 0 16 16" fill="none" stroke="#c9d1d9" stroke-width="1.2" stroke-linejoin="round"><path d="M8 1.6l1.95 3.95 4.36.63-3.16 3.08.75 4.34L8 11.55l-3.9 2.05.75-4.34L1.69 6.18l4.36-.63z"/></svg><span>Star</span></div><div class="sep"></div><div class="n">48.2k</div></div>
+        <div id="strike"></div>
+        <div class="alabel" style="top: 640px; color: #9a9a9a;">Not the signal</div>
+      </div>
+
+      <div id="a-issues" class="clip asset" data-start="6.0" data-duration="2.56" data-track-index="1">
+        <div id="iss" class="shot" style="left: 115px; top: 150px; width: 850px;"><img src="assets/issues.png" alt="" /></div>
+      </div>
+
+      <div id="a-title" class="clip asset" data-start="8.56" data-duration="2.48" data-track-index="1">
+        <div id="title-card" class="page" style="left: 40px; top: 300px; width: 1000px;"><img src="assets/title.png" alt="" /></div>
+        <div class="alabel" style="top: 740px;">Carnegie Mellon University</div>
+      </div>
+
+      <div id="a-nums" class="clip asset" data-start="11.04" data-duration="4.4" data-track-index="1">
+        <div id="n1" class="numcol" style="top: 200px;"><div class="num">6M</div><div class="lbl">SUSPECTED FAKE STARS</div></div>
+        <div id="n2" class="numcol" style="top: 540px;"><div class="num">18,000+</div><div class="lbl">REPOS</div></div>
+      </div>
+
+      <div id="a-rank" class="clip asset" data-start="15.44" data-duration="2.42" data-track-index="1">
+        <div class="rk-title">Who gets fake stars</div>
+        <div id="rk-mal" class="rk" style="top: 270px; background: #1c1c1c; color: #6f6f6f;"><span>Malware</span><span class="tag">EXCLUDED</span></div>
+        <div id="rk-ai" class="rk" style="top: 386px; background: #ffd60a; color: #111; font-size: 54px; font-weight: 700;">AI / LLM</div>
+        <div id="rk-rest">
+          <div class="rk" style="top: 502px; background: #1c1c1c; color: #cfcfcf;">Blockchain</div>
+          <div class="rk" style="top: 610px; background: #1c1c1c; color: #cfcfcf;">Tools / apps</div>
+          <div class="rk" style="top: 718px; background: #1c1c1c; color: #cfcfcf;">Tutorials</div>
+        </div>
+      </div>
+
+      <div id="a-line" class="clip asset" data-start="22.2" data-duration="4.28" data-track-index="1">
+        <svg width="1080" height="960" viewBox="0 0 1080 960" style="position: absolute; left: 0; top: 0;">
+          <line x1="140" y1="760" x2="960" y2="760" stroke="#444" stroke-width="3" />
+          <line x1="140" y1="200" x2="140" y2="760" stroke="#444" stroke-width="3" />
+          <path id="line-path" d="M140 740 C 260 700, 330 330, 470 300 S 640 290, 700 330 S 860 430, 950 470" fill="none" stroke="#ffd60a" stroke-width="10" stroke-linecap="round" />
+          <g id="marker">
+            <line x1="520" y1="210" x2="520" y2="760" stroke="#e6e6e6" stroke-width="3" stroke-dasharray="14 12" />
+            <text x="540" y="240" fill="#fff" font-family="InterHF" font-size="44" font-weight="700">~2 months</text>
+          </g>
+          <text x="140" y="810" fill="#8a8a8a" font-family="InterHF" font-size="30" font-weight="600">time</text>
+          <text x="160" y="190" fill="#8a8a8a" font-family="InterHF" font-size="30" font-weight="600">effect of fake stars</text>
+        </svg>
+        <div id="line-foot" class="alabel" style="top: 840px; font-size: 32px; color: #9a9a9a;">Short boost, long-term liability</div>
+      </div>
+
+      <video id="rec" class="clip" src="assets/rec.mp4" muted playsinline data-start="26.48" data-duration="5.12" data-track-index="1"></video>
+
+      <div id="a-cta" class="clip asset" data-start="31.6" data-duration="2.4" data-track-index="1">
+        <div class="page" style="left: 40px; top: 300px; width: 1000px;"><img src="assets/title.png" alt="" /></div>
+      </div>
+
+      <div id="cap0" class="clip cap cap-full" data-start="2.56" data-duration="1.04" data-track-index="10"><span class="box">My new favourite</span></div>
+      <div id="cap1" class="clip cap cap-full" data-start="3.6" data-duration="0.64" data-track-index="10"><span class="box">thing to check</span></div>
+      <div id="cap2" class="clip cap cap-full" data-start="4.24" data-duration="0.64" data-track-index="10"><span class="box">on GitHub</span></div>
+      <div id="cap3" class="clip cap " data-start="4.88" data-duration="1.12" data-track-index="10"><span class="box">isn't the star count,</span></div>
+      <div id="cap4" class="clip cap " data-start="6.0" data-duration="0.96" data-track-index="10"><span class="box">it's whether anyone</span></div>
+      <div id="cap5" class="clip cap " data-start="6.96" data-duration="0.72" data-track-index="10"><span class="box">is actually using</span></div>
+      <div id="cap6" class="clip cap " data-start="7.68" data-duration="0.88" data-track-index="10"><span class="box">the repo.</span></div>
+      <div id="cap7" class="clip cap " data-start="8.56" data-duration="0.96" data-track-index="10"><span class="box">Researchers from</span></div>
+      <div id="cap8" class="clip cap " data-start="9.52" data-duration="1.2" data-track-index="10"><span class="box">Carnegie Mellon</span></div>
+      <div id="cap9" class="clip cap " data-start="10.72" data-duration="0.56" data-track-index="10"><span class="box">found around</span></div>
+      <div id="cap10" class="clip cap " data-start="11.28" data-duration="0.8" data-track-index="10"><span class="box">6 million</span></div>
+      <div id="cap11" class="clip cap " data-start="12.08" data-duration="1.28" data-track-index="10"><span class="box">suspected fake stars</span></div>
+      <div id="cap12" class="clip cap " data-start="13.36" data-duration="0.8" data-track-index="10"><span class="box">across more than</span></div>
+      <div id="cap13" class="clip cap " data-start="14.16" data-duration="1.28" data-track-index="10"><span class="box">18,000 repos.</span></div>
+      <div id="cap14" class="clip cap " data-start="15.44" data-duration="0.48" data-track-index="10"><span class="box">And apart from</span></div>
+      <div id="cap15" class="clip cap " data-start="15.92" data-duration="0.64" data-track-index="10"><span class="box">malware,</span></div>
+      <div id="cap16" class="clip cap " data-start="16.56" data-duration="0.72" data-track-index="10"><span class="box">AI projects</span></div>
+      <div id="cap17" class="clip cap " data-start="17.28" data-duration="0.88" data-track-index="10"><span class="box">were the biggest group.</span></div>
+      <div id="cap18" class="clip cap cap-full" data-start="18.16" data-duration="0.64" data-track-index="10"><span class="box">I'll be honest,</span></div>
+      <div id="cap19" class="clip cap cap-full" data-start="18.8" data-duration="0.96" data-track-index="10"><span class="box">I've picked tools</span></div>
+      <div id="cap20" class="clip cap cap-full" data-start="19.76" data-duration="0.48" data-track-index="10"><span class="box">to try</span></div>
+      <div id="cap21" class="clip cap cap-full" data-start="20.24" data-duration="0.48" data-track-index="10"><span class="box">just because</span></div>
+      <div id="cap22" class="clip cap cap-full" data-start="20.72" data-duration="0.32" data-track-index="10"><span class="box">they had</span></div>
+      <div id="cap23" class="clip cap cap-full" data-start="21.04" data-duration="0.8" data-track-index="10"><span class="box">a lot of stars.</span></div>
+      <div id="cap24" class="clip cap " data-start="21.84" data-duration="0.72" data-track-index="10"><span class="box">So, this one hit.</span></div>
+      <div id="cap25" class="clip cap " data-start="22.56" data-duration="0.64" data-track-index="10"><span class="box">They also found</span></div>
+      <div id="cap26" class="clip cap " data-start="23.2" data-duration="0.8" data-track-index="10"><span class="box">the fake stars</span></div>
+      <div id="cap27" class="clip cap " data-start="24.0" data-duration="0.72" data-track-index="10"><span class="box">stopped helping</span></div>
+      <div id="cap28" class="clip cap " data-start="24.72" data-duration="1.76" data-track-index="10"><span class="box">within about two months.</span></div>
+      <div id="cap29" class="clip cap " data-start="26.48" data-duration="0.88" data-track-index="10"><span class="box">So, next time</span></div>
+      <div id="cap30" class="clip cap " data-start="27.36" data-duration="0.48" data-track-index="10"><span class="box">you see</span></div>
+      <div id="cap31" class="clip cap " data-start="27.84" data-duration="1.04" data-track-index="10"><span class="box">a huge number,</span></div>
+      <div id="cap32" class="clip cap " data-start="28.88" data-duration="0.88" data-track-index="10"><span class="box">open the issues</span></div>
+      <div id="cap33" class="clip cap " data-start="29.76" data-duration="0.72" data-track-index="10"><span class="box">and check whether</span></div>
+      <div id="cap34" class="clip cap " data-start="30.48" data-duration="0.48" data-track-index="10"><span class="box">real people</span></div>
+      <div id="cap35" class="clip cap " data-start="30.96" data-duration="0.64" data-track-index="10"><span class="box">are using it.</span></div>
+      <div id="cap36" class="clip cap " data-start="31.6" data-duration="0.8" data-track-index="10"><span class="box">Comment "STARS"</span></div>
+      <div id="cap37" class="clip cap " data-start="32.4" data-duration="0.48" data-track-index="10"><span class="box">and I'll send</span></div>
+      <div id="cap38" class="clip cap " data-start="32.88" data-duration="1.06" data-track-index="10"><span class="box">you the study.</span></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power3.out" }, t);
+      const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
+
+      pop("#star-btn", 4.88);
+      tl.fromTo("#strike", { scaleX: 0 }, { scaleX: 1, duration: 0.25, ease: "power2.out" }, 5.6);
+      tl.to("#star-btn", { opacity: 0.45, duration: 0.25 }, 5.6);
+      rise("#iss", 6.0);
+      rise("#title-card", 8.56);
+      pop("#n1", 11.28); pop("#n2", 14.16);
+      tl.fromTo("#rk-mal", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 15.92);
+      pop("#rk-ai", 16.56);
+      tl.fromTo("#rk-rest", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.9);
+      tl.to("#line-path", { strokeDashoffset: 0, duration: 3.0, ease: "none" }, 22.3);
+      tl.fromTo("#marker", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 25.44);
+      tl.fromTo("#line-foot", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.7);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
