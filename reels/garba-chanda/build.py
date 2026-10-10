@@ -16,12 +16,14 @@ SRC, SFX, OUT = sys.argv[1:4]
 DIR = os.path.dirname(os.path.abspath(__file__))
 BUILD = os.path.join(DIR, 'build')
 W, H, FPS = 1080, 1920, 30
-HOOK_FRAMES = 27                 # 0.9 s of extra hands footage in front
+HOOK_FRAMES = int(os.environ.get('HOOK_FRAMES', '27'))  # extra hands footage in front (0 = start on the take)
 HOOK = HOOK_FRAMES / FPS
 HOOK_SRC = 28.95                 # he is counting notes here, with his face out of the crop
 OPEN_END = 0.9                   # first word ("...ek second") starts here in the take
 HANDS = (270, 850, 540, 960)     # x, y, w, h crop for the hands close-up
 CAP_Y = 1440                     # caption centre: inside the bottom third, above Instagram's UI
+BASE_ONLY = os.environ.get('BASE_ONLY') == '1'   # video layer only, for the HyperFrames composition
+ZOOM = os.environ.get('ZOOM', '1') == '1'        # 0 = no punch-in / push-in and no hands crop
 
 tl = json.load(open(os.path.join(DIR, 'timeline.json')))
 caps = [(a, b, Image.open(os.path.join(BUILD, f'cap{i}.png')).convert('RGBA'))
@@ -36,6 +38,8 @@ def smooth(x):
 
 def zoom_at(t):
     """(scale, centre_x, centre_y) for source time t."""
+    if not ZOOM:
+        return 1.0, 540, 960
     if OPEN_END <= t < 3.2:                       # punch-in on "ek second", back out on "Nahi, seriously"
         return 1.10, 540, 900
     if 11.25 <= t < 14.4:                         # slow push-in under "₹500 = ???"
@@ -84,7 +88,7 @@ def compose(raw, t, hook):
         if z != 1.0:
             w, h = round(W / z), round(H / z)
             img = crop_resize(img, round(cx - w / 2), round(cy - h / 2), w, h)
-    if hook:
+    if hook or BASE_ONLY:
         return img
     frame = img.convert('RGBA')
     for p in pops:
@@ -126,7 +130,7 @@ for raw in frames(HOOK_SRC, HOOK_FRAMES):
     enc.stdin.write(compose(raw, 0, True).tobytes()); n_out += 1
 for i, raw in enumerate(frames()):
     t = i / FPS
-    enc.stdin.write(compose(raw, t, t < OPEN_END).tobytes()); n_out += 1
+    enc.stdin.write(compose(raw, t, ZOOM and t < OPEN_END).tobytes()); n_out += 1
     if i % 150 == 0:
         print(f'frame {n_out}', flush=True)
 enc.stdin.close(); enc.wait()

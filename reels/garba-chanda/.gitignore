@@ -1,2 +1,6 @@
 build/video_only.mp4
 build/audio.wav
+build/hf_silent.mp4
+build/hf_audio.wav
+hf/assets/take.mp4
+hf/snapshots/

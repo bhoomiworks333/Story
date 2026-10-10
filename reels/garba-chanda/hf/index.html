@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Garba chanda reel</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-SemiBold.otf"); font-weight: 600; }
+      html, body { margin: 0; background: #000; }
+      body { font-family: "InterHF", system-ui, sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #take { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .pop { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 5; }
+      .pop img { position: absolute; display: block; }
+      .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
+      .cap .box { position: absolute; left: 50%; top: 1500px; transform: translate(-50%, -50%); background: #fff; color: #000;
+                  font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
+                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="31.95">
+      <video id="take" class="clip" src="assets/take.mp4" muted playsinline data-start="0" data-duration="31.95" data-track-index="0"></video>
+      <div id="w-p-cash" class="clip pop" data-start="6.3000" data-duration="1.3000" data-track-index="5"><img id="p-cash" src="assets/cash.png" style="left:540px;top:270px;transform:translate(-50%,-50%) rotate(0deg) scale(1.0)" alt="" /></div>
+      <div id="w-p-gpay" class="clip pop" data-start="7.6000" data-duration="1.5000" data-track-index="5"><img id="p-gpay" src="assets/gpay.png" style="left:540px;top:250px;transform:translate(-50%,-50%) rotate(0deg) scale(1.0)" alt="" /></div>
+      <div id="w-p-chat" class="clip pop" data-start="9.5333" data-duration="1.5333" data-track-index="5"><img id="p-chat" src="assets/chat.png" style="left:520px;top:260px;transform:translate(-50%,-50%) rotate(0deg) scale(1.0)" alt="" /></div>
+      <div id="w-p-q500" class="clip pop" data-start="12.5333" data-duration="1.8000" data-track-index="5"><img id="p-q500" src="assets/q500.png" style="left:540px;top:270px;transform:translate(-50%,-50%) rotate(0deg) scale(1.0)" alt="" /></div>
+      <div id="w-p-notes" class="clip pop" data-start="17.2667" data-duration="4.5333" data-track-index="5"><img id="p-notes" src="assets/notes.png" style="left:540px;top:1060px;transform:translate(-50%,-50%) rotate(-3deg) scale(0.95)" alt="" /></div>
+      <div id="w-p-tag" class="clip pop" data-start="25.9333" data-duration="6.0000" data-track-index="5"><img id="p-tag" src="assets/tag.png" style="left:540px;top:270px;transform:translate(-50%,-50%) rotate(0deg) scale(1.0)" alt="" /></div>
+      <div id="cap0" class="clip cap" data-start="0.9000" data-duration="0.9667" data-track-index="10"><span class="box">...ek second.</span></div>
+      <div id="cap1" class="clip cap" data-start="1.8667" data-duration="1.2333" data-track-index="10"><span class="box">Ye kisne diya tha?</span></div>
+      <div id="cap2" class="clip cap" data-start="3.2000" data-duration="1.2000" data-track-index="10"><span class="box">Nahi, seriously.</span></div>
+      <div id="cap3" class="clip cap" data-start="4.5000" data-duration="0.8000" data-track-index="10"><span class="box">Garba ka chanda</span></div>
+      <div id="cap4" class="clip cap" data-start="5.3000" data-duration="0.7000" data-track-index="10"><span class="box">aata hai na,</span></div>
+      <div id="cap5" class="clip cap" data-start="6.0000" data-duration="1.1333" data-track-index="10"><span class="box">koi cash deta hai,</span></div>
+      <div id="cap6" class="clip cap" data-start="7.1333" data-duration="1.3000" data-track-index="10"><span class="box">koi GPay karta hai,</span></div>
+      <div id="cap7" class="clip cap" data-start="8.4333" data-duration="1.1000" data-track-index="10"><span class="box">koi bolta hai...</span></div>
+      <div id="cap8" class="clip cap" data-start="9.5333" data-duration="1.5333" data-track-index="10"><span class="box">&quot;haan haan, baad mein&quot;</span></div>
+      <div id="cap9" class="clip cap" data-start="11.2667" data-duration="0.6667" data-track-index="10"><span class="box">Aur mujhe sach mein</span></div>
+      <div id="cap10" class="clip cap" data-start="11.9333" data-duration="0.5667" data-track-index="10"><span class="box">nahi pata</span></div>
+      <div id="cap11" class="clip cap" data-start="12.5000" data-duration="0.8333" data-track-index="10"><span class="box">ye paanch sau</span></div>
+      <div id="cap12" class="clip cap" data-start="13.3333" data-duration="0.9667" data-track-index="10"><span class="box">kiska hai.</span></div>
+      <div id="cap13" class="clip cap" data-start="14.5333" data-duration="0.3667" data-track-index="10"><span class="box">List?</span></div>
+      <div id="cap14" class="clip cap" data-start="14.9000" data-duration="0.8333" data-track-index="10"><span class="box">Wo kisi uncle ke</span></div>
+      <div id="cap15" class="clip cap" data-start="15.7333" data-duration="1.1333" data-track-index="10"><span class="box">phone mein hai.</span></div>
+      <div id="cap16" class="clip cap" data-start="16.8667" data-duration="1.2667" data-track-index="10"><span class="box">Notes mein.</span></div>
+      <div id="cap17" class="clip cap" data-start="18.1333" data-duration="1.0000" data-track-index="10"><span class="box">Jo khud bhool</span></div>
+      <div id="cap18" class="clip cap" data-start="19.1333" data-duration="1.3667" data-track-index="10"><span class="box">gaye honge</span></div>
+      <div id="cap19" class="clip cap" data-start="20.5000" data-duration="1.4000" data-track-index="10"><span class="box">kahan save kiya.</span></div>
+      <div id="cap20" class="clip cap" data-start="22.0667" data-duration="1.8333" data-track-index="10"><span class="box">Matlab paisa aa gaya...</span></div>
+      <div id="cap21" class="clip cap" data-start="23.9333" data-duration="0.8000" data-track-index="10"><span class="box">bas kiska aaya,</span></div>
+      <div id="cap22" class="clip cap" data-start="24.7333" data-duration="0.8667" data-track-index="10"><span class="box">ye nahi pata.</span></div>
+      <div id="cap23" class="clip cap" data-start="25.8667" data-duration="1.0667" data-track-index="10"><span class="box">Aapke yahan ye kaun</span></div>
+      <div id="cap24" class="clip cap" data-start="26.9333" data-duration="1.2000" data-track-index="10"><span class="box">collect karta hai?</span></div>
+      <div id="cap25" class="clip cap" data-start="28.2667" data-duration="0.6667" data-track-index="10"><span class="box">Tag karo,</span></div>
+      <div id="cap26" class="clip cap" data-start="28.9333" data-duration="0.6667" data-track-index="10"><span class="box">dekhte hain</span></div>
+      <div id="cap27" class="clip cap" data-start="29.6000" data-duration="1.3000" data-track-index="10"><span class="box">unka kya haal hai.</span></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const tf = (s, r) => ({ xPercent: -50, yPercent: -50, rotation: r, scale: s });
+      const pop = (sel, t, s, r) => tl.fromTo(sel, { ...tf(s * 0.5, r), opacity: 0 },
+        { ...tf(s, r), opacity: 1, duration: 0.22, ease: "back.out(1.8)", immediateRender: false }, t);
+      const out = (sel, t, s, r) => tl.to(sel, { scale: s * 0.85, opacity: 0, duration: 0.12, ease: "power2.in" }, t);
+      pop("#p-cash", 6.3000, 1.0, 0);
+      out("#p-cash", 7.4800, 1.0, 0);
+      pop("#p-gpay", 7.6000, 1.0, 0);
+      out("#p-gpay", 8.9800, 1.0, 0);
+      pop("#p-chat", 9.5333, 1.0, 0);
+      out("#p-chat", 10.9467, 1.0, 0);
+      pop("#p-q500", 12.5333, 1.0, 0);
+      out("#p-q500", 14.2133, 1.0, 0);
+      pop("#p-notes", 17.2667, 0.95, -3);
+      out("#p-notes", 21.6800, 0.95, -3);
+      pop("#p-tag", 25.9333, 1.0, 0);
+      tl.set({}, {}, 31.95);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
