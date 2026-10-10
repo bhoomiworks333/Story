@@ -1,0 +1,31 @@
+{
+  "_note": "All times are SOURCE-take seconds. The output adds HOOK_PRE seconds of hands close-up in front, so out = src + 0.9. Caption timings were aligned from pauses and sibilant anchors in the audio (cash 6.5, GPay 7.8, paanch sau 12.6, Notes 17.6, paisa 22.3, bas kiska 24.1).",
+  "captions": [
+    [0.90, 1.85, "...ek second."],
+    [1.85, 3.10, "Ye kisne diya tha?"],
+    [3.20, 4.40, "Nahi, seriously."],
+    [4.50, 6.00, "Garba ka chanda aata hai na,"],
+    [6.00, 7.15, "koi cash deta hai,"],
+    [7.15, 8.45, "koi GPay karta hai,"],
+    [8.45, 9.55, "koi bolta hai..."],
+    [9.55, 11.05, "\"haan haan, baad mein\""],
+    [11.25, 12.50, "Aur mujhe sach mein nahi pata"],
+    [12.50, 14.30, "ye paanch sau kiska hai."],
+    [14.55, 16.85, "List? Wo kisi uncle ke\nphone mein hai."],
+    [16.85, 18.15, "Notes mein."],
+    [18.15, 20.50, "Jo khud bhool gaye honge"],
+    [20.50, 21.90, "kahan save kiya."],
+    [22.05, 23.90, "Matlab paisa aa gaya..."],
+    [23.95, 25.60, "bas kiska aaya, ye nahi pata."],
+    [25.85, 28.15, "Aapke yahan ye kaun\ncollect karta hai?"],
+    [28.25, 30.90, "Tag karo, dekhte hain\nunka kya haal hai."]
+  ],
+  "popups": [
+    {"asset": "cash",  "in": 6.30,  "out": 7.60,  "cx": 540, "cy": 270},
+    {"asset": "gpay",  "in": 7.60,  "out": 9.10,  "cx": 540, "cy": 250},
+    {"asset": "chat",  "in": 9.55,  "out": 11.05, "cx": 520, "cy": 260},
+    {"asset": "q500",  "in": 12.55, "out": 14.35, "cx": 540, "cy": 270},
+    {"asset": "notes", "in": 17.25, "out": 21.80, "cx": 540, "cy": 1060, "rot": -3, "scale": 0.95},
+    {"asset": "tag",   "in": 25.95, "out": 99,    "cx": 540, "cy": 270}
+  ]
+}
