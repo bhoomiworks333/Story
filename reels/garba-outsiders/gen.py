@@ -116,6 +116,21 @@ def vibration(path, dur, bursts, sr=48000):
         w.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
 
 
+def denoise(src, dst, sr=48000):
+    """Room-noise reduction using the 2.5 s of silence at the end of the take as the noise profile
+    (about -16 dB on the noise floor, voice level within 1 dB)."""
+    import noisereduce as nr
+    def pcm(args):
+        raw = subprocess.run(['ffmpeg', '-v', 'error', *args, '-ac', '1', '-ar', str(sr), '-f', 's16le', '-'],
+                             capture_output=True, check=True).stdout
+        return np.frombuffer(raw, np.int16).astype(np.float32) / 32768
+    y = nr.reduce_noise(y=pcm(['-i', src]), sr=sr, y_noise=pcm(['-ss', '40.9', '-t', '2.5', '-i', SRC]),
+                        stationary=True, prop_decrease=0.85, n_std_thresh_stationary=1.5)
+    with wave.open(dst, 'w') as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr)
+        w.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
+
+
 if not MUX:
     # base video + audio: trim each kept range, 12 ms audio fades at every cut so the jumps don't click
     parts, labels = [], []
@@ -129,9 +144,10 @@ if not MUX:
          '-preset', 'medium', '-g', '30', '-keyint_min', '30', '-pix_fmt', 'yuv420p', os.path.join(HERE, 'hf', 'assets', 'base.mp4'),
          '-map', '[a]', '-ar', '48000', os.path.join(BUILD, 'speech.wav')])
     # buzz while the phone sits on the stand; stops as he lifts it (take 3.4 s -> output 1.0 s)
+    denoise(os.path.join(BUILD, 'speech.wav'), os.path.join(BUILD, 'speech_dn.wav'))
     vib = os.path.join(BUILD, 'vibration.wav')
     vibration(vib, 1.2, [(0.0, 0.42), (0.62, 1.0)])
-    run(['ffmpeg', '-v', 'error', '-y', '-i', os.path.join(BUILD, 'speech.wav'), '-i', vib, '-filter_complex',
+    run(['ffmpeg', '-v', 'error', '-y', '-i', os.path.join(BUILD, 'speech_dn.wav'), '-i', vib, '-filter_complex',
          "[1:a]aresample=48000,volume=-6dB[b];[0:a][b]amix=inputs=2:normalize=0:duration=first,"
          "loudnorm=I=-16:TP=-1.5:LRA=11[a]", '-map', '[a]', '-ar', '48000', os.path.join(BUILD, 'audio.wav')])
 
