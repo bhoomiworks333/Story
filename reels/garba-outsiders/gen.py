@@ -70,9 +70,9 @@ CAPS = [
     (29.10, 30.00, "kya bolein yaar,"),
     (30.12, 31.40, "DJ itna loud hai,"),
     (31.40, 33.10, "wo kya poochega."),
-    (33.46, 34.30, "Aur agle din"),
-    (34.30, 35.00, "poora group"),
-    (35.00, 36.90, "detective ban jaata hai."),
+    (33.46, 34.40, "Aur agle din poora"),
+    (34.40, 35.30, "WhatsApp group hi"),
+    (35.30, 36.90, "deactivate ban jaata hai."),
     (37.37, 38.40, "Aapki society mein"),
     (38.40, 39.00, "garba pe"),
     (39.00, 40.65, "bahar wale aate hain?"),
@@ -88,7 +88,7 @@ POPS = [
     ("p-nb4", "nb4.png", 16.17, 17.75, 540, 452, 0.95),
     ("p-reg", "register.png", 23.95, 27.80, 540, 1185, 0.90),   # on "Rahul, guest"
     ("p-kaun", "kaunsa.png", 25.45, 27.80, 540, 250, 1.0),      # on "kaunsa Rahul"
-    ("p-det", "detect.png", 34.90, 36.90, 540, 210, 1.0),       # small, top
+    ("p-det", "detect.png", 35.30, 36.90, 540, 210, 1.0),       # on "deactivate", small, top
     ("p-aap", "aapki.png", 37.40, 99, 540, 250, 1.0),           # holds to the end
 ]
 
