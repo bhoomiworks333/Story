@@ -6,56 +6,44 @@
     <title>Gemini 4 Argon short</title>
     <script src="assets/gsap.min.js"></script>
     <style>
-      @font-face { font-family: "InterHF"; src: url("assets/Inter-Medium.otf"); font-weight: 500; }
       @font-face { font-family: "InterHF"; src: url("assets/Inter-SemiBold.otf"); font-weight: 600; }
       @font-face { font-family: "InterHF"; src: url("assets/Inter-Bold.otf"); font-weight: 700; }
       html, body { margin: 0; background: #111111; }
       body { font-family: "InterHF", system-ui, sans-serif; color: #fff; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111111; }
       #base { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 1; }
-      /* floating card above his head (free space is roughly y 110-520) */
-      .card { position: absolute; left: 40px; top: 130px; width: 1000px; border-radius: 24px; overflow: hidden; z-index: 3;
-              box-shadow: 0 18px 50px rgba(0,0,0,.55); }
-      .card img { display: block; width: 100%; height: auto; }
+      .paper { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; z-index: 2; }
+      .cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }
+      .pg { position: absolute; left: 0; width: 1080px; }
+      .pg img { display: block; width: 100%; height: auto; }
       .hl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 4px; transform-origin: 0 50%; }
-      .say { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 4; }
-      .say .t { position: absolute; left: 70px; right: 70px; top: 180px; text-align: center; background: #fff; color: #000;
-                font-size: 68px; font-weight: 700; line-height: 1.15; padding: 26px 34px; border-radius: 22px;
-                box-shadow: 0 18px 50px rgba(0,0,0,.45); }
-      .plans { position: absolute; left: 40px; top: 130px; width: 1000px; height: 360px; border-radius: 24px; z-index: 3;
-               background: rgba(18,18,18,.94); box-shadow: 0 18px 50px rgba(0,0,0,.55); }
-      .pl { position: absolute; top: 24px; width: 470px; height: 312px; border-radius: 18px; border: 3px solid #2e2e2e; box-sizing: border-box; }
-      .pl .nm { position: absolute; top: 18px; left: 0; right: 0; text-align: center; font-size: 52px; font-weight: 700; }
-      .pl .row { position: absolute; left: 28px; right: 28px; display: flex; align-items: center; gap: 18px; font-size: 34px; font-weight: 600; color: #dcdcdc; }
-      .ic { flex: none; width: 54px; height: 54px; border-radius: 27px; display: flex; align-items: center; justify-content: center; }
+      .plans { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #111111; z-index: 2; }
+      .pl { position: absolute; top: 470px; width: 470px; height: 720px; border-radius: 28px; border: 4px solid #2e2e2e; box-sizing: border-box; background: #191919; }
+      .pl .nm { position: absolute; top: 46px; left: 0; right: 0; text-align: center; font-size: 84px; font-weight: 700; }
+      .pl .rw { position: absolute; left: 0; right: 0; text-align: center; }
+      .pl .rw .lb { font-size: 40px; font-weight: 600; color: #dcdcdc; line-height: 1.2; margin-bottom: 22px; }
+      .ic { display: inline-flex; width: 92px; height: 92px; border-radius: 46px; align-items: center; justify-content: center; }
       .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
       .cap .box { position: absolute; left: 50%; top: 1560px; transform: translate(-50%, -50%); background: #fff; color: #000;
                   font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
-                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
+                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; box-shadow: 0 6px 24px rgba(0,0,0,.28); }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="34.3333">
       <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="34.3333" data-track-index="0"></video>
-      <div id="k-key" class="clip" data-start="1.68" data-duration="2.4" data-track-index="1"><div id="k-key-c" class="card"><img src="assets/keyart.png" alt="" /></div></div>
-      <div id="k-mac" class="clip" data-start="6.48" data-duration="2.24" data-track-index="1"><div id="k-mac-c" class="card"><img src="assets/macapp.png" alt="" /></div></div>
-      <div id="k-ag" class="clip" data-start="8.72" data-duration="1.04" data-track-index="1"><div id="k-ag-c" class="card"><img src="assets/antigravity.png" alt="" /><div id="hl-ag1" class="hl" style="left: 397px; top: 37px; width: 558px; height: 34px;"></div><div id="hl-ag2" class="hl" style="left: 17px; top: 77px; width: 480px; height: 34px;"></div></div></div>
-      <div id="k-tasks" class="clip" data-start="10.72" data-duration="3.36" data-track-index="1"><div id="k-tasks-c" class="card"><img src="assets/tasks.png" alt="" /><div id="hl-tasks" class="hl" style="left: 159px; top: 41px; width: 396px; height: 34px;"></div></div></div>
-      <div id="k-apps" class="clip" data-start="16.96" data-duration="6.48" data-track-index="1"><div id="k-apps-c" class="card"><img src="assets/apps.png" alt="" /><div id="hl-40" class="hl" style="left: 350px; top: 8px; width: 205px; height: 34px;"></div><div id="hl-ic" class="hl" style="left: 620px; top: 8px; width: 106px; height: 34px;"></div><div id="hl-ot" class="hl" style="left: 730px; top: 8px; width: 124px; height: 34px;"></div><div id="hl-ad" class="hl" style="left: 859px; top: 8px; width: 80px; height: 34px;"></div><div id="hl-sh" class="hl" style="left: 17px; top: 50px; width: 91px; height: 34px;"></div></div></div>
-      <div id="k-plans" class="clip" data-start="24.58" data-duration="4.3" data-track-index="1">
-        <div id="k-plans-c" class="plans">
-          <div id="pl-pro" class="pl" style="left: 20px;"><div class="nm">Pro</div>
-            <div id="r1p" class="row" style="top: 110px;"><span class="ic" style="background: #1f9d55;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Argon in the app</span></div>
-            <div id="r2p" class="row" style="top: 205px;"><span class="ic" style="background: #c0392b;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>Full coding side</span></div></div>
-          <div id="pl-ultra" class="pl" style="left: 510px;"><div class="nm">Ultra</div>
-            <div id="r1u" class="row" style="top: 110px;"><span class="ic" style="background: #1f9d55;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Argon in the app</span></div>
-            <div id="r2u" class="row" style="top: 205px;"><span class="ic" style="background: #1f9d55;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Full coding side</span></div></div>
-        </div>
+      <div id="p-argon" class="clip paper" data-start="1.68" data-duration="2.4" data-track-index="1" style="background: linear-gradient(#e4f3ff, #f7faff);"><div id="p-argon-cam" class="cam"><div class="pg" style="top: 330px;"><img src="assets/argon.png" alt="" /><div id="hl-argon" class="hl" style="left: 36px; top: 119px; width: 458px; height: 65px;"></div></div></div></div>
+      <div id="p-mac" class="clip paper" data-start="6.48" data-duration="2.24" data-track-index="1" style="background: #ffffff;"><div id="p-mac-cam" class="cam"><div class="pg" style="top: 380px;"><img src="assets/mac.png" alt="" /><div id="hl-mac" class="hl" style="left: 558px; top: 105px; width: 413px; height: 65px;"></div></div></div></div>
+      <div id="p-post1" class="clip paper" data-start="8.72" data-duration="6.72" data-track-index="1" style="background: linear-gradient(#e6f4ff, #f8faff);"><div id="p-post1-cam" class="cam"><div class="pg" style="top: 300px;"><img src="assets/post.png" alt="" /><div id="hl-ag1" class="hl" style="left: 434px; top: 543px; width: 576px; height: 35px;"></div><div id="hl-ag2" class="hl" style="left: 42px; top: 583px; width: 496px; height: 35px;"></div><div id="hl-tg" class="hl" style="left: 188px; top: 704px; width: 409px; height: 35px;"></div><div id="hl-wk1" class="hl" style="left: 590px; top: 704px; width: 420px; height: 35px;"></div><div id="hl-wk2" class="hl" style="left: 42px; top: 744px; width: 609px; height: 35px;"></div></div></div></div>
+      <div id="p-post2" class="clip paper" data-start="16.96" data-duration="6.48" data-track-index="1" style="background: linear-gradient(#e6f4ff, #f8faff);"><div id="p-post2-cam" class="cam"><div class="pg" style="top: 300px;"><img src="assets/post.png" alt="" /><div id="hl-40" class="hl" style="left: 384px; top: 863px; width: 213px; height: 35px;"></div><div id="hl-ic" class="hl" style="left: 663px; top: 863px; width: 111px; height: 35px;"></div><div id="hl-ot" class="hl" style="left: 776px; top: 863px; width: 130px; height: 35px;"></div><div id="hl-ad" class="hl" style="left: 909px; top: 863px; width: 84px; height: 35px;"></div><div id="hl-sh" class="hl" style="left: 42px; top: 906px; width: 96px; height: 35px;"></div></div></div></div>
+      <div id="k-plans" class="clip plans" data-start="24.58" data-duration="4.3" data-track-index="1">
+        <div id="pl-pro" class="pl" style="left: 50px;"><div class="nm">Pro</div>
+          <div id="r1p" class="rw" style="top: 220px;"><div class="lb">Argon in the app</div><span class="ic" style="background: #1f9d55;"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+          <div id="r2p" class="rw" style="top: 450px;"><div class="lb">Full coding side</div><span class="ic" style="background: #c0392b;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div></div>
+        <div id="pl-ultra" class="pl" style="left: 560px;"><div class="nm">Ultra</div>
+          <div id="r1u" class="rw" style="top: 220px;"><div class="lb">Argon in the app</div><span class="ic" style="background: #1f9d55;"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+          <div id="r2u" class="rw" style="top: 450px;"><div class="lb">Full coding side</div><span class="ic" style="background: #1f9d55;"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div></div>
       </div>
-      <div id="s-in" class="clip say" data-start="9.76" data-duration="0.96" data-track-index="4"><div class="t">Right inside it.</div></div>
-      <div id="s-bg" class="clip say" data-start="14.08" data-duration="1.36" data-track-index="4"><div class="t">It runs in the background.</div></div>
-      <div id="s-day" class="clip say" data-start="15.44" data-duration="1.52" data-track-index="4"><div class="t">You carry on with your day.</div></div>
-      <div id="s-q" class="clip say" data-start="30.8" data-duration="3.533" data-track-index="4"><div class="t">What&rsquo;s the first thing you&rsquo;d use it for?</div></div>
       <div id="cap0" class="clip cap" data-start="0.4" data-duration="1.84" data-track-index="10"><span class="box">Google's Gemini 4 Argon</span></div>
       <div id="cap1" class="clip cap" data-start="2.24" data-duration="0.56" data-track-index="10"><span class="box">just landed</span></div>
       <div id="cap2" class="clip cap" data-start="2.8" data-duration="1.28" data-track-index="10"><span class="box">in the Gemini app,</span></div>
@@ -66,41 +54,56 @@
       <div id="cap7" class="clip cap" data-start="6.32" data-duration="0.96" data-track-index="10"><span class="box">the Mac app.</span></div>
       <div id="cap8" class="clip cap" data-start="7.28" data-duration="0.72" data-track-index="10"><span class="box">Google put its</span></div>
       <div id="cap9" class="clip cap" data-start="8.0" data-duration="1.76" data-track-index="10"><span class="box">coding agent Antigravity</span></div>
-      <div id="cap10" class="clip cap" data-start="10.72" data-duration="0.8" data-track-index="10"><span class="box">There's also a new</span></div>
-      <div id="cap11" class="clip cap" data-start="11.52" data-duration="0.72" data-track-index="10"><span class="box">Tasks mode</span></div>
-      <div id="cap12" class="clip cap" data-start="12.24" data-duration="0.72" data-track-index="10"><span class="box">where you hand</span></div>
-      <div id="cap13" class="clip cap" data-start="12.96" data-duration="1.12" data-track-index="10"><span class="box">it some work,</span></div>
-      <div id="cap14" class="clip cap" data-start="16.96" data-duration="0.8" data-track-index="10"><span class="box">It connects to</span></div>
-      <div id="cap15" class="clip cap" data-start="17.76" data-duration="1.52" data-track-index="10"><span class="box">more than 40 apps</span></div>
-      <div id="cap16" class="clip cap" data-start="19.28" data-duration="0.72" data-track-index="10"><span class="box">now, too,</span></div>
-      <div id="cap17" class="clip cap" data-start="20.0" data-duration="1.12" data-track-index="10"><span class="box">like Instacart,</span></div>
-      <div id="cap18" class="clip cap" data-start="21.12" data-duration="0.72" data-track-index="10"><span class="box">OpenTable,</span></div>
-      <div id="cap19" class="clip cap" data-start="21.84" data-duration="0.56" data-track-index="10"><span class="box">Adobe,</span></div>
-      <div id="cap20" class="clip cap" data-start="22.4" data-duration="1.04" data-track-index="10"><span class="box">Shopify.</span></div>
-      <div id="cap21" class="clip cap" data-start="23.44" data-duration="1.04" data-track-index="10"><span class="box">One catch though.</span></div>
-      <div id="cap22" class="clip cap" data-start="24.48" data-duration="0.72" data-track-index="10"><span class="box">Pro users</span></div>
-      <div id="cap23" class="clip cap" data-start="25.2" data-duration="0.8" data-track-index="10"><span class="box">get Argon</span></div>
-      <div id="cap24" class="clip cap" data-start="26.0" data-duration="0.64" data-track-index="10"><span class="box">in the app,</span></div>
-      <div id="cap25" class="clip cap" data-start="26.64" data-duration="0.48" data-track-index="10"><span class="box">but the full</span></div>
-      <div id="cap26" class="clip cap" data-start="27.12" data-duration="0.88" data-track-index="10"><span class="box">coding side</span></div>
-      <div id="cap27" class="clip cap" data-start="28.0" data-duration="0.88" data-track-index="10"><span class="box">needs Ultra.</span></div>
-      <div id="cap28" class="clip cap" data-start="28.88" data-duration="0.48" data-track-index="10"><span class="box">So, if you</span></div>
-      <div id="cap29" class="clip cap" data-start="29.36" data-duration="0.56" data-track-index="10"><span class="box">got your hands</span></div>
-      <div id="cap30" class="clip cap" data-start="29.92" data-duration="0.88" data-track-index="10"><span class="box">on it today,</span></div>
+      <div id="cap10" class="clip cap" data-start="9.76" data-duration="0.96" data-track-index="10"><span class="box">right inside it.</span></div>
+      <div id="cap11" class="clip cap" data-start="10.72" data-duration="0.8" data-track-index="10"><span class="box">There's also a new</span></div>
+      <div id="cap12" class="clip cap" data-start="11.52" data-duration="0.72" data-track-index="10"><span class="box">Tasks mode</span></div>
+      <div id="cap13" class="clip cap" data-start="12.24" data-duration="0.72" data-track-index="10"><span class="box">where you hand</span></div>
+      <div id="cap14" class="clip cap" data-start="12.96" data-duration="1.12" data-track-index="10"><span class="box">it some work,</span></div>
+      <div id="cap15" class="clip cap" data-start="14.08" data-duration="0.48" data-track-index="10"><span class="box">it runs</span></div>
+      <div id="cap16" class="clip cap" data-start="14.56" data-duration="0.88" data-track-index="10"><span class="box">in the background,</span></div>
+      <div id="cap17" class="clip cap" data-start="15.44" data-duration="0.8" data-track-index="10"><span class="box">and you carry on</span></div>
+      <div id="cap18" class="clip cap" data-start="16.24" data-duration="0.72" data-track-index="10"><span class="box">with your day.</span></div>
+      <div id="cap19" class="clip cap" data-start="16.96" data-duration="0.8" data-track-index="10"><span class="box">It connects to</span></div>
+      <div id="cap20" class="clip cap" data-start="17.76" data-duration="1.52" data-track-index="10"><span class="box">more than 40 apps</span></div>
+      <div id="cap21" class="clip cap" data-start="19.28" data-duration="0.72" data-track-index="10"><span class="box">now, too,</span></div>
+      <div id="cap22" class="clip cap" data-start="20.0" data-duration="1.12" data-track-index="10"><span class="box">like Instacart,</span></div>
+      <div id="cap23" class="clip cap" data-start="21.12" data-duration="0.72" data-track-index="10"><span class="box">OpenTable,</span></div>
+      <div id="cap24" class="clip cap" data-start="21.84" data-duration="0.56" data-track-index="10"><span class="box">Adobe,</span></div>
+      <div id="cap25" class="clip cap" data-start="22.4" data-duration="1.04" data-track-index="10"><span class="box">Shopify.</span></div>
+      <div id="cap26" class="clip cap" data-start="23.44" data-duration="1.04" data-track-index="10"><span class="box">One catch though.</span></div>
+      <div id="cap27" class="clip cap" data-start="24.48" data-duration="0.72" data-track-index="10"><span class="box">Pro users</span></div>
+      <div id="cap28" class="clip cap" data-start="25.2" data-duration="0.8" data-track-index="10"><span class="box">get Argon</span></div>
+      <div id="cap29" class="clip cap" data-start="26.0" data-duration="0.64" data-track-index="10"><span class="box">in the app,</span></div>
+      <div id="cap30" class="clip cap" data-start="26.64" data-duration="0.48" data-track-index="10"><span class="box">but the full</span></div>
+      <div id="cap31" class="clip cap" data-start="27.12" data-duration="0.88" data-track-index="10"><span class="box">coding side</span></div>
+      <div id="cap32" class="clip cap" data-start="28.0" data-duration="0.88" data-track-index="10"><span class="box">needs Ultra.</span></div>
+      <div id="cap33" class="clip cap" data-start="28.88" data-duration="0.48" data-track-index="10"><span class="box">So, if you</span></div>
+      <div id="cap34" class="clip cap" data-start="29.36" data-duration="0.56" data-track-index="10"><span class="box">got your hands</span></div>
+      <div id="cap35" class="clip cap" data-start="29.92" data-duration="0.88" data-track-index="10"><span class="box">on it today,</span></div>
+      <div id="cap36" class="clip cap" data-start="30.8" data-duration="0.88" data-track-index="10"><span class="box">what's the first thing</span></div>
+      <div id="cap37" class="clip cap" data-start="31.68" data-duration="2.653" data-track-index="10"><span class="box">you'd use it for?</span></div>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, y: -16, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "power3.out" }, t);
       const mark = (sel, t) => tl.fromTo(sel, { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.out" }, t);
       const show = (sel, t) => tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t);
-      pop("#k-key-c", 1.68); pop("#k-mac-c", 6.48); pop("#k-ag-c", 8.72); mark("#hl-ag1", 8.9); mark("#hl-ag2", 9.2);
-      pop("#k-tasks-c", 10.72); mark("#hl-tasks", 11.52);
-      pop("#k-apps-c", 16.96); mark("#hl-40", 17.76); mark("#hl-ic", 20.24); mark("#hl-ot", 21.12); mark("#hl-ad", 21.84); mark("#hl-sh", 22.4);
-      pop("#k-plans-c", 24.58);
+      // headers: slow push in, highlight on the word
+      tl.fromTo("#p-argon-cam", { scale: 1 }, { scale: 1.12, x: -40, y: -60, duration: 2.4, ease: "none" }, 1.68); mark("#hl-argon", 1.8);
+      tl.fromTo("#p-mac-cam", { scale: 1 }, { scale: 1.12, x: -110, y: -50, duration: 2.24, ease: "none" }, 6.48); mark("#hl-mac", 6.6);
+      // availability post: camera travels to each sentence as it is said
+      tl.to("#p-post1-cam", { x: -32, y: -166, scale: 1.06, duration: 0.001, ease: "power2.inOut" }, 8.72);
+      tl.to("#p-post1-cam", { x: -32, y: -326, scale: 1.06, duration: 0.5, ease: "power2.inOut" }, 10.72);
+      tl.to("#p-post1-cam", { x: -32, y: -353, scale: 1.06, duration: 0.3, ease: "power2.inOut" }, 14.0);
+      tl.to("#p-post2-cam", { x: -32, y: -517, scale: 1.06, duration: 0.001, ease: "power2.inOut" }, 16.96);
+      mark("#hl-ag1", 8.95); mark("#hl-ag2", 9.25);
+      mark("#hl-tg", 11.52);
+      mark("#hl-wk1", 14.24); mark("#hl-wk2", 14.55);
+      mark("#hl-40", 17.76); mark("#hl-ic", 20.24); mark("#hl-ot", 21.12); mark("#hl-ad", 21.84); mark("#hl-sh", 22.4);
+      // plans
       tl.set(["#r1p", "#r1u", "#r2p", "#r2u"], { opacity: 0 }, 24.58);
       show(["#r1p", "#r1u"], 25.36); show(["#r2p", "#r2u"], 26.88);
-      tl.to("#pl-ultra", { borderColor: "#ffd60a", duration: 0.2 }, 28.24);
-      tl.to("#pl-pro", { opacity: 0.45, duration: 0.2 }, 28.24);
+      tl.to("#pl-ultra", { borderColor: "#ffd60a", scale: 1.03, duration: 0.25 }, 28.24);
+      tl.to("#pl-pro", { opacity: 0.45, duration: 0.25 }, 28.24);
       window.__timelines["main"] = tl;
     </script>
   </body>
