@@ -17,15 +17,15 @@
       .pg { position: absolute; left: 0; width: 1080px; }
       .pg img { display: block; width: 100%; height: auto; }
       .hl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 4px; transform-origin: 0 50%; }
-      .plans { position: absolute; left: 40px; top: 1090px; width: 1000px; height: 390px; border-radius: 26px; z-index: 3;
-               background: rgba(18,18,18,.95); box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 100%; }
+      .plans { position: absolute; left: 40px; top: 130px; width: 1000px; height: 390px; border-radius: 26px; z-index: 3;
+               background: rgba(18,18,18,.95); box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 0; }
       .pl { position: absolute; top: 24px; width: 470px; height: 342px; border-radius: 18px; border: 3px solid #2e2e2e; box-sizing: border-box; }
       .pl .nm { position: absolute; top: 20px; left: 0; right: 0; text-align: center; font-size: 56px; font-weight: 700; }
       .pl .rw { position: absolute; left: 28px; right: 28px; display: flex; align-items: center; gap: 18px; }
       .pl .rw .lb { font-size: 36px; font-weight: 600; color: #dcdcdc; }
       .ic { flex: none; display: inline-flex; width: 60px; height: 60px; border-radius: 30px; align-items: center; justify-content: center; }
       .pcard { position: absolute; left: 40px; width: 1000px; border-radius: 24px; overflow: hidden; z-index: 3;
-               box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 100%; }
+               box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 0; }
       .pcard img { display: block; width: 100%; height: auto; }
       .phl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 4px; transform-origin: 0 50%; }
       .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
@@ -37,10 +37,12 @@
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="34.3333">
       <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="34.3333" data-track-index="0"></video>
-      <div id="p-argon" class="clip" data-start="1.68" data-duration="2.4" data-track-index="1"><div id="p-argon-c" class="pcard" style="top: 1177px;"><img src="assets/keyart.png" alt="" /><div id="hl-argon" class="phl" style="background: rgba(255,214,0,.55); left: 9px; top: 20px; width: 464px; height: 66px;"></div></div></div>
-      <div id="p-mac" class="clip" data-start="6.48" data-duration="2.24" data-track-index="1"><div id="p-mac-c" class="pcard" style="top: 1281px;"><img src="assets/macapp.png" alt="" /><div id="hl-mac" class="phl" style="background: rgba(255,214,0,.55); left: 578px; top: 18px; width: 385px; height: 65px;"></div></div></div>
-      <div id="p-post1" class="clip paper" data-start="8.72" data-duration="6.72" data-track-index="1" style="background: linear-gradient(#e6f4ff, #f8faff);"><div id="p-post1-cam" class="cam"><div class="pg" style="top: 300px;"><img src="assets/post.png" alt="" /><div id="hl-ag1" class="hl" style="background: rgba(255,214,0,.6); left: 434px; top: 543px; width: 576px; height: 35px;"></div><div id="hl-ag2" class="hl" style="background: rgba(255,214,0,.6); left: 42px; top: 583px; width: 496px; height: 35px;"></div><div id="hl-tg" class="hl" style="background: rgba(80,230,140,.55); left: 188px; top: 704px; width: 409px; height: 35px;"></div><div id="hl-wk1" class="hl" style="background: rgba(255,120,190,.5); left: 590px; top: 704px; width: 420px; height: 35px;"></div><div id="hl-wk2" class="hl" style="background: rgba(255,120,190,.5); left: 42px; top: 744px; width: 609px; height: 35px;"></div></div></div></div>
-      <div id="p-post2" class="clip paper" data-start="16.96" data-duration="6.48" data-track-index="1" style="background: linear-gradient(#e6f4ff, #f8faff);"><div id="p-post2-cam" class="cam"><div class="pg" style="top: 300px;"><img src="assets/post.png" alt="" /><div id="hl-40" class="hl" style="background: rgba(255,160,40,.6); left: 384px; top: 863px; width: 213px; height: 35px;"></div><div id="hl-ic" class="hl" style="background: rgba(80,230,140,.55); left: 663px; top: 863px; width: 111px; height: 35px;"></div><div id="hl-ot" class="hl" style="background: rgba(255,120,190,.5); left: 776px; top: 863px; width: 130px; height: 35px;"></div><div id="hl-ad" class="hl" style="background: rgba(120,190,255,.6); left: 909px; top: 863px; width: 84px; height: 35px;"></div><div id="hl-sh" class="hl" style="background: rgba(255,214,0,.6); left: 42px; top: 906px; width: 96px; height: 35px;"></div></div></div></div>
+      <div id="p-argon" class="clip" data-start="1.68" data-duration="2.4" data-track-index="1"><div id="p-argon-c" class="pcard" style="top: 130px;"><img src="assets/keyart.png" alt="" /><div id="hl-argon" class="phl" style="background: rgba(255,214,0,.55); left: 9px; top: 20px; width: 464px; height: 66px;"></div></div></div>
+      <div id="p-mac" class="clip" data-start="6.48" data-duration="2.24" data-track-index="1"><div id="p-mac-c" class="pcard" style="top: 130px;"><img src="assets/macapp.png" alt="" /><div id="hl-mac" class="phl" style="background: rgba(255,214,0,.55); left: 578px; top: 18px; width: 385px; height: 65px;"></div></div></div>
+      <video id="p-post1" class="clip" src="assets/post1.mp4" muted playsinline data-start="8.72" data-duration="6.72" data-track-index="1" style="position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 2;"></video>
+      <div id="p-post1-hl" class="clip" data-start="8.72" data-duration="6.72" data-track-index="2" style="position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 3;"><div id="hl-ag1" class="hl" style="background: rgba(255,214,0,.6); left: 811px; top: 634px; width: 178px; height: 66px;"></div><div id="hl-ag2" class="hl" style="background: rgba(255,214,0,.6); left: 35px; top: 707px; width: 957px; height: 66px;"></div><div id="hl-ag3" class="hl" style="background: rgba(255,214,0,.6); left: 35px; top: 780px; width: 977px; height: 66px;"></div><div id="hl-tg1" class="hl" style="background: rgba(80,230,140,.55); left: 339px; top: 1080px; width: 643px; height: 66px;"></div><div id="hl-tg2" class="hl" style="background: rgba(80,230,140,.55); left: 35px; top: 1154px; width: 133px; height: 66px;"></div><div id="hl-wk1" class="hl" style="background: rgba(255,120,190,.5); left: 168px; top: 1154px; width: 826px; height: 66px;"></div><div id="hl-wk2" class="hl" style="background: rgba(255,120,190,.5); left: 35px; top: 1227px; width: 957px; height: 66px;"></div><div id="hl-wk3" class="hl" style="background: rgba(255,120,190,.5); left: 35px; top: 1302px; width: 240px; height: 66px;"></div><div style="position: absolute; left: 0; top: 1400px; width: 1080px; height: 520px; background: linear-gradient(rgba(244,248,255,0), #f4f8ff 90px);"></div></div>
+      <video id="p-post2" class="clip" src="assets/post2.mp4" muted playsinline data-start="16.96" data-duration="6.48" data-track-index="1" style="position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 2;"></video>
+      <div id="p-post2-hl" class="clip" data-start="16.96" data-duration="6.48" data-track-index="2" style="position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 3;"><div id="hl-40a" class="hl" style="background: rgba(255,160,40,.6); left: 683px; top: 447px; width: 319px; height: 66px;"></div><div id="hl-40b" class="hl" style="background: rgba(255,160,40,.6); left: 35px; top: 520px; width: 122px; height: 66px;"></div><div id="hl-ic" class="hl" style="background: rgba(80,230,140,.55); left: 299px; top: 520px; width: 210px; height: 66px;"></div><div id="hl-ot" class="hl" style="background: rgba(255,120,190,.5); left: 524px; top: 520px; width: 250px; height: 66px;"></div><div id="hl-ad" class="hl" style="background: rgba(120,190,255,.6); left: 790px; top: 520px; width: 156px; height: 66px;"></div><div id="hl-sh" class="hl" style="background: rgba(255,214,0,.6); left: 131px; top: 594px; width: 181px; height: 66px;"></div><div style="position: absolute; left: 0; top: 1400px; width: 1080px; height: 520px; background: linear-gradient(rgba(244,248,255,0), #f4f8ff 90px);"></div></div>
       <div id="k-plans" class="clip" data-start="24.58" data-duration="4.3" data-track-index="1"><div id="k-plans-c" class="plans">
         <div id="pl-pro" class="pl" style="left: 20px;"><div class="nm">Pro</div>
           <div id="r1p" class="rw" style="top: 130px;"><span class="ic" style="background: #1f9d55;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div class="lb">Argon in the app</div></div>
@@ -98,18 +100,11 @@
       pop("#p-mac-c", 6.48); mark("#hl-mac", 6.8);
       pop("#k-plans-c", 24.58);
       // availability post: camera travels to each sentence as it is said
-      tl.to("#p-post1-cam", { x: -32, y: -132, scale: 1.06, duration: 0.001, ease: "power2.inOut" }, 8.72);
-      tl.to("#p-post1-cam", { x: -32, y: -186, scale: 1.06, duration: 1.95, ease: "none" }, 8.73);
-      tl.to("#p-post1-cam", { x: -32, y: -313, scale: 1.06, duration: 0.3, ease: "power2.inOut" }, 10.72);
-      tl.to("#p-post1-cam", { x: -32, y: -346, scale: 1.06, duration: 2.9, ease: "none" }, 11.03);
-      tl.to("#p-post1-cam", { x: -32, y: -359, scale: 1.06, duration: 0.25, ease: "power2.inOut" }, 13.95);
-      tl.to("#p-post1-cam", { x: -32, y: -386, scale: 1.06, duration: 1.2, ease: "none" }, 14.21);
-      tl.to("#p-post2-cam", { x: -32, y: -480, scale: 1.06, duration: 0.001, ease: "power2.inOut" }, 16.96);
-      tl.to("#p-post2-cam", { x: -32, y: -540, scale: 1.06, duration: 6.4, ease: "none" }, 16.97);
-      mark("#hl-ag1", 8.95); mark("#hl-ag2", 9.25);
-      mark("#hl-tg", 11.52);
-      mark("#hl-wk1", 14.24); mark("#hl-wk2", 14.55);
-      mark("#hl-40", 17.76); mark("#hl-ic", 20.24); mark("#hl-ot", 21.12); mark("#hl-ad", 21.84); mark("#hl-sh", 22.4);
+
+      mark("#hl-ag1", 8.95); mark("#hl-ag2", 9.1); mark("#hl-ag3", 9.3);
+      mark("#hl-tg1", 11.52); mark("#hl-tg2", 11.75);
+      mark("#hl-wk1", 14.24); mark("#hl-wk2", 14.45); mark("#hl-wk3", 14.65);
+      mark("#hl-40a", 17.76); mark("#hl-40b", 17.95); mark("#hl-ic", 20.24); mark("#hl-ot", 21.12); mark("#hl-ad", 21.84); mark("#hl-sh", 22.4);
       // plans
       tl.set(["#r1p", "#r1u", "#r2p", "#r2u"], { opacity: 0 }, 24.58);
       show(["#r1p", "#r1u"], 25.36); show(["#r2p", "#r2u"], 26.88);

@@ -42,7 +42,7 @@ def page(i, key, start, end, hls):
 
 def popcard(i, start, end, img, cw, ch, h):
     k = 1000 / cw
-    top = 1480 - round(ch * k)              # sits between his chin and the captions
+    top = 130                               # above his head, as in v1
     mark = hl(h[0], k, *h[1:]).replace('class="hl"', 'class="phl"')
     return (f'      <div id="{i}" class="clip" data-start="{start}" data-duration="{round(end - start, 3)}" data-track-index="1">'
             f'<div id="{i}-c" class="pcard" style="top: {top}px;"><img src="assets/{img}" alt="" />{mark}</div></div>')
@@ -78,15 +78,15 @@ HTML = r"""<!doctype html>
       .pg { position: absolute; left: 0; width: 1080px; }
       .pg img { display: block; width: 100%; height: auto; }
       .hl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 4px; transform-origin: 0 50%; }
-      .plans { position: absolute; left: 40px; top: 1090px; width: 1000px; height: 390px; border-radius: 26px; z-index: 3;
-               background: rgba(18,18,18,.95); box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 100%; }
+      .plans { position: absolute; left: 40px; top: 130px; width: 1000px; height: 390px; border-radius: 26px; z-index: 3;
+               background: rgba(18,18,18,.95); box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 0; }
       .pl { position: absolute; top: 24px; width: 470px; height: 342px; border-radius: 18px; border: 3px solid #2e2e2e; box-sizing: border-box; }
       .pl .nm { position: absolute; top: 20px; left: 0; right: 0; text-align: center; font-size: 56px; font-weight: 700; }
       .pl .rw { position: absolute; left: 28px; right: 28px; display: flex; align-items: center; gap: 18px; }
       .pl .rw .lb { font-size: 36px; font-weight: 600; color: #dcdcdc; }
       .ic { flex: none; display: inline-flex; width: 60px; height: 60px; border-radius: 30px; align-items: center; justify-content: center; }
       .pcard { position: absolute; left: 40px; width: 1000px; border-radius: 24px; overflow: hidden; z-index: 3;
-               box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 100%; }
+               box-shadow: 0 20px 60px rgba(0,0,0,.6); transform-origin: 50% 0; }
       .pcard img { display: block; width: 100%; height: auto; }
       .phl { position: absolute; background: rgba(255, 214, 0, 0.55); mix-blend-mode: multiply; border-radius: 4px; transform-origin: 0 50%; }
       .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
@@ -119,11 +119,11 @@ __CAPS__
       pop("#p-mac-c", 6.48); mark("#hl-mac", 6.8);
       pop("#k-plans-c", 24.58);
       // availability post: camera travels to each sentence as it is said
-__POSTCAM__
-      mark("#hl-ag1", 8.95); mark("#hl-ag2", 9.25);
-      mark("#hl-tg", 11.52);
-      mark("#hl-wk1", 14.24); mark("#hl-wk2", 14.55);
-      mark("#hl-40", 17.76); mark("#hl-ic", 20.24); mark("#hl-ot", 21.12); mark("#hl-ad", 21.84); mark("#hl-sh", 22.4);
+
+      mark("#hl-ag1", 8.95); mark("#hl-ag2", 9.1); mark("#hl-ag3", 9.3);
+      mark("#hl-tg1", 11.52); mark("#hl-tg2", 11.75);
+      mark("#hl-wk1", 14.24); mark("#hl-wk2", 14.45); mark("#hl-wk3", 14.65);
+      mark("#hl-40a", 17.76); mark("#hl-40b", 17.95); mark("#hl-ic", 20.24); mark("#hl-ot", 21.12); mark("#hl-ad", 21.84); mark("#hl-sh", 22.4);
       // plans
       tl.set(["#r1p", "#r1u", "#r2p", "#r2u"], { opacity: 0 }, 24.58);
       show(["#r1p", "#r1u"], 25.36); show(["#r2p", "#r2u"], 26.88);
@@ -139,11 +139,27 @@ post_hls1 = [("hl-ag1", 348, 433, 797, 456), ("hl-ag2", 37, 465, 423, 488), ("hl
              ("hl-wk1", 472, 561, 797, 584), ("hl-wk2", 37, 593, 512, 616)]
 post_hls2 = [("hl-40", 309, 687, 470, 710), ("hl-ic", 530, 687, 610, 710), ("hl-ot", 620, 687, 715, 710),
              ("hl-ad", 725, 687, 784, 710), ("hl-sh", 37, 721, 105, 744)]
+# highlight boxes in screen px on the held frames
+REC1 = [("hl-ag1", 816, 637, 984, 697), ("hl-ag2", 40, 710, 987, 770), ("hl-ag3", 40, 783, 1007, 843),
+        ("hl-tg1", 344, 1083, 977, 1143), ("hl-tg2", 40, 1157, 163, 1217),
+        ("hl-wk1", 173, 1157, 989, 1217), ("hl-wk2", 40, 1230, 987, 1290), ("hl-wk3", 40, 1305, 270, 1365)]
+REC2 = [("hl-40a", 688, 450, 997, 510), ("hl-40b", 40, 523, 152, 583), ("hl-ic", 304, 523, 504, 583),
+        ("hl-ot", 529, 523, 769, 583), ("hl-ad", 795, 523, 941, 583), ("hl-sh", 136, 597, 307, 657)]
+def rec(i, src, start, end, boxes):
+    d = round(end - start, 3)
+    marks = "".join(hl(b[0], 1, *b[1:]) for b in boxes)
+    return (f'      <video id="{i}" class="clip" src="assets/{src}" muted playsinline data-start="{start}" data-duration="{d}" data-track-index="1" '
+            f'style="position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 2;"></video>\n'
+            f'      <div id="{i}-hl" class="clip" data-start="{start}" data-duration="{d}" data-track-index="2" '
+            f'style="position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 3;">{marks}'
+            f'<div style="position: absolute; left: 0; top: 1400px; width: 1080px; height: 520px; '
+            f'background: linear-gradient(rgba(244,248,255,0), #f4f8ff 90px);"></div></div>')
+
 pages = "\n".join([
     popcard("p-argon", 1.68, 4.08, "keyart.png", 1090, 330, ("hl-argon", 45 - 30, 135 - 110, 540 - 30, 200 - 110)),
     popcard("p-mac", 6.48, 8.72, "macapp.png", 1080, 215, ("hl-mac", 650 - 20, 118 - 95, 1055 - 20, 182 - 95)),
-    page("p-post1", "post", 8.72, 15.44, post_hls1),
-    page("p-post2", "post", 16.96, 23.44, post_hls2),
+    rec("p-post1", "post1.mp4", 8.72, 15.44, REC1),
+    rec("p-post2", "post2.mp4", 16.96, 23.44, REC2),
 ])
 postcam = "\n".join([
     cam_set("#p-post1-cam", 428, 430, 8.72), cam_to("#p-post1-cam", 428, 470, 8.73, dur=1.95).replace("power2.inOut", "none"),
