@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Gemini 4 Argon short</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Regular.otf"); font-weight: 400; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Medium.otf"); font-weight: 500; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-SemiBold.otf"); font-weight: 600; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Bold.otf"); font-weight: 700; }
+      html, body { margin: 0; background: #111111; }
+      body { font-family: "InterHF", system-ui, sans-serif; color: #fff; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #111111; }
+      #base { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 1; }
+      .asset { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; overflow: hidden; background: #111111; z-index: 2; }
+      .hdr { position: absolute; left: 0; top: 0; width: 1080px; height: 120px; background: #111111; z-index: 5; }
+      .hdr .t { position: absolute; left: 60px; top: 50px; font-size: 28px; font-weight: 600; letter-spacing: .14em; color: #9a9a9a; }
+      .hdr .dot { position: absolute; left: 1004px; top: 58px; width: 14px; height: 14px; border-radius: 7px; background: #e5e5e5; }
+      .hdr .rule { position: absolute; left: 60px; right: 60px; top: 112px; height: 2px; background: #262626; }
+      .shot { position: absolute; border-radius: 16px; overflow: hidden; border: 2px solid #2c2c2c; }
+      .shot img { display: block; width: 100%; height: auto; }
+      .ph { position: absolute; left: 90px; top: 170px; width: 900px; height: 700px; box-sizing: border-box; border: 4px dashed #555;
+            border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #777; font-size: 34px; font-weight: 700; letter-spacing: .12em; }
+      .ph .ph-l { margin-top: 18px; font-size: 44px; color: #bbb; letter-spacing: 0; }
+      /* spoken-text punches: static, appear on the word, no animation */
+      .say { position: absolute; left: 0; top: 0; width: 1080px; height: 960px; background: #111111; z-index: 4;
+             display: flex; align-items: center; justify-content: center; }
+      .say .t { width: 900px; text-align: center; font-size: 84px; font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; }
+      .say-full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 4; }
+      .say-full .t { position: absolute; left: 80px; right: 80px; top: 200px; text-align: center; background: #fff; color: #000;
+                     font-size: 64px; font-weight: 700; line-height: 1.15; padding: 26px 34px; border-radius: 20px; }
+      /* apps */
+      .apps-n { position: absolute; left: 0; right: 0; top: 160px; text-align: center; font-size: 150px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+      .apps-n small { font-size: 60px; font-weight: 600; color: #9b9b9b; letter-spacing: 0; margin-left: 18px; }
+      .tile { position: absolute; width: 400px; height: 210px; border-radius: 22px; background: #1c1c1c; border: 2px solid #2e2e2e;
+              display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 700; }
+      /* plans */
+      .plan { position: absolute; top: 170px; width: 430px; height: 640px; border-radius: 24px; background: #1a1a1a; border: 3px solid #2e2e2e; }
+      .plan .nm { position: absolute; top: 40px; left: 0; right: 0; text-align: center; font-size: 64px; font-weight: 700; }
+      .plan .row { position: absolute; left: 34px; right: 34px; font-size: 38px; font-weight: 600; line-height: 1.2; color: #d6d6d6; }
+      .plan .ic { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+      .ic span { width: 84px; height: 84px; border-radius: 42px; display: flex; align-items: center; justify-content: center; }
+      .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
+      .cap .box { position: absolute; left: 50%; top: 960px; transform: translate(-50%, -50%); background: #fff; color: #000;
+                  font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
+                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
+      .cap-full .box { top: 1560px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="34.3333">
+      <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="34.3333" data-track-index="0"></video>
+      <div id="h1" class="clip hdr" data-start="1.68" data-duration="2.4" data-track-index="2"><div class="t">GOOGLE · GEMINI 4 ARGON</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h2" class="clip hdr" data-start="6.48" data-duration="16.81" data-track-index="2"><div class="t">GEMINI APP · MAC</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="h3" class="clip hdr" data-start="24.58" data-duration="4.15" data-track-index="2"><div class="t">WHO GETS WHAT</div><div class="dot"></div><div class="rule"></div></div>
+      <div id="a-key" class="clip asset" data-start="1.68" data-duration="2.4" data-track-index="1"><div class="ph"><div>ASSET PENDING</div><div class="ph-l">Argon key art</div></div></div>
+      <div id="a-mac" class="clip asset" data-start="6.48" data-duration="2.24" data-track-index="1"><div class="ph"><div>ASSET PENDING</div><div class="ph-l">Gemini Mac app</div></div></div>
+      <div id="a-ag" class="clip asset" data-start="8.72" data-duration="1.04" data-track-index="1"><div class="ph"><div>ASSET PENDING</div><div class="ph-l">Antigravity in the Mac app</div></div></div>
+      <div id="a-tasks" class="clip asset" data-start="10.72" data-duration="3.36" data-track-index="1"><div class="ph"><div>ASSET PENDING</div><div class="ph-l">Chat &rarr; Tasks toggle</div></div></div>
+      <div id="a-apps" class="clip asset" data-start="16.96" data-duration="6.33" data-track-index="1">
+        <div id="apps-n" class="apps-n">40+<small>apps</small></div>
+        <div id="app0" class="tile" style="left: 120px; top: 360px;"><span>Instacart</span></div>
+        <div id="app1" class="tile" style="left: 560px; top: 360px;"><span>OpenTable</span></div>
+        <div id="app2" class="tile" style="left: 120px; top: 610px;"><span>Adobe</span></div>
+        <div id="app3" class="tile" style="left: 560px; top: 610px;"><span>Shopify</span></div>
+      </div>
+      <div id="a-plans" class="clip asset" data-start="24.58" data-duration="4.15" data-track-index="1">
+        <div id="pl-pro" class="plan" style="left: 80px;">
+          <div class="nm">Pro</div>
+          <div class="row" style="top: 190px;">Argon in the Gemini app</div>
+          <div class="ic" style="top: 290px;"><span style="background: #1f9d55;"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+          <div class="row" style="top: 430px;">Full coding side</div>
+          <div class="ic" style="top: 520px;"><span style="background: #c0392b;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+        </div>
+        <div id="pl-ultra" class="plan" style="left: 570px;">
+          <div class="nm">Ultra</div>
+          <div class="row" style="top: 190px;">Argon in the Gemini app</div>
+          <div class="ic" style="top: 290px;"><span style="background: #1f9d55;"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+          <div class="row" style="top: 430px;">Full coding side</div>
+          <div class="ic" style="top: 520px;"><span style="background: #1f9d55;"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+        </div>
+      </div>
+      <div id="s-inside" class="clip say" data-start="9.76" data-duration="0.96" data-track-index="4"><div class="t">Right inside it.</div></div>
+      <div id="s-bg" class="clip say" data-start="14.08" data-duration="1.36" data-track-index="4"><div class="t">It runs in the background.</div></div>
+      <div id="s-day" class="clip say" data-start="15.44" data-duration="1.52" data-track-index="4"><div class="t">You carry on with your day.</div></div>
+      <div id="s-q" class="clip say-full" data-start="30.8" data-duration="3.533" data-track-index="4"><div class="t">What&rsquo;s the first thing you&rsquo;d use it for?</div></div>
+      <div id="cap0" class="clip cap cap-full" data-start="0.4" data-duration="1.28" data-track-index="10"><span class="box">Google's Gemini 4 Argon</span></div>
+      <div id="cap1" class="clip cap " data-start="1.68" data-duration="0.56" data-track-index="10"><span class="box">Google's Gemini 4 Argon</span></div>
+      <div id="cap2" class="clip cap " data-start="2.24" data-duration="0.56" data-track-index="10"><span class="box">just landed</span></div>
+      <div id="cap3" class="clip cap " data-start="2.8" data-duration="1.28" data-track-index="10"><span class="box">in the Gemini app,</span></div>
+      <div id="cap4" class="clip cap cap-full" data-start="4.08" data-duration="0.56" data-track-index="10"><span class="box">and the part</span></div>
+      <div id="cap5" class="clip cap cap-full" data-start="4.64" data-duration="0.56" data-track-index="10"><span class="box">I am most</span></div>
+      <div id="cap6" class="clip cap cap-full" data-start="5.2" data-duration="0.72" data-track-index="10"><span class="box">interested in</span></div>
+      <div id="cap7" class="clip cap cap-full" data-start="5.92" data-duration="0.4" data-track-index="10"><span class="box">is on</span></div>
+      <div id="cap8" class="clip cap cap-full" data-start="6.32" data-duration="0.16" data-track-index="10"><span class="box">the Mac app.</span></div>
+      <div id="cap9" class="clip cap " data-start="6.48" data-duration="0.8" data-track-index="10"><span class="box">the Mac app.</span></div>
+      <div id="cap10" class="clip cap " data-start="7.28" data-duration="0.72" data-track-index="10"><span class="box">Google put its</span></div>
+      <div id="cap11" class="clip cap " data-start="8.0" data-duration="1.76" data-track-index="10"><span class="box">coding agent Antigravity</span></div>
+      <div id="cap12" class="clip cap " data-start="10.72" data-duration="0.8" data-track-index="10"><span class="box">There's also a new</span></div>
+      <div id="cap13" class="clip cap " data-start="11.52" data-duration="0.72" data-track-index="10"><span class="box">Tasks mode</span></div>
+      <div id="cap14" class="clip cap " data-start="12.24" data-duration="0.72" data-track-index="10"><span class="box">where you hand</span></div>
+      <div id="cap15" class="clip cap " data-start="12.96" data-duration="1.12" data-track-index="10"><span class="box">it some work,</span></div>
+      <div id="cap16" class="clip cap " data-start="16.96" data-duration="0.8" data-track-index="10"><span class="box">It connects to</span></div>
+      <div id="cap17" class="clip cap " data-start="17.76" data-duration="1.52" data-track-index="10"><span class="box">more than 40 apps</span></div>
+      <div id="cap18" class="clip cap " data-start="19.28" data-duration="0.72" data-track-index="10"><span class="box">now, too,</span></div>
+      <div id="cap19" class="clip cap " data-start="20.0" data-duration="1.12" data-track-index="10"><span class="box">like Instacart,</span></div>
+      <div id="cap20" class="clip cap " data-start="21.12" data-duration="0.72" data-track-index="10"><span class="box">OpenTable,</span></div>
+      <div id="cap21" class="clip cap " data-start="21.84" data-duration="0.56" data-track-index="10"><span class="box">Adobe,</span></div>
+      <div id="cap22" class="clip cap " data-start="22.4" data-duration="1.04" data-track-index="10"><span class="box">Shopify.</span></div>
+      <div id="cap23" class="clip cap cap-full" data-start="23.44" data-duration="1.04" data-track-index="10"><span class="box">One catch though.</span></div>
+      <div id="cap24" class="clip cap cap-full" data-start="24.48" data-duration="0.1" data-track-index="10"><span class="box">Pro users</span></div>
+      <div id="cap25" class="clip cap " data-start="24.58" data-duration="0.62" data-track-index="10"><span class="box">Pro users</span></div>
+      <div id="cap26" class="clip cap " data-start="25.2" data-duration="0.8" data-track-index="10"><span class="box">get Argon</span></div>
+      <div id="cap27" class="clip cap " data-start="26.0" data-duration="0.64" data-track-index="10"><span class="box">in the app,</span></div>
+      <div id="cap28" class="clip cap " data-start="26.64" data-duration="0.48" data-track-index="10"><span class="box">but the full</span></div>
+      <div id="cap29" class="clip cap " data-start="27.12" data-duration="0.88" data-track-index="10"><span class="box">coding side</span></div>
+      <div id="cap30" class="clip cap " data-start="28.0" data-duration="0.88" data-track-index="10"><span class="box">needs Ultra.</span></div>
+      <div id="cap31" class="clip cap cap-full" data-start="28.88" data-duration="0.48" data-track-index="10"><span class="box">So, if you</span></div>
+      <div id="cap32" class="clip cap cap-full" data-start="29.36" data-duration="0.56" data-track-index="10"><span class="box">got your hands</span></div>
+      <div id="cap33" class="clip cap cap-full" data-start="29.92" data-duration="0.88" data-track-index="10"><span class="box">on it today,</span></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power3.out" }, t);
+      const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, t);
+
+      pop("#apps-n", 18.16);
+      pop("#app0", 20.24);
+      pop("#app1", 21.12);
+      pop("#app2", 21.84);
+      pop("#app3", 22.4);
+      pop("#pl-pro", 24.58);
+      tl.fromTo("#pl-ultra", { opacity: 0 }, { opacity: 0.55, duration: 0.25 }, 24.58);
+      tl.to("#pl-ultra", { opacity: 1, borderColor: "#ffd60a", scale: 1.03, duration: 0.25, ease: "power2.out" }, 28.24);
+      tl.to("#pl-pro", { opacity: 0.5, duration: 0.25 }, 28.24);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

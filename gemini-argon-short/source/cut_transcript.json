@@ -1,0 +1,527 @@
+[
+{
+"text": "Google's",
+"start": 0.4,
+"end": 1.04
+},
+{
+"text": "Gemini",
+"start": 0.96,
+"end": 1.52
+},
+{
+"text": "4",
+"start": 1.52,
+"end": 1.68
+},
+{
+"text": "Argon",
+"start": 1.68,
+"end": 2.24
+},
+{
+"text": "just",
+"start": 2.24,
+"end": 2.4
+},
+{
+"text": "landed",
+"start": 2.4,
+"end": 2.8
+},
+{
+"text": "in",
+"start": 2.8,
+"end": 2.88
+},
+{
+"text": "the",
+"start": 2.88,
+"end": 2.96
+},
+{
+"text": "Gemini",
+"start": 2.96,
+"end": 3.6
+},
+{
+"text": "app,",
+"start": 3.76,
+"end": 4.08
+},
+{
+"text": "and",
+"start": 4.08,
+"end": 4.24
+},
+{
+"text": "the",
+"start": 4.24,
+"end": 4.4
+},
+{
+"text": "part",
+"start": 4.4,
+"end": 4.64
+},
+{
+"text": "I",
+"start": 4.64,
+"end": 4.8
+},
+{
+"text": "am",
+"start": 4.8,
+"end": 4.96
+},
+{
+"text": "most",
+"start": 4.96,
+"end": 5.2
+},
+{
+"text": "interested",
+"start": 5.2,
+"end": 5.6
+},
+{
+"text": "in",
+"start": 5.6,
+"end": 5.68
+},
+{
+"text": "is",
+"start": 5.92,
+"end": 6.16
+},
+{
+"text": "on",
+"start": 6.16,
+"end": 6.32
+},
+{
+"text": "the",
+"start": 6.32,
+"end": 6.48
+},
+{
+"text": "Mac",
+"start": 6.48,
+"end": 6.88
+},
+{
+"text": "app.",
+"start": 6.88,
+"end": 7.12
+},
+{
+"text": "Google",
+"start": 7.28,
+"end": 7.68
+},
+{
+"text": "put",
+"start": 7.68,
+"end": 7.84
+},
+{
+"text": "its",
+"start": 7.84,
+"end": 8.0
+},
+{
+"text": "coding",
+"start": 8.0,
+"end": 8.32
+},
+{
+"text": "agent",
+"start": 8.32,
+"end": 8.64
+},
+{
+"text": "Anti-Gravity",
+"start": 8.72,
+"end": 9.6
+},
+{
+"text": "right",
+"start": 9.76,
+"end": 10.0
+},
+{
+"text": "inside",
+"start": 10.0,
+"end": 10.32
+},
+{
+"text": "it.",
+"start": 10.32,
+"end": 10.72
+},
+{
+"text": "There's",
+"start": 10.72,
+"end": 11.12
+},
+{
+"text": "also",
+"start": 11.04,
+"end": 11.2
+},
+{
+"text": "a",
+"start": 11.2,
+"end": 11.36
+},
+{
+"text": "new",
+"start": 11.36,
+"end": 11.52
+},
+{
+"text": "task",
+"start": 11.52,
+"end": 11.84
+},
+{
+"text": "mode",
+"start": 11.84,
+"end": 12.24
+},
+{
+"text": "where",
+"start": 12.24,
+"end": 12.48
+},
+{
+"text": "you",
+"start": 12.48,
+"end": 12.64
+},
+{
+"text": "hand",
+"start": 12.64,
+"end": 12.96
+},
+{
+"text": "it",
+"start": 12.96,
+"end": 13.12
+},
+{
+"text": "some",
+"start": 13.12,
+"end": 13.28
+},
+{
+"text": "work,",
+"start": 13.28,
+"end": 14.08
+},
+{
+"text": "it",
+"start": 14.08,
+"end": 14.24
+},
+{
+"text": "runs",
+"start": 14.24,
+"end": 14.56
+},
+{
+"text": "in",
+"start": 14.56,
+"end": 14.72
+},
+{
+"text": "the",
+"start": 14.72,
+"end": 14.8
+},
+{
+"text": "background,",
+"start": 14.8,
+"end": 15.44
+},
+{
+"text": "and",
+"start": 15.44,
+"end": 15.6
+},
+{
+"text": "you",
+"start": 15.6,
+"end": 15.76
+},
+{
+"text": "carry",
+"start": 15.76,
+"end": 16.08
+},
+{
+"text": "on",
+"start": 16.08,
+"end": 16.24
+},
+{
+"text": "with",
+"start": 16.24,
+"end": 16.4
+},
+{
+"text": "your",
+"start": 16.4,
+"end": 16.56
+},
+{
+"text": "day.",
+"start": 16.56,
+"end": 16.96
+},
+{
+"text": "It",
+"start": 16.96,
+"end": 17.12
+},
+{
+"text": "connects",
+"start": 17.12,
+"end": 17.52
+},
+{
+"text": "to",
+"start": 17.52,
+"end": 17.76
+},
+{
+"text": "more",
+"start": 17.76,
+"end": 17.92
+},
+{
+"text": "than",
+"start": 17.92,
+"end": 18.16
+},
+{
+"text": "40",
+"start": 18.16,
+"end": 18.72
+},
+{
+"text": "apps",
+"start": 18.72,
+"end": 19.12
+},
+{
+"text": "now,",
+"start": 19.28,
+"end": 19.6
+},
+{
+"text": "too,",
+"start": 19.6,
+"end": 20.0
+},
+{
+"text": "like",
+"start": 20.0,
+"end": 20.24
+},
+{
+"text": "Instacart,",
+"start": 20.24,
+"end": 21.12
+},
+{
+"text": "Open",
+"start": 21.12,
+"end": 21.36
+},
+{
+"text": "Table,",
+"start": 21.36,
+"end": 21.84
+},
+{
+"text": "Adobe,",
+"start": 21.84,
+"end": 22.32
+},
+{
+"text": "Shopify.",
+"start": 22.4,
+"end": 23.44
+},
+{
+"text": "One",
+"start": 23.44,
+"end": 23.68
+},
+{
+"text": "catch",
+"start": 23.68,
+"end": 23.92
+},
+{
+"text": "though:",
+"start": 24.0,
+"end": 24.48
+},
+{
+"text": "pro",
+"start": 24.48,
+"end": 24.64
+},
+{
+"text": "users",
+"start": 24.8,
+"end": 25.2
+},
+{
+"text": "get",
+"start": 25.2,
+"end": 25.36
+},
+{
+"text": "Argon",
+"start": 25.36,
+"end": 26.0
+},
+{
+"text": "in",
+"start": 26.0,
+"end": 26.16
+},
+{
+"text": "the",
+"start": 26.16,
+"end": 26.32
+},
+{
+"text": "app,",
+"start": 26.32,
+"end": 26.64
+},
+{
+"text": "but",
+"start": 26.64,
+"end": 26.8
+},
+{
+"text": "the",
+"start": 26.8,
+"end": 26.88
+},
+{
+"text": "full",
+"start": 26.88,
+"end": 27.12
+},
+{
+"text": "coding",
+"start": 27.12,
+"end": 27.52
+},
+{
+"text": "site",
+"start": 27.68,
+"end": 28.0
+},
+{
+"text": "needs",
+"start": 28.0,
+"end": 28.24
+},
+{
+"text": "Ultra.",
+"start": 28.24,
+"end": 28.88
+},
+{
+"text": "So,",
+"start": 28.88,
+"end": 29.12
+},
+{
+"text": "if",
+"start": 29.12,
+"end": 29.2
+},
+{
+"text": "you",
+"start": 29.2,
+"end": 29.36
+},
+{
+"text": "got",
+"start": 29.36,
+"end": 29.52
+},
+{
+"text": "your",
+"start": 29.52,
+"end": 29.68
+},
+{
+"text": "hands",
+"start": 29.68,
+"end": 29.92
+},
+{
+"text": "on",
+"start": 29.92,
+"end": 30.08
+},
+{
+"text": "it",
+"start": 30.08,
+"end": 30.32
+},
+{
+"text": "today,",
+"start": 30.32,
+"end": 30.8
+},
+{
+"text": "what's",
+"start": 30.8,
+"end": 31.12
+},
+{
+"text": "the",
+"start": 31.04,
+"end": 31.2
+},
+{
+"text": "first",
+"start": 31.2,
+"end": 31.44
+},
+{
+"text": "thing",
+"start": 31.44,
+"end": 31.68
+},
+{
+"text": "you'd",
+"start": 31.68,
+"end": 32.08
+},
+{
+"text": "use",
+"start": 32.08,
+"end": 32.32
+},
+{
+"text": "it",
+"start": 32.32,
+"end": 32.56
+},
+{
+"text": "for?",
+"start": 32.56,
+"end": 33.12
+}
+]
