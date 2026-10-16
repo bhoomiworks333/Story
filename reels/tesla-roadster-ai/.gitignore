@@ -1,3 +1,4 @@
 build/
 hf/assets/*.mp4
-hf/snapshots/
+hf/snapshots*/
+hf/.hyperframes/
