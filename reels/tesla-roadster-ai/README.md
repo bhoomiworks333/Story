@@ -23,4 +23,6 @@ the 1280x720 reveal recording. Words were timed with Vosk (`vosk.json`, small en
   thrusters and top speed. Every shot is reframed so the re-uploader's watermark and the YouTube
   player stay outside the frame; "Footage: Tesla" is shown whenever Tesla footage is on screen.
 - 0-60 note: "*Thrust & Rocket trims. Base model: under 1.6 s".
+- News cards: Hagerty on "But AI is the ultimate cheat code", Electrek on "We are entering the era of physical AI"
+  (screenshots in `articles/`, cropped by `articles/make_cards.py`).
 - The generative-design card is an illustration (labelled as such), not a Tesla part.

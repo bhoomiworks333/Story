@@ -198,9 +198,11 @@ CHIPS = [  # small white pills dropping in at the top, garba-banner style: (id, 
 ]
 PUNCH = [  # outlined punch text at the top: (id, html, take start, take end)
     ('k-ai', 'Did <b>AI</b> build this? 🤔', 10.62, 14.72),
-    ('k-cheat', 'AI = the <b>cheat code</b> 🎮', 33.18, 35.50),
-    ('k-phys', '<b>Physical AI</b> 🦾', 53.82, 58.15),
     ('k-ready', 'Are you <b>ready?</b> 👇', 68.88, 99),
+]
+ARTICLES = [  # news screenshots as top cards (articles/make_cards.py): (id, png, take start, take end)
+    ('art1', 'art_hagerty.png', 32.40, 35.50),   # "But AI is the ultimate cheat code that makes it possible."
+    ('art2', 'art_electrek.png', 52.74, 58.15),  # "We are entering the era of physical AI ... heavy manufacturing."
 ]
 GEN = (35.55, 42.80)  # generative design card: "Engineers use AI ... draw by hand"
 
@@ -274,6 +276,12 @@ def page(caps):
         anims.append(f'pop("#{kid}", {s:.4f}, 1);')
         if e < DUR:
             anims.append(f'out("#{kid}", {e - 0.12:.4f}, 1);')
+    for aid, png, a, b in ARTICLES:
+        s, e = T(a), T(b)
+        pops.append(f'      <div class="clip cardw" data-start="{s:.4f}" data-duration="{e - s:.4f}" data-track-index="4">'
+                    f'<img id="card_{aid}" class="card art" src="assets/{png}" alt="" /></div>')
+        anims.append(f'pop("#card_{aid}", {s:.4f}, 1, 0.6, 0.35);')
+        anims.append(f'out("#card_{aid}", {e - 0.12:.4f}, 1);')
     gs, ge = T(GEN[0]), T(GEN[1])
     pops.append(f'      <div class="clip cardw" data-start="{gs:.4f}" data-duration="{ge - gs:.4f}" data-track-index="4">'
                 f'<div id="card_gen" class="card gen">{gen_design_svg()}<span class="lab">Generative design</span>'
@@ -307,6 +315,8 @@ def page(caps):
       .cardv {{ position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; border-radius: 24px; z-index: 4;
                box-shadow: 0 20px 60px rgba(0,0,0,.6); object-fit: cover; background: #000; }}
       .cardo {{ position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; z-index: 5; }}
+      .card.art {{ height: auto; }}
+      #card_art2 {{ width: 860px; left: 110px; }}
       .card.gen {{ background: radial-gradient(ellipse at 50% 45%, #1f2a3a 0%, #0b0f16 75%); }}
       .card .lab, .cardo .lab {{ position: absolute; left: 24px; bottom: 22px; background: #fff; color: #000; font-size: 40px; font-weight: 600;
                    padding: 10px 20px 12px; border-radius: 12px; letter-spacing: -0.01em; }}

@@ -22,6 +22,8 @@
       .cardv { position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; border-radius: 24px; z-index: 4;
                box-shadow: 0 20px 60px rgba(0,0,0,.6); object-fit: cover; background: #000; }
       .cardo { position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; z-index: 5; }
+      .card.art { height: auto; }
+      #card_art2 { width: 860px; left: 110px; }
       .card.gen { background: radial-gradient(ellipse at 50% 45%, #1f2a3a 0%, #0b0f16 75%); }
       .card .lab, .cardo .lab { position: absolute; left: 24px; bottom: 22px; background: #fff; color: #000; font-size: 40px; font-weight: 600;
                    padding: 10px 20px 12px; border-radius: 12px; letter-spacing: -0.01em; }
@@ -68,9 +70,9 @@
       <div class="clip pop" data-start="34.2000" data-duration="1.8667" data-track-index="5"><span id="c-code" class="chip" style="top:110px">💻 Writes code</span></div>
       <div class="clip pop" data-start="35.2333" data-duration="0.8333" data-track-index="5"><span id="c-img" class="chip" style="top:200px">🖼️ Makes images</span></div>
       <div class="clip pop" data-start="7.8000" data-duration="1.2333" data-track-index="6"><div id="k-ai" class="punch" data-t="Did AI build this? 🤔">Did <b>AI</b> build this? 🤔</div></div>
-      <div class="clip pop" data-start="22.9667" data-duration="2.1000" data-track-index="6"><div id="k-cheat" class="punch" data-t="AI = the cheat code 🎮">AI = the <b>cheat code</b> 🎮</div></div>
-      <div class="clip pop" data-start="37.0333" data-duration="3.4333" data-track-index="6"><div id="k-phys" class="punch" data-t="Physical AI 🦾"><b>Physical AI</b> 🦾</div></div>
       <div class="clip pop" data-start="43.8000" data-duration="1.4333" data-track-index="6"><div id="k-ready" class="punch" data-t="Are you ready? 👇">Are you <b>ready?</b> 👇</div></div>
+      <div class="clip cardw" data-start="22.2333" data-duration="2.8333" data-track-index="4"><img id="card_art1" class="card art" src="assets/art_hagerty.png" alt="" /></div>
+      <div class="clip cardw" data-start="36.0667" data-duration="4.4000" data-track-index="4"><img id="card_art2" class="card art" src="assets/art_electrek.png" alt="" /></div>
       <div class="clip cardw" data-start="25.1000" data-duration="6.6000" data-track-index="4"><div id="card_gen" class="card gen"><svg viewBox="0 0 960 540" width="960" height="540">
   <defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#f3f5f8" /><stop offset="1" stop-color="#9aa4b2" /></linearGradient></defs>
@@ -192,11 +194,11 @@
       strike(["#c-code", "#c-img"], 35.7667);
       pop("#k-ai", 7.8000, 1);
       out("#k-ai", 8.9133, 1);
-      pop("#k-cheat", 22.9667, 1);
-      out("#k-cheat", 24.9467, 1);
-      pop("#k-phys", 37.0333, 1);
-      out("#k-phys", 40.3467, 1);
       pop("#k-ready", 43.8000, 1);
+      pop("#card_art1", 22.2333, 1, 0.6, 0.35);
+      out("#card_art1", 24.9467, 1);
+      pop("#card_art2", 36.0667, 1, 0.6, 0.35);
+      out("#card_art2", 40.3467, 1);
       pop("#card_gen", 25.1000, 1, 0.6, 0.35);
       genDesign(25.1000);
       tl.set({}, {}, 45.233333333333334);
