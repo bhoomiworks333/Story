@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Tesla Roadster AI reel</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-SemiBold.otf"); font-weight: 600; }
+      @font-face { font-family: "InterHF"; src: url("assets/Inter-Black.otf"); font-weight: 900; }
+      @font-face { font-family: "Noto Color Emoji"; src: local("Noto Color Emoji"); }
+      html, body { margin: 0; background: #000; }
+      body { font-family: "InterHF", "Noto Color Emoji", system-ui, sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #base { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; z-index: 2; }
+      .credit { position: absolute; left: 40px; top: 48px; z-index: 3; color: rgba(255,255,255,.85); font-size: 26px;
+                font-weight: 600; text-shadow: 0 2px 6px rgba(0,0,0,.8); }
+      .cardw { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 4; }
+      .card { position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; border-radius: 24px; overflow: hidden;
+              box-shadow: 0 20px 60px rgba(0,0,0,.6); background: #000; }
+      .cardv { position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; border-radius: 24px; z-index: 4;
+               box-shadow: 0 20px 60px rgba(0,0,0,.6); object-fit: cover; background: #000; }
+      .cardo { position: absolute; left: 60px; top: 70px; width: 960px; height: 540px; z-index: 5; }
+      .card.gen { background: radial-gradient(ellipse at 50% 45%, #1f2a3a 0%, #0b0f16 75%); }
+      .card .lab, .cardo .lab { position: absolute; left: 24px; bottom: 22px; background: #fff; color: #000; font-size: 40px; font-weight: 600;
+                   padding: 10px 20px 12px; border-radius: 12px; letter-spacing: -0.01em; }
+      .card .tag, .cardo .tag { position: absolute; right: 22px; top: 18px; color: rgba(255,255,255,.8); font-size: 22px; font-weight: 600;
+                   text-shadow: 0 2px 6px rgba(0,0,0,.8); }
+      .note { position: absolute; left: 0; top: 556px; width: 960px; text-align: center; color: #fff; font-size: 28px;
+              font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,.9); }
+      .pop { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 6; }
+      .chip { position: absolute; left: 540px; background: #fff; color: #000; font-size: 44px; font-weight: 600; white-space: nowrap;
+              padding: 12px 26px 14px; border-radius: 40px; box-shadow: 0 10px 28px rgba(0,0,0,.30); }
+      .chip .line { position: absolute; left: 18px; right: 18px; top: 50%; height: 6px; background: #e0242b; border-radius: 3px;
+                    transform-origin: left center; transform: scaleX(0); }
+      .punch { position: absolute; left: 540px; top: 230px; font-size: 84px; font-weight: 900; color: #fff; white-space: nowrap;
+               letter-spacing: -0.02em; line-height: 1.05; isolation: isolate; }
+      .punch::before { content: attr(data-t); position: absolute; left: 0; top: 0; z-index: -1; color: transparent;
+                       -webkit-text-stroke: 16px #000; }
+      .punch b { color: #ffd400; font-weight: 900; }
+      .cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; z-index: 10; }
+      .cap .box { position: absolute; left: 50%; top: 1500px; transform: translate(-50%, -50%); background: #fff; color: #000;
+                  font-size: 50px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em;
+                  padding: 14px 26px 16px; border-radius: 14px; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="45.233333333333334">
+      <video id="base" class="clip" src="assets/base.mp4" muted playsinline data-start="0" data-duration="45.233333333333334" data-track-index="0"></video>
+      <video id="full_hop" class="clip full" src="assets/full_hop.mp4" muted playsinline data-start="0.0000" data-duration="2.6667" data-track-index="2"></video>
+      <div class="clip credit" data-start="0.0000" data-duration="2.6667" data-track-index="3">Footage: Tesla</div>
+      <video id="v_launch" class="clip cardv g_launch" src="assets/card_launch.mp4" muted playsinline data-start="2.6667" data-duration="0.8000" data-track-index="4"></video>
+      <div id="o_launch" class="clip cardo g_launch" data-start="2.6667" data-duration="0.8000" data-track-index="5"><span class="lab">0–60 in under 1 s*</span><span class="tag">Footage: Tesla</span><div class="note">*Thrust &amp; Rocket trims. Base model: under 1.6 s</div></div>
+      <video id="full_hover" class="clip full" src="assets/full_hover.mp4" muted playsinline data-start="3.4667" data-duration="2.8333" data-track-index="2"></video>
+      <div class="clip credit" data-start="3.4667" data-duration="2.8333" data-track-index="3">Footage: Tesla</div>
+      <video id="v_fans" class="clip cardv g_fans" src="assets/card_fans.mp4" muted playsinline data-start="9.6333" data-duration="1.5000" data-track-index="4"></video>
+      <div id="o_fans" class="clip cardo g_fans" data-start="9.6333" data-duration="1.5000" data-track-index="5"><span class="lab">Suction fans</span><span class="tag">Footage: Tesla</span></div>
+      <video id="v_jets" class="clip cardv g_jets" src="assets/card_jets.mp4" muted playsinline data-start="11.1333" data-duration="1.2333" data-track-index="4"></video>
+      <div id="o_jets" class="clip cardo g_jets" data-start="11.1333" data-duration="1.2333" data-track-index="5"><span class="lab">Cold-gas thrusters</span><span class="tag">Footage: Tesla</span></div>
+      <video id="v_speed" class="clip cardv g_speed" src="assets/card_speed.mp4" muted playsinline data-start="12.3667" data-duration="2.1667" data-track-index="4"></video>
+      <div id="o_speed" class="clip cardo g_speed" data-start="12.3667" data-duration="2.1667" data-track-index="5"><span class="lab">230+ mph</span><span class="tag">Footage: Tesla</span></div>
+      <video id="full_burst" class="clip full" src="assets/full_burst.mp4" muted playsinline data-start="40.4667" data-duration="3.2000" data-track-index="2"></video>
+      <div class="clip credit" data-start="40.4667" data-duration="3.2000" data-track-index="3">Footage: Tesla</div>
+      <div class="clip pop" data-start="20.1000" data-duration="2.1333" data-track-index="5"><span id="c-met" class="chip" style="top:110px">⚙️ Metallurgy</span></div>
+      <div class="clip pop" data-start="20.8000" data-duration="1.4333" data-track-index="5"><span id="c-flu" class="chip" style="top:200px">🌊 Fluid dynamics</span></div>
+      <div class="clip pop" data-start="21.6333" data-duration="0.6000" data-track-index="5"><span id="c-roc" class="chip" style="top:290px">🚀 Rocket science</span></div>
+      <div class="clip pop" data-start="34.2000" data-duration="1.8667" data-track-index="5"><span id="c-code" class="chip" style="top:110px">💻 Writes code</span></div>
+      <div class="clip pop" data-start="35.2333" data-duration="0.8333" data-track-index="5"><span id="c-img" class="chip" style="top:200px">🖼️ Makes images</span></div>
+      <div class="clip pop" data-start="7.8000" data-duration="1.2333" data-track-index="6"><div id="k-ai" class="punch" data-t="Did AI build this? 🤔">Did <b>AI</b> build this? 🤔</div></div>
+      <div class="clip pop" data-start="22.9667" data-duration="2.1000" data-track-index="6"><div id="k-cheat" class="punch" data-t="AI = the cheat code 🎮">AI = the <b>cheat code</b> 🎮</div></div>
+      <div class="clip pop" data-start="37.0333" data-duration="3.4333" data-track-index="6"><div id="k-phys" class="punch" data-t="Physical AI 🦾"><b>Physical AI</b> 🦾</div></div>
+      <div class="clip pop" data-start="43.8000" data-duration="1.4333" data-track-index="6"><div id="k-ready" class="punch" data-t="Are you ready? 👇">Are you <b>ready?</b> 👇</div></div>
+      <div class="clip cardw" data-start="25.1000" data-duration="6.6000" data-track-index="4"><div id="card_gen" class="card gen"><svg viewBox="0 0 960 540" width="960" height="540">
+  <defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3f5f8" /><stop offset="1" stop-color="#9aa4b2" /></linearGradient></defs>
+  <rect id="g-block" x="95" y="70" width="770" height="400" rx="30" fill="url(#metal)" opacity="0.9" />
+  <g id="g-lattice" fill="none" stroke="url(#metal)" stroke-linecap="round"><path class="strut" d="M150,120 Q287.0,125.0 480,270" stroke-width="30" />
+<path class="strut" d="M150,120 Q385.0,216.0 480,270" stroke-width="16" />
+<path class="strut" d="M810,120 Q673.0,265.0 480,270" stroke-width="30" />
+<path class="strut" d="M810,120 Q575.0,174.0 480,270" stroke-width="16" />
+<path class="strut" d="M150,420 Q287.0,275.0 480,270" stroke-width="30" />
+<path class="strut" d="M150,420 Q385.0,366.0 480,270" stroke-width="16" />
+<path class="strut" d="M810,420 Q673.0,415.0 480,270" stroke-width="30" />
+<path class="strut" d="M810,420 Q575.0,324.0 480,270" stroke-width="16" />
+<path class="strut" d="M150,120 C360.0,190.0 600.0,190.0 810,120" stroke-width="14" />
+<path class="strut" d="M150,420 C360.0,350.0 600.0,350.0 810,420" stroke-width="14" />
+<path class="strut" d="M150,120 C30.0,340.0 270.0,340.0 150,420" stroke-width="14" />
+<path class="strut" d="M810,120 C690.0,200.0 930.0,200.0 810,420" stroke-width="14" />
+<path class="strut" d="M550,270 Q600,275 629,335" stroke-width="7" />
+<path class="strut" d="M537,303 Q585,338 566,414" stroke-width="7" />
+<path class="strut" d="M502,323 Q510,360 450,398" stroke-width="7" />
+<path class="strut" d="M458,323 Q442,349 377,348" stroke-width="7" />
+<path class="strut" d="M423,303 Q373,326 297,289" stroke-width="7" />
+<path class="strut" d="M410,270 Q348,265 310,196" stroke-width="7" />
+<path class="strut" d="M423,237 Q395,215 416,162" stroke-width="7" />
+<path class="strut" d="M458,217 Q451,184 508,151" stroke-width="7" />
+<path class="strut" d="M502,217 Q527,171 622,162" stroke-width="7" />
+<path class="strut" d="M537,237 Q585,215 660,251" stroke-width="7" /></g>
+  <g id="g-bosses" fill="url(#metal)"><circle class="boss" cx="150" cy="120" r="42" /><circle class="hole" cx="150" cy="120" r="17" />
+<circle class="boss" cx="810" cy="120" r="42" /><circle class="hole" cx="810" cy="120" r="17" />
+<circle class="boss" cx="150" cy="420" r="42" /><circle class="hole" cx="150" cy="420" r="17" />
+<circle class="boss" cx="810" cy="420" r="42" /><circle class="hole" cx="810" cy="420" r="17" />
+<circle class="boss" cx="480" cy="270" r="42" /><circle class="hole" cx="480" cy="270" r="17" /></g>
+</svg><span class="lab">Generative design</span><span class="tag">Illustration</span></div></div>
+      <div class="clip cap" data-start="0.1333" data-duration="0.9333" data-track-index="10"><span class="box">Tesla just revealed</span></div>
+      <div class="clip cap" data-start="1.0667" data-duration="0.8000" data-track-index="10"><span class="box">a car that hits</span></div>
+      <div class="clip cap" data-start="1.8667" data-duration="0.6667" data-track-index="10"><span class="box">0 to 60</span></div>
+      <div class="clip cap" data-start="2.5333" data-duration="0.9333" data-track-index="10"><span class="box">under 1 second</span></div>
+      <div class="clip cap" data-start="3.4667" data-duration="0.8333" data-track-index="10"><span class="box">and literally hops</span></div>
+      <div class="clip cap" data-start="4.3000" data-duration="0.5333" data-track-index="10"><span class="box">off the ground</span></div>
+      <div class="clip cap" data-start="4.8333" data-duration="1.3667" data-track-index="10"><span class="box">using SpaceX thrusters.</span></div>
+      <div class="clip cap" data-start="6.3667" data-duration="0.4333" data-track-index="10"><span class="box">But here&#x27;s</span></div>
+      <div class="clip cap" data-start="6.8000" data-duration="1.0000" data-track-index="10"><span class="box">the real question.</span></div>
+      <div class="clip cap" data-start="7.8000" data-duration="1.2667" data-track-index="10"><span class="box">Did AI build this?</span></div>
+      <div class="clip cap" data-start="9.0667" data-duration="0.6667" data-track-index="10"><span class="box">We are talking</span></div>
+      <div class="clip cap" data-start="9.7333" data-duration="0.6667" data-track-index="10"><span class="box">active underbody</span></div>
+      <div class="clip cap" data-start="10.4000" data-duration="0.8000" data-track-index="10"><span class="box">suction fans,</span></div>
+      <div class="clip cap" data-start="11.2000" data-duration="0.4333" data-track-index="10"><span class="box">cold gas</span></div>
+      <div class="clip cap" data-start="11.6333" data-duration="0.6000" data-track-index="10"><span class="box">rocket thrusters,</span></div>
+      <div class="clip cap" data-start="12.2333" data-duration="0.7333" data-track-index="10"><span class="box">and top speed</span></div>
+      <div class="clip cap" data-start="12.9667" data-duration="1.7000" data-track-index="10"><span class="box">over 230 mph.</span></div>
+      <div class="clip cap" data-start="14.6667" data-duration="0.6000" data-track-index="10"><span class="box">So, is this</span></div>
+      <div class="clip cap" data-start="15.2667" data-duration="0.8000" data-track-index="10"><span class="box">AI&#x27;s doing?</span></div>
+      <div class="clip cap" data-start="16.0667" data-duration="1.1000" data-track-index="10"><span class="box">Yes and no.</span></div>
+      <div class="clip cap" data-start="17.1667" data-duration="1.2667" data-track-index="10"><span class="box">AI didn&#x27;t physically</span></div>
+      <div class="clip cap" data-start="18.4333" data-duration="0.9333" data-track-index="10"><span class="box">build the thrusters.</span></div>
+      <div class="clip cap" data-start="19.3667" data-duration="1.4333" data-track-index="10"><span class="box">That&#x27;s hardcore metallurgy,</span></div>
+      <div class="clip cap" data-start="20.8000" data-duration="0.7000" data-track-index="10"><span class="box">fluid dynamics</span></div>
+      <div class="clip cap" data-start="21.5000" data-duration="0.7333" data-track-index="10"><span class="box">and rocket science.</span></div>
+      <div class="clip cap" data-start="22.2333" data-duration="0.6000" data-track-index="10"><span class="box">But AI is</span></div>
+      <div class="clip cap" data-start="22.8333" data-duration="0.9333" data-track-index="10"><span class="box">the ultimate cheat code</span></div>
+      <div class="clip cap" data-start="23.7667" data-duration="1.1667" data-track-index="10"><span class="box">that makes it possible.</span></div>
+      <div class="clip cap" data-start="25.1000" data-duration="1.1667" data-track-index="10"><span class="box">Engineers use AI</span></div>
+      <div class="clip cap" data-start="26.2667" data-duration="1.0333" data-track-index="10"><span class="box">for generative design,</span></div>
+      <div class="clip cap" data-start="27.3000" data-duration="1.2000" data-track-index="10"><span class="box">letting algorithms create</span></div>
+      <div class="clip cap" data-start="28.5000" data-duration="0.8000" data-track-index="10"><span class="box">lightweight, organic</span></div>
+      <div class="clip cap" data-start="29.3000" data-duration="0.9667" data-track-index="10"><span class="box">structural parts</span></div>
+      <div class="clip cap" data-start="30.3333" data-duration="0.5000" data-track-index="10"><span class="box">that a human</span></div>
+      <div class="clip cap" data-start="30.8333" data-duration="0.3667" data-track-index="10"><span class="box">could never</span></div>
+      <div class="clip cap" data-start="31.2000" data-duration="0.5667" data-track-index="10"><span class="box">draw by hand.</span></div>
+      <div class="clip cap" data-start="31.7667" data-duration="0.4667" data-track-index="10"><span class="box">This is where</span></div>
+      <div class="clip cap" data-start="32.2333" data-duration="0.7000" data-track-index="10"><span class="box">we are heading.</span></div>
+      <div class="clip cap" data-start="32.9333" data-duration="1.0667" data-track-index="10"><span class="box">We&#x27;re moving past AI</span></div>
+      <div class="clip cap" data-start="34.0000" data-duration="1.1333" data-track-index="10"><span class="box">that just writes code</span></div>
+      <div class="clip cap" data-start="35.1333" data-duration="0.9333" data-track-index="10"><span class="box">or generates images.</span></div>
+      <div class="clip cap" data-start="36.0667" data-duration="0.6000" data-track-index="10"><span class="box">We are entering</span></div>
+      <div class="clip cap" data-start="36.6667" data-duration="0.4000" data-track-index="10"><span class="box">the era of</span></div>
+      <div class="clip cap" data-start="37.0667" data-duration="0.7000" data-track-index="10"><span class="box">physical AI,</span></div>
+      <div class="clip cap" data-start="37.7667" data-duration="0.8667" data-track-index="10"><span class="box">where machine learning</span></div>
+      <div class="clip cap" data-start="38.6333" data-duration="0.6333" data-track-index="10"><span class="box">merges directly</span></div>
+      <div class="clip cap" data-start="39.2667" data-duration="1.2667" data-track-index="10"><span class="box">with heavy manufacturing.</span></div>
+      <div class="clip cap" data-start="40.5333" data-duration="0.9333" data-track-index="10"><span class="box">The physical world</span></div>
+      <div class="clip cap" data-start="41.4667" data-duration="0.7000" data-track-index="10"><span class="box">is about to get</span></div>
+      <div class="clip cap" data-start="42.1667" data-duration="1.5667" data-track-index="10"><span class="box">updated like software.</span></div>
+      <div class="clip cap" data-start="43.8000" data-duration="0.4333" data-track-index="10"><span class="box">Are you ready</span></div>
+      <div class="clip cap" data-start="44.2333" data-duration="1.0000" data-track-index="10"><span class="box">for it?</span></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const tf = (s) => ({ xPercent: -50, yPercent: -50, scale: s });
+      const pop = (sel, t, s, from = 0.5, d = 0.22) => {
+        const centred = !(sel.startsWith("#card") || sel.startsWith(".g_"));
+        const a = centred ? { ...tf(s * from) } : { scale: s * from };
+        const b = centred ? { ...tf(s) } : { scale: s };
+        tl.fromTo(sel, { ...a, opacity: 0 }, { ...b, opacity: 1, duration: d, ease: "back.out(1.8)", immediateRender: false }, t);
+      };
+      const out = (sel, t, s) => tl.to(sel, { scale: s * 0.85, opacity: 0, duration: 0.12, ease: "power2.in" }, t);
+      document.querySelectorAll(".chip").forEach((c) => c.insertAdjacentHTML("beforeend", '<span class="line"></span>'));
+      gsap.set(".chip, .punch", { xPercent: -50, yPercent: -50 });
+      const strike = (sels, t) => sels.forEach((s, i) =>
+        tl.to(s + " .line", { scaleX: 1, duration: 0.18, ease: "power2.out" }, t + i * 0.08));
+      const genDesign = (t) => {
+        const struts = document.querySelectorAll("#g-lattice .strut");
+        struts.forEach((p) => { const L = p.getTotalLength(); gsap.set(p, { strokeDasharray: L, strokeDashoffset: L }); });
+        tl.fromTo("#g-block", { opacity: 0.9 }, { opacity: 0.12, duration: 1.2, ease: "power1.inOut", immediateRender: false }, t + 0.5);
+        tl.to(struts, { strokeDashoffset: 0, duration: 1.1, ease: "power2.out", stagger: 0.07 }, t + 0.6);
+        tl.to("#g-block", { opacity: 0, duration: 0.6 }, t + 2.6);
+      };
+      pop(".g_launch", 2.6667, 1, 0.6, 0.35);
+      pop(".g_fans", 9.6333, 1, 0.6, 0.35);
+      pop("#c-met", 20.1000, 1);
+      out("#c-met", 22.1133, 1);
+      pop("#c-flu", 20.8000, 1);
+      out("#c-flu", 22.1133, 1);
+      pop("#c-roc", 21.6333, 1);
+      out("#c-roc", 22.1133, 1);
+      pop("#c-code", 34.2000, 1);
+      out("#c-code", 35.9467, 1);
+      pop("#c-img", 35.2333, 1);
+      out("#c-img", 35.9467, 1);
+      strike(["#c-code", "#c-img"], 35.7667);
+      pop("#k-ai", 7.8000, 1);
+      out("#k-ai", 8.9133, 1);
+      pop("#k-cheat", 22.9667, 1);
+      out("#k-cheat", 24.9467, 1);
+      pop("#k-phys", 37.0333, 1);
+      out("#k-phys", 40.3467, 1);
+      pop("#k-ready", 43.8000, 1);
+      pop("#card_gen", 25.1000, 1, 0.6, 0.35);
+      genDesign(25.1000);
+      tl.set({}, {}, 45.233333333333334);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
