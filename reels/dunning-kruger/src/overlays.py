@@ -15,7 +15,7 @@ FONT_B = "/usr/share/fonts/opentype/inter/Inter-Bold.otf"
 FONT_SB = "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
 EMOJI = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
 WHITE, BLACK, YELLOW = (255, 255, 255, 255), (0, 0, 0, 255), (255, 214, 10, 255)
-PAPER = "/tmp/claude-0/-home-user-Story/28f5bad9-c84f-5c72-8bba-12dc4654381d/images/2.png"  # APA PsycNet listing (mobile), supplied by user
+PAPER = os.path.join(HERE, "paper_psycnet.png")  # APA PsycNet listing (mobile), supplied by user
 PAPER_KEEP = [(0, 240), (600, 776)]  # header+title, authors+citation; middle clutter cut
 PAPER_HL = (10, 110, 397, 143)  # "Unskilled and unaware of it:" in source pixels
 
