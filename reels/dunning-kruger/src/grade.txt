@@ -1,0 +1,1 @@
+eq=contrast=1.08:saturation=1.0,curves=all='0/0.03 0.25/0.28 0.75/0.73 1/0.97',colorbalance=rm=0.03:bm=-0.03,huesaturation=colors=g:saturation=-0.2,huesaturation=colors=y:saturation=-0.12,unsharp=5:5:0.4,vignette=angle=PI/9
