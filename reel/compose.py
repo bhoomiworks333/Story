@@ -1,4 +1,4 @@
-"""Full Dussehra reel edit: B-roll, text cards, push-in, end hold, subtitles.
+"""Full Dussehra reel edit: B-roll, cards, push-in, end hold, subtitles.
 
 All times are on the ORIGINAL footage timeline (see words_asr.json).
 usage: python3 compose.py TALKING_HEAD.mp4 DAHAN_CLIP.mp4 OUT.mp4
@@ -23,14 +23,6 @@ STOP_PRESS = 39.76                           # the word "stop."
 DAHAN = (40.48, 43.84)                       # "Happy Dussehra. Would you let AI make big decisions"
 DAHAN_SRC = 3.0                              # where in the clip to start (flames -> collapse)
 DAHAN_CROP = (31, 90, 532, 946)              # x, y, w, h: removes the player controls
-TITLES = [  # (start, end, lines, size, y-centre)
-    (4.16, 7.90, ["The smartest person", "in the Ramayana? 🤔"], 50, 0.20),
-    (9.45, 10.30, ["Scholar"], 84, 0.20),
-    (10.30, 11.25, ["Musician"], 84, 0.20),
-    (11.25, 12.40, ["King"], 84, 0.20),
-    (13.04, 16.32, ["10 heads =", "10 kinds of knowledge"], 50, 0.20),
-]
-END_TITLE = (45.76, ["Yes or no? 👇"], 72, 0.76)   # replaces the last subtitle, held to the end
 TASK_LABELS = ["Code", "Email", "Research", "Reports", "Design",
                "Data", "Meetings", "Support", "Sales", "Planning"]
 
@@ -84,23 +76,6 @@ def draw_rich(img, xy, text, font, fill, anchor_center=True):
             img.alpha_composite(s, (int(x), int(xy[1] - s.height / 2)))
         x += w
     return total
-
-
-def title_box(lines, size):
-    font = ImageFont.truetype(BOLD, size)
-    px, py, gap = int(size * 0.45), int(size * 0.28), int(size * 0.18)
-    widths = []
-    for ln in lines:
-        tmp = Image.new("RGBA", (10, 10)); widths.append(draw_rich(tmp, (0, 0), ln, font, "black"))
-    lh = size + 2 * py
-    w = int(max(widths) + 2 * px)
-    img = Image.new("RGBA", (w, lh * len(lines) + gap * (len(lines) - 1)), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    for i, (ln, lw) in enumerate(zip(lines, widths)):
-        y0 = i * (lh + gap); bw = int(lw + 2 * px)
-        d.rounded_rectangle([(w - bw) // 2, y0, (w + bw) // 2, y0 + lh], int(size * 0.3), fill="white")
-        draw_rich(img, (w / 2, y0 + lh / 2), ln, font, "black")
-    return img
 
 
 def pop(img, k):
@@ -194,12 +169,9 @@ def main(head, dahan, out):
     _, _, _, dur = sub.probe(head)
     total = dur + HOLD
     cues = sub.build_cues("words_asr.json", dur)
-    cues = [c for c in cues if c[0] < END_TITLE[0] - 0.1]                 # end title replaces "Yes or no?"
-    cues[-1] = (cues[-1][0], END_TITLE[0], cues[-1][2])
+    cues[-1] = (cues[-1][0], total, cues[-1][2])                         # "Yes or no?" holds through the freeze
     sfont = ImageFont.truetype(sub.FONT, sub.SIZE)
     sboxes = [sub.render_box(t, sfont) for _, _, t in cues]
-    titles = [(s, e, title_box(l, sz), y) for s, e, l, sz, y in TITLES]
-    end_img = title_box(END_TITLE[1], END_TITLE[2])
     painting = Image.open(PAINTING).convert("RGB")
     dahan_frames = [f.crop((0, 0, W, H)) for f in read_frames(dahan, W, H, ss=DAHAN_SRC, t=DAHAN[1] - DAHAN[0] + 0.2, crop=DAHAN_CROP)]
 
@@ -231,10 +203,6 @@ def main(head, dahan, out):
         else:
             fr = last
         fr = fr.convert("RGBA")
-        for s, e, img, y in titles:
-            if s <= t < e: place(fr, pop(img, (t - s) / 0.15), y)
-        if t >= END_TITLE[0]:
-            place(fr, pop(end_img, (t - END_TITLE[0]) / 0.15), END_TITLE[3])
         for i, (s, e, _) in enumerate(cues):
             if s <= t < e:
                 place(fr, pop(sboxes[i], (t - s) / sub.POP), sub.Y_CENTER); break
