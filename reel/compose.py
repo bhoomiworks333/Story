@@ -10,7 +10,9 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import subtitles as sub
 
-W, H, FPS = 720, 1280, 30
+W, H, FPS = 1080, 1920, 30
+K = W / 720                                  # layout below is designed at 720 wide
+def px(x): return int(round(x * K))
 HOLD = 1.5                                   # freeze at the end for the CTA
 BOLD = "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf"
 SEMI = "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
@@ -94,11 +96,11 @@ BG = (14, 15, 19, 255)
 def tasks_card(t):
     """10 labelled boxes appearing one by one in an arc around an 'AI' head."""
     im = Image.new("RGBA", (W, H), BG); d = ImageDraw.Draw(im)
-    f_t, f_l = ImageFont.truetype(BOLD, 54), ImageFont.truetype(SEMI, 25)
-    d.text((W / 2, 170), "10 tasks at once", font=f_t, fill="white", anchor="mm")
-    cx, cy, R = W / 2, 600, 262
+    f_t, f_l = ImageFont.truetype(BOLD, px(54)), ImageFont.truetype(SEMI, px(25))
+    d.text((W / 2, px(170)), "10 tasks at once", font=f_t, fill="white", anchor="mm")
+    cx, cy, R = W / 2, px(600), px(262)
     k0 = ease(t / 0.35)
-    r = int(72 * (0.8 + 0.2 * k0))
+    r = int(px(72) * (0.8 + 0.2 * k0))
     shown = []
     for i, lab in enumerate(TASK_LABELS):
         k = (t - 0.25 - i * 0.12) / 0.18
@@ -106,13 +108,13 @@ def tasks_card(t):
         a = math.radians(225 - i * 30)               # 270° crown open at the bottom, like the ten heads
         shown.append((lab, k, cx + R * math.cos(a), cy - R * math.sin(a)))
     for _, k, x, y in shown:                         # spokes under the boxes
-        d.line([cx, cy, x, y], fill=(70, 74, 90, 255), width=2)
+        d.line([cx, cy, x, y], fill=(70, 74, 90, 255), width=px(2))
     d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(255, 255, 255, 255))
-    d.text((cx, cy), "AI", font=ImageFont.truetype(BOLD, 56), fill="black", anchor="mm")
-    bw, bh = 128, 54
+    d.text((cx, cy), "AI", font=ImageFont.truetype(BOLD, px(56)), fill="black", anchor="mm")
+    bw, bh = px(128), px(54)
     for lab, k, x, y in shown:
         box = Image.new("RGBA", (bw, bh), (0, 0, 0, 0)); bd = ImageDraw.Draw(box)
-        bd.rounded_rectangle([0, 0, bw - 1, bh - 1], 12, fill=(32, 35, 45, 255), outline=(255, 196, 64, 255), width=2)
+        bd.rounded_rectangle([0, 0, bw - 1, bh - 1], px(12), fill=(32, 35, 45, 255), outline=(255, 196, 64, 255), width=px(2))
         bd.text((bw / 2, bh / 2), lab, font=f_l, fill="white", anchor="mm")
         b = pop(box, k)
         im.alpha_composite(b, (int(x - b.width / 2), int(y - b.height / 2)))
@@ -123,27 +125,27 @@ def stop_card(t, pressed):
     """'AI wants to: send payment ₹5,00,000' with Approve / Stop; Stop highlighted, pressed on 'stop.'"""
     im = Image.new("RGBA", (W, H), BG); d = ImageDraw.Draw(im)
     k = ease(t / 0.3)
-    x0, y0, x1, y1 = 70, int(300 + 40 * (1 - k)), W - 70, int(800 + 40 * (1 - k))
-    d.rounded_rectangle([x0, y0, x1, y1], 32, fill=(255, 255, 255, int(255 * k)))
+    x0, y0, x1, y1 = px(70), px(300 + 40 * (1 - k)), W - px(70), px(800 + 40 * (1 - k))
+    d.rounded_rectangle([x0, y0, x1, y1], px(32), fill=(255, 255, 255, int(255 * k)))
     if k < 1: return im
-    draw_rich(im, (x0 + 50, y0 + 75), "🤖 AI wants to:", ImageFont.truetype(SEMI, 34), (90, 94, 110), anchor_center=False)
-    d.text((x0 + 50, y0 + 160), "Send payment", font=ImageFont.truetype(BOLD, 52), fill="black", anchor="lm")
-    d.text((x0 + 50, y0 + 245), "₹5,00,000", font=ImageFont.truetype(BOLD, 76), fill="black", anchor="lm")
-    by, bh, bw = y1 - 150, 100, 230
-    fb = ImageFont.truetype(BOLD, 36)
-    ax = x0 + 40
-    d.rounded_rectangle([ax, by, ax + bw, by + bh], 22, fill=(240, 241, 245), outline=(205, 208, 218), width=3)
+    draw_rich(im, (x0 + px(50), y0 + px(75)), "🤖 AI wants to:", ImageFont.truetype(SEMI, px(34)), (90, 94, 110), anchor_center=False)
+    d.text((x0 + px(50), y0 + px(160)), "Send payment", font=ImageFont.truetype(BOLD, px(52)), fill="black", anchor="lm")
+    d.text((x0 + px(50), y0 + px(245)), "₹5,00,000", font=ImageFont.truetype(BOLD, px(76)), fill="black", anchor="lm")
+    by, bh, bw = y1 - px(150), px(100), px(230)
+    fb = ImageFont.truetype(BOLD, px(36))
+    ax = x0 + px(40)
+    d.rounded_rectangle([ax, by, ax + bw, by + bh], px(22), fill=(240, 241, 245), outline=(205, 208, 218), width=px(3))
     draw_rich(im, (ax + bw / 2, by + bh / 2), "✅ Approve", fb, (120, 124, 138))
-    sx = x1 - 40 - bw
+    sx = x1 - px(40) - bw
     pulse = 0.5 + 0.5 * math.sin(t * 2 * math.pi * 1.6)
-    glow = 8 + int(10 * pulse) if not pressed else 14
-    d.rounded_rectangle([sx - glow, by - glow, sx + bw + glow, by + bh + glow], 22 + glow, fill=(229, 57, 53, 70 if not pressed else 120))
-    s = 0.94 if pressed else 1.0
+    glow = px(8 + 10 * pulse) if not pressed else px(14)
+    d.rounded_rectangle([sx - glow, by - glow, sx + bw + glow, by + bh + glow], px(22) + glow, fill=(229, 57, 53, 70 if not pressed else 120))
+    sc = 0.94 if pressed else 1.0
     cxs, cys = sx + bw / 2, by + bh / 2
-    d.rounded_rectangle([cxs - bw * s / 2, cys - bh * s / 2, cxs + bw * s / 2, cys + bh * s / 2], 22, fill=(198, 32, 32))
+    d.rounded_rectangle([cxs - bw * sc / 2, cys - bh * sc / 2, cxs + bw * sc / 2, cys + bh * sc / 2], px(22), fill=(198, 32, 32))
     draw_rich(im, (cxs, cys), "🛑 Stop", fb, "white")
     if pressed:
-        d.text((W / 2, y1 + 70), "Human said stop. Nothing sent.", font=ImageFont.truetype(SEMI, 32), fill=(200, 203, 214), anchor="mm")
+        d.text((W / 2, y1 + px(70)), "Human said stop. Nothing sent.", font=ImageFont.truetype(SEMI, px(32)), fill=(200, 203, 214), anchor="mm")
     return im
 
 
@@ -177,6 +179,7 @@ def main(head, dahan, out, cuts=(), speed=1.0):
     total = dur + HOLD
     cues = sub.build_cues("words_asr.json", dur, cuts)
     cues[-1] = (cues[-1][0], total, cues[-1][2])                         # "Yes or no?" holds through the freeze
+    sub.SIZE, sub.PAD_X, sub.PAD_Y, sub.RADIUS = px(sub.SIZE), px(sub.PAD_X), px(sub.PAD_Y), px(sub.RADIUS)
     sfont = ImageFont.truetype(sub.FONT, sub.SIZE)
     sboxes = [sub.render_box(t, sfont) for _, _, t in cues]
     painting = Image.open(PAINTING).convert("RGB")
