@@ -1,9 +1,11 @@
 """Full Dussehra reel edit: B-roll, cards, push-in, end hold, subtitles.
 
-All times are on the ORIGINAL footage timeline (see words_asr.json).
-usage: python3 compose.py TALKING_HEAD.mp4 DAHAN_CLIP.mp4 OUT.mp4
+All times are on the ORIGINAL footage timeline (see words_asr.json); with
+--cuts they are remapped onto the trimmed footage made by trim.py.
+--speed speeds up everything except the end hold (pitch preserved).
+usage: python3 compose.py TALKING_HEAD.mp4 DAHAN_CLIP.mp4 OUT.mp4 [--cuts cut_plan.json] [--speed 1.15]
 """
-import math, subprocess, sys
+import argparse, json, math, os, subprocess, sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import subtitles as sub
@@ -15,7 +17,7 @@ SEMI = "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
 EMOJI = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"
 PAINTING = "assets/ravana_jatayu_ravi_varma.webp"
 
-PAINT = (0.0, 2.96)                          # full screen, cut to Prashant on "on Dussehra"
+PAINT = (0.0, 3.20)                          # full screen (~1.9 s at 1.15x), cut to Prashant on "Dussehra"
 PUSH = (22.72, 26.80)                        # "So he lost because ... say stop."
 TASKS = (31.28, 34.80)                       # "It can do 10 things at once ... 10 heads."
 STOP = (37.20, 40.48)                        # "a human can still check it and say stop."
@@ -165,10 +167,15 @@ def read_frames(path, w, h, ss=None, t=None, crop=None):
         yield Image.frombytes("RGB", (w, h), b)
 
 
-def main(head, dahan, out):
+def main(head, dahan, out, cuts=(), speed=1.0):
+    global PAINT, PUSH, TASKS, STOP, STOP_PRESS, DAHAN
+    R = lambda t: sub.remap(t, cuts)
+    PAINT, PUSH, TASKS, STOP, DAHAN = [tuple(map(R, x)) for x in (PAINT, PUSH, TASKS, STOP, DAHAN)]
+    STOP_PRESS = R(STOP_PRESS)
+    final, out = out, (out + ".1x.mp4" if speed != 1.0 else out)
     _, _, _, dur = sub.probe(head)
     total = dur + HOLD
-    cues = sub.build_cues("words_asr.json", dur)
+    cues = sub.build_cues("words_asr.json", dur, cuts)
     cues[-1] = (cues[-1][0], total, cues[-1][2])                         # "Yes or no?" holds through the freeze
     sfont = ImageFont.truetype(sub.FONT, sub.SIZE)
     sboxes = [sub.render_box(t, sfont) for _, _, t in cues]
@@ -208,8 +215,22 @@ def main(head, dahan, out):
                 place(fr, pop(sboxes[i], (t - s) / sub.POP), sub.Y_CENTER); break
         enc.stdin.write(fr.convert("RGB").tobytes())
     enc.stdin.close(); rc = enc.wait()
-    subprocess.call(["rm", "-f", audio]); sys.exit(rc)
+    os.remove(audio)
+    if rc: sys.exit(rc)
+    if speed != 1.0:
+        sp = f"{speed}"
+        subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", out, "-filter_complex",
+            f"[0:v]trim=0:{dur},setpts=(PTS-STARTPTS)/{sp},fps={FPS}[v1];[0:v]trim={dur},setpts=PTS-STARTPTS[v2];"
+            f"[0:a]atrim=0:{dur},asetpts=PTS-STARTPTS,atempo={sp}[a1];[0:a]atrim={dur},asetpts=PTS-STARTPTS[a2];"
+            "[v1][a1][v2][a2]concat=n=2:v=1:a=1[v][a]", "-map", "[v]", "-map", "[a]", "-c:v", "libx264",
+            "-crf", "18", "-preset", "slow", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+            "-movflags", "+faststart", final])
+        os.remove(out)
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    ap = argparse.ArgumentParser()
+    ap.add_argument("head"); ap.add_argument("dahan"); ap.add_argument("out")
+    ap.add_argument("--cuts"); ap.add_argument("--speed", type=float, default=1.0)
+    a = ap.parse_args()
+    main(a.head, a.dahan, a.out, json.load(open(a.cuts))["cuts"] if a.cuts else [], a.speed)
