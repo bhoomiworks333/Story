@@ -1,0 +1,4 @@
+{"source":"ab66a792-1020.mp4","threshold_db":-35,"min_silence":0.4,"pad":0.15,
+ "cuts":[[0.200,1.226],[7.555,7.758]],
+ "keep":[[0.0,0.200],[1.226,7.555],[7.758,46.788]],
+ "orig_duration":46.788,"new_duration":45.559,"removed":1.229}
