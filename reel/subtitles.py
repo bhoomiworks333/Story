@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 FONT = "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf"
 SIZE, PAD_X, PAD_Y, RADIUS = 46, 22, 12, 14
-Y_CENTER = 0.70            # fraction of height; clear of IG caption/UI area
+Y_CENTER = 0.76            # fraction of height; clear of IG caption/UI area
 MAX_WORDS, MAX_CHARS = 4, 20
 GLUE = {"a", "the", "in", "his", "to", "at", "of", "on", "he", "so", "and", "but", "it", "can", "10", "i", "those", "you", "is"}
 LEAD = 0.05                # show a chunk slightly before its first word
@@ -61,6 +61,15 @@ def remap(t, cuts):
     return t - shift
 
 
+def build_cues(words_path, dur, cuts=()):
+    ch = [[remap(s, cuts), t] for s, t in chunk(load_words(words_path))]
+    cues = []
+    for i, (s, t) in enumerate(ch):
+        end = ch[i + 1][0] - LEAD if i + 1 < len(ch) else dur
+        cues.append((max(0, s - LEAD), end, t))
+    return cues
+
+
 def render_box(text, font):
     l, t, r, b = font.getbbox(text)
     w, h = r - l + 2 * PAD_X, SIZE + 2 * PAD_Y
@@ -92,11 +101,7 @@ def main():
     a = ap.parse_args()
     W, H, fps, dur = probe(a.inp)
     cuts = json.load(open(a.cuts))["cuts"] if a.cuts else []
-    ch = [[remap(s, cuts), t] for s, t in chunk(load_words(a.words))]
-    cues = []
-    for i, (s, t) in enumerate(ch):
-        end = ch[i + 1][0] - LEAD if i + 1 < len(ch) else dur
-        cues.append((max(0, s - LEAD), end, t))
+    cues = build_cues(a.words, dur, cuts)
     if a.srt:
         with open(a.srt, "w") as f:
             for i, (s, e, t) in enumerate(cues, 1):
