@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Montserrat,60,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,16,0,2,60,60,420,1
+Style: Hook,Montserrat,66,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,18,0,8,40,40,220,1
+Style: Cover,Montserrat,60,&H00FFFFFF,&H00FFFFFF,&H00FFFFFF,&H00FFFFFF,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.00,0:00:04.00,Hook,,0,0,0,,AI tried to teach him Chinese.\NWait for his answer {\1a&HFF&}😂{\1a&H00&}
+Dialogue: 0,0:00:00.00,0:00:04.00,Cover,,0,0,0,,{\pos(0,0)\p1}m 180 200 l 900 200 900 378 180 378{\p0}
+Dialogue: 1,0:00:00.62,0:00:03.85,Sub,,0,0,0,,Kid: Why do we say\N'nǐ hǎo' in Chinese?
+Dialogue: 1,0:00:06.41,0:00:10.60,Sub,,0,0,0,,AI: 'Nǐ hǎo' is how you\Nsay hello in Chinese.
+Dialogue: 0,0:00:06.41,0:00:10.60,Cover,,0,0,0,,{\pos(0,0)\p1}m 190 1364 l 890 1364 890 1515 190 1515{\p0}
+Dialogue: 1,0:00:11.20,0:00:12.95,Sub,,0,0,0,,AI: Like when you want to\Nsay hello to someone,
+Dialogue: 0,0:00:11.20,0:00:12.95,Cover,,0,0,0,,{\pos(0,0)\p1}m 190 1364 l 890 1364 890 1515 190 1515{\p0}
+Dialogue: 1,0:00:12.95,0:00:14.35,Sub,,0,0,438,,AI: you say 'nǐ hǎo'.
+Dialogue: 0,0:00:12.95,0:00:14.35,Cover,,0,0,0,,{\pos(0,0)\p1}m 190 1390 l 890 1390 890 1515 190 1515{\p0}
+Dialogue: 1,0:00:15.27,0:00:16.94,Sub,,0,0,0,,AI: Say it and show me:\N'nǐ hǎo'!
+Dialogue: 0,0:00:15.27,0:00:16.94,Cover,,0,0,0,,{\pos(0,0)\p1}m 190 1364 l 890 1364 890 1515 190 1515{\p0}
+Dialogue: 1,0:00:16.94,0:00:18.40,Sub,,0,0,438,,Kid: Meeha!
+Dialogue: 0,0:00:16.94,0:00:18.40,Cover,,0,0,0,,{\pos(0,0)\p1}m 250 1390 l 840 1390 840 1515 250 1515{\p0}
