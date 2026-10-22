@@ -1,0 +1,36 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Main,Montserrat,74,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,14,0,2,60,60,500,1
+Style: Highlight,Montserrat,74,&H00000000,&H00000000,&H0000D7FF,&H0000D7FF,-1,0,0,0,100,100,0,0,3,14,0,2,60,60,500,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:05.75,0:00:07.19,Main,,0,0,0,,Imagine waking up
+Dialogue: 0,0:00:07.19,0:00:08.31,Main,,0,0,0,,and your AI has
+Dialogue: 0,0:00:08.31,0:00:09.43,Highlight,,0,0,0,,already texted you
+Dialogue: 0,0:00:09.43,0:00:10.55,Main,,0,0,0,,That's what Anthropic
+Dialogue: 0,0:00:10.55,0:00:11.27,Main,,0,0,0,,just launched
+Dialogue: 0,0:00:11.27,0:00:11.75,Main,,0,0,0,,It's called
+Dialogue: 0,0:00:11.75,0:00:12.87,Highlight,,0,0,0,,Claude Duet
+Dialogue: 0,0:00:16.23,0:00:16.87,Highlight,,0,0,0,,unpaid
+Dialogue: 0,0:00:16.87,0:00:18.07,Main,,0,0,0,,which client replied
+Dialogue: 0,0:00:18.07,0:00:19.03,Main,,0,0,0,,and which meeting
+Dialogue: 0,0:00:19.03,0:00:19.99,Main,,0,0,0,,needs you today
+Dialogue: 0,0:00:19.99,0:00:20.55,Main,,0,0,0,,Then you just
+Dialogue: 0,0:00:24.55,0:00:25.59,Main,,0,0,0,,build me a deck
+Dialogue: 0,0:00:25.59,0:00:26.63,Main,,0,0,0,,chase this payment
+Dialogue: 0,0:00:26.63,0:00:27.75,Main,,0,0,0,,And it keeps working
+Dialogue: 0,0:00:27.75,0:00:29.03,Main,,0,0,0,,while you're away
+Dialogue: 0,0:00:29.03,0:00:29.83,Main,,0,0,0,,Before it sends
+Dialogue: 0,0:00:32.15,0:00:33.51,Highlight,,0,0,0,,asks you first
+Dialogue: 0,0:00:38.55,0:00:40.15,Main,,0,0,0,,So, honest question
+Dialogue: 0,0:00:40.15,0:00:41.11,Main,,0,0,0,,Would you let AI
+Dialogue: 0,0:00:41.11,0:00:42.23,Main,,0,0,0,,handle your inbox?
+Dialogue: 0,0:00:42.23,0:00:44.83,Highlight,,0,0,0,,Yes or no?
