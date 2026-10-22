@@ -19,7 +19,7 @@ for k in range(len(ev)):              # hold each chunk until the next starts (i
 ev[-1][1] = TOTAL
 out = []
 for s, e, t, hl in ev:
-    if not hl:                         # plain chunks are hidden under inserts / access card
+    if not hl:                         # non-key chunks are hidden under inserts / access card
         for hs, he in HIDE:
             if s < he and e > hs:
                 if s >= hs: s = max(s, he)
@@ -36,8 +36,8 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Main,Montserrat,74,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,14,0,2,60,60,500,1
-Style: Highlight,Montserrat,74,&H00000000,&H00000000,&H0000D7FF,&H0000D7FF,-1,0,0,0,100,100,0,0,3,14,0,2,60,60,500,1
+Style: Main,Montserrat,74,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,14,0,2,60,60,380,1
+Style: Highlight,Montserrat,74,&H00000000,&H00000000,&H0000D7FF,&H0000D7FF,-1,0,0,0,100,100,0,0,3,14,0,2,60,60,380,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -45,5 +45,5 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 with open(sys.argv[1], "w") as f:
     f.write(hdr)
     for s, e, t, hl in out:
-        f.write(f"Dialogue: 0,{ts(s)},{ts(e)},{'Highlight' if hl else 'Main'},,0,0,0,,{t}\n")
+        f.write(f"Dialogue: 0,{ts(s)},{ts(e)},{'Highlight' if t == 'Yes or no?' else 'Main'},,0,0,0,,{t}\n")
 for s, e, t, hl in out: print(f"{s:6.2f}-{e:6.2f} {'[HL] ' if hl else ''}{t}")
