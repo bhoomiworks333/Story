@@ -7,7 +7,13 @@ G = os.path.join(HERE, "..", "graphics")
 out_path, ass_path = sys.argv[1], sys.argv[2]
 N = int(round(TOTAL * FPS))
 FACE_X = 895                                   # face centre in the 1920x1080 source
-FULL_BOX = (FACE_X - 304, 0, FACE_X + 304, 1080)   # 608x1080 -> 1080x1920
+FULL_CW = 860                                      # full mode: 860x1080 of source -> 1080x1356, wall extended above
+FULL_S = W / FULL_CW; FULL_H = round(1080 * FULL_S); FULL_TOP = H - FULL_H
+FEATHER = Image.linear_gradient("L").resize((W, 220))  # soft seam between real and extended wall
+_plate = Image.open(os.path.join(WORK, "wall_plate.png")).convert("RGB")   # median of the top rows: wall without his hair
+_plate = _plate.resize((W, 30), Image.LANCZOS, box=(FACE_X - FULL_CW / 2, 0, FACE_X + FULL_CW / 2, 30))
+from PIL import ImageFilter
+WALL = _plate.resize((W, FULL_TOP + 220), Image.BILINEAR).filter(ImageFilter.GaussianBlur(24))
 SPLIT_BOX = (FACE_X - 550, 60, FACE_X + 550, 1038)  # 1100x978 -> 1080x960, head fully in frame
 
 def ease(x): x = min(max(x, 0), 1); return 1 - (1 - x) ** 3
@@ -75,6 +81,16 @@ def pop(img, t0, t, canvas_size):
     if a < 1: im = im.copy(); im.putalpha(im.getchannel("A").point(lambda v: int(v * a)))
     layer.alpha_composite(im, ((canvas_size[0] - im.width) // 2, (canvas_size[1] - im.height) // 2)); return layer
 
+def full_frame(fr, z):
+    """Zoomed-out full layout: the real frame sits at the bottom, the plain grey wall is extended above it."""
+    real = fr.resize((W, FULL_H), Image.LANCZOS, box=(FACE_X - FULL_CW / 2, 0, FACE_X + FULL_CW / 2, 1080))
+    canvas = Image.new("RGB", (W, H)); canvas.paste(WALL, (0, 0))
+    canvas.paste(real.crop((0, 0, W, 220)), (0, FULL_TOP), FEATHER); canvas.paste(real.crop((0, 220, W, FULL_H)), (0, FULL_TOP + 220))
+    if z != 1.0:                                       # push-in around his face
+        cx, cy = W / 2, FULL_TOP + 460 * FULL_S; bw, bh = W / z, H / z
+        canvas = canvas.resize((W, H), Image.LANCZOS, box=(cx - cx / z, cy - cy / z, cx - cx / z + bw, cy - cy / z + bh))
+    return canvas.convert("RGBA")
+
 def frames(path):
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-i", path, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
     last = None
@@ -93,9 +109,7 @@ for n in range(N):
     e0 = next(e for s, e, m, c in SEGMENTS if s == s0)
     if mode == "full":
         z = 1 + 0.04 * ease_io(t / SEGMENTS[0][1]) if s0 == 0 else 1.0       # push-in on "Brooo"
-        x0, y0, x1, y1 = FULL_BOX; cx, cy = FACE_X, 450
-        bw, bh = (x1 - x0) / z, (y1 - y0) / z; bx = cx - (cx - x0) / z; by = cy - (cy - y0) / z
-        out = fr.resize((W, H), Image.LANCZOS, box=(bx, by, bx + bw, by + bh)).convert("RGBA")
+        out = full_frame(fr, z)
         if card == "cta" and t >= CTA_AT:
             a = ease((t - CTA_AT) / 0.2); sc = 0.92 + 0.08 * a
             c = cta.resize((int(cta.width * sc), int(cta.height * sc)), Image.LANCZOS)
