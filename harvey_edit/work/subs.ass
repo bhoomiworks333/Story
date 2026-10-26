@@ -1,0 +1,55 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Main,Montserrat,60,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,13,0,2,60,60,330,1
+Style: Highlight,Montserrat,60,&H00000000,&H00000000,&H0000D6FF,&H0000D6FF,-1,0,0,0,100,100,0,0,3,13,0,2,60,60,330,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.56,Main,,0,0,330,,Brooo
+Dialogue: 0,0:00:00.56,0:00:01.44,Main,,0,0,330,,Someone just built an
+Dialogue: 0,0:00:01.44,0:00:02.80,Main,,0,0,970,,AI agent whose
+Dialogue: 0,0:00:02.80,0:00:03.68,Main,,0,0,970,,only job is
+Dialogue: 0,0:00:03.68,0:00:05.12,Highlight,,0,0,970,,finding you customers
+Dialogue: 0,0:00:05.12,0:00:05.60,Main,,0,0,970,,It's called
+Dialogue: 0,0:00:05.60,0:00:06.32,Highlight,,0,0,970,,Harvey
+Dialogue: 0,0:00:06.32,0:00:06.80,Main,,0,0,970,,And it's
+Dialogue: 0,0:00:06.80,0:00:07.76,Highlight,,0,0,970,,open source
+Dialogue: 0,0:00:07.76,0:00:08.32,Main,,0,0,970,,You tell it
+Dialogue: 0,0:00:08.32,0:00:09.12,Main,,0,0,970,,two things
+Dialogue: 0,0:00:09.12,0:00:10.00,Main,,0,0,970,,What you sell
+Dialogue: 0,0:00:10.00,0:00:10.96,Main,,0,0,970,,and who you want
+Dialogue: 0,0:00:10.96,0:00:11.92,Main,,0,0,970,,to sell to
+Dialogue: 0,0:00:11.92,0:00:12.72,Main,,0,0,330,,That's it
+Dialogue: 0,0:00:12.72,0:00:13.60,Main,,0,0,970,,Then it goes off
+Dialogue: 0,0:00:13.60,0:00:14.32,Main,,0,0,970,,on its own
+Dialogue: 0,0:00:14.32,0:00:15.68,Main,,0,0,970,,finds those companies
+Dialogue: 0,0:00:15.68,0:00:16.64,Main,,0,0,970,,reads their websites
+Dialogue: 0,0:00:16.64,0:00:17.28,Main,,0,0,970,,and digs out
+Dialogue: 0,0:00:17.28,0:00:18.00,Main,,0,0,970,,the right people
+Dialogue: 0,0:00:18.00,0:00:19.36,Main,,0,0,970,,and their emails
+Dialogue: 0,0:00:19.36,0:00:20.24,Main,,0,0,970,,Then it writes
+Dialogue: 0,0:00:20.24,0:00:20.88,Main,,0,0,970,,each of them
+Dialogue: 0,0:00:20.88,0:00:22.80,Main,,0,0,970,,a personal cold email
+Dialogue: 0,0:00:22.80,0:00:23.68,Main,,0,0,970,,Sends it
+Dialogue: 0,0:00:23.68,0:00:25.04,Main,,0,0,970,,Replies when they reply
+Dialogue: 0,0:00:25.04,0:00:26.16,Main,,0,0,970,,And books the meeting
+Dialogue: 0,0:00:26.16,0:00:27.12,Main,,0,0,970,,Every 15 minutes
+Dialogue: 0,0:00:27.12,0:00:28.08,Main,,0,0,970,,it wakes up
+Dialogue: 0,0:00:28.08,0:00:29.20,Main,,0,0,970,,does its work
+Dialogue: 0,0:00:29.20,0:00:31.04,Main,,0,0,970,,and goes back to sleep
+Dialogue: 0,0:00:31.04,0:00:32.72,Main,,0,0,330,,Basically a salesperson who
+Dialogue: 0,0:00:32.72,0:00:33.92,Highlight,,0,0,330,,never takes leave
+Dialogue: 0,0:00:33.92,0:00:35.04,Main,,0,0,970,,The code's free
+Dialogue: 0,0:00:35.04,0:00:36.08,Main,,0,0,970,,It runs on your
+Dialogue: 0,0:00:36.08,0:00:37.76,Main,,0,0,970,,Claude Max subscription
+Dialogue: 0,0:00:37.76,0:00:38.88,Main,,0,0,330,,Want the setup guide?
+Dialogue: 0,0:00:38.88,0:00:39.28,Main,,0,0,330,,Comment
+Dialogue: 0,0:00:39.28,0:00:39.76,Highlight,,0,0,330,,HARVEY
+Dialogue: 0,0:00:39.76,0:00:42.47,Main,,0,0,330,,I'll DM it to you
