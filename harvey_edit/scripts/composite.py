@@ -91,6 +91,22 @@ def full_frame(fr, z):
         canvas = canvas.resize((W, H), Image.LANCZOS, box=(cx - cx / z, cy - cy / z, cx - cx / z + bw, cy - cy / z + bh))
     return canvas.convert("RGBA")
 
+CLOSE_CW = 720; CLOSE_H = round(1080 * W / CLOSE_CW)   # leaning-in moments: 1.5x, frame top = screen top
+CLOSE_FEATHER = Image.linear_gradient("L").resize((W, 200))           # 0 at top -> 255 at bottom
+_sp = Image.open(os.path.join(WORK, "shirt_plate.png")).convert("RGB")      # median bottom rows: shirt without hands
+_sp = _sp.resize((W, 30), Image.LANCZOS, box=(FACE_X - CLOSE_CW / 2, 0, FACE_X + CLOSE_CW / 2, 30))
+from PIL import ImageFilter as _IF
+from PIL import ImageEnhance as _IE
+_sp = ImageEnhance_dark = _IE.Brightness(_IE.Color(_sp).enhance(0.15)).enhance(0.55)   # read as black shirt, not arm
+SHIRT = _sp.resize((W, H - CLOSE_H + 200), Image.BILINEAR).filter(_IF.GaussianBlur(20))
+CLOSE_SEGS = [(S("Basically"), S("The")), (S("Want"), TOTAL)]   # his head leaves the top of the source frame here
+def close_frame(fr):
+    real = fr.resize((W, CLOSE_H), Image.LANCZOS, box=(FACE_X - CLOSE_CW / 2, 0, FACE_X + CLOSE_CW / 2, 1080))
+    canvas = Image.new("RGB", (W, H)); canvas.paste(real, (0, 0))
+    canvas.paste(SHIRT.crop((0, 0, W, 200)), (0, CLOSE_H - 200), CLOSE_FEATHER)   # blend into the extended shirt
+    canvas.paste(SHIRT.crop((0, 200, W, SHIRT.height)), (0, CLOSE_H))
+    return canvas.convert("RGBA")
+
 def frames(path):
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-i", path, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
     last = None
@@ -109,12 +125,13 @@ for n in range(N):
     e0 = next(e for s, e, m, c in SEGMENTS if s == s0)
     if mode == "full":
         z = 1 + 0.04 * ease_io(t / SEGMENTS[0][1]) if s0 == 0 else 1.0       # push-in on "Brooo"
-        out = full_frame(fr, z)
+        close = any(a <= t < b for a, b in CLOSE_SEGS)
+        out = close_frame(fr) if close else full_frame(fr, z)
         if card == "cta" and t >= CTA_AT:
             a = ease((t - CTA_AT) / 0.2); sc = 0.92 + 0.08 * a
             c = cta.resize((int(cta.width * sc), int(cta.height * sc)), Image.LANCZOS)
             if a < 1: c.putalpha(c.getchannel("A").point(lambda v: int(v * a)))
-            out.alpha_composite(c, ((W - c.width) // 2, 212 - c.height // 2))
+            out.alpha_composite(c, ((W - c.width) // 2, (1300 if close else 212) - c.height // 2))
     else:
         out = Image.new("RGBA", (W, H), (0, 0, 0, 255))
         out.alpha_composite(pop(card_for(card, t, s0, e0), s0, t, (W, HALF)), (0, 0))
