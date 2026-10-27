@@ -4,357 +4,289 @@
 <meta charset="utf-8">
 <title>Register to ERP</title>
 <style>
+@font-face { font-family: 'Nunito'; src: url(fonts/Nunito.woff2) format('woff2'); font-weight: 200 1000; }
 @font-face { font-family: 'Hand'; src: url(fonts/Caveat.woff2) format('woff2'); font-weight: 100 900; }
-@font-face { font-family: 'Script'; src: url(fonts/Kalam.woff2) format('woff2'); font-weight: 100 900; }
-@font-face { font-family: 'JBM'; src: url(fonts/JetBrainsMono-Medium.ttf); font-weight: 500; }
-@font-face { font-family: 'JBM'; src: url(fonts/JetBrainsMono-Bold.ttf); font-weight: 700; }
-@font-face { font-family: 'JBM'; src: url(fonts/JetBrainsMono-ExtraBold.ttf); font-weight: 800; }
-
 :root {
-  --ink: #16181D;
-  --soft: #5A5650;
-  --paper: #FCFAF4;
-  --sticky: #FFE873;
-  --pink: #FFC9B8;
-  --red: #D23A2E;
-  --pen-blue: #1F2F6E;
-  --hl: rgba(255, 214, 10, .72);
-  --shadow: 14px 22px 30px rgba(45, 22, 5, .40), 2px 4px 5px rgba(45, 22, 5, .28);
-  --display: 'Inter Display', 'Inter', sans-serif;
-  --sans: 'Inter', sans-serif;
-  --mono: 'JBM', monospace;
+  --o: #2A2433;
+  --cream: #FFF4E0; --sky: #E4F4FF; --pink: #FFEDF1; --mint: #E9F8E6; --lemon: #FFF7CF; --sun: #FFE58A;
+  --red: #E8584A; --green: #2FA35F; --hl: #FFD84D;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #222; font-synthesis: none; -webkit-font-smoothing: antialiased; }
-#strip { position: relative; width: 10800px; height: 1350px; overflow: hidden; font-family: var(--sans); color: var(--ink); }
-#wood { position: absolute; inset: 0; }
-#light { position: absolute; inset: 0; pointer-events: none; z-index: 900;
-  background: linear-gradient(160deg, rgba(255, 240, 210, .16), transparent 40%, rgba(30, 12, 0, .18)); }
-.sl { position: absolute; top: 0; width: 1080px; height: 1350px; }
-
-.card { position: absolute; background: var(--paper); box-shadow: var(--shadow); padding: 54px 60px; border-radius: 3px; }
-.card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, .4), transparent 40%, rgba(0, 0, 0, .04)); pointer-events: none; }
-.sticky { position: absolute; background: var(--sticky); box-shadow: var(--shadow); padding: 36px 38px; }
-.sticky::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 34px; background: rgba(0, 0, 0, .05); }
-.pen-note { font: 700 46px/1.15 'Hand', cursive; color: var(--red); }
-.ink-note { font: 700 46px/1.15 'Hand', cursive; color: var(--pen-blue); }
-.tape { position: absolute; width: 150px; height: 44px; background: rgba(240, 232, 205, .78); box-shadow: 0 1px 3px rgba(0, 0, 0, .15); z-index: 5; }
-
-.kicker { font: 700 24px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
-.h { font: 800 82px/1.0 var(--display); letter-spacing: -2.6px; color: var(--ink); }
-.sub { font: 500 36px/1.3 var(--sans); color: var(--soft); letter-spacing: -.3px; }
-.hl { background: linear-gradient(178deg, transparent 10%, var(--hl) 10% 90%, transparent 90%); padding: 0 10px; margin: 0 -6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-
-.reg { position: absolute; background: #6B1E22; border-radius: 10px; padding: 16px; box-shadow: var(--shadow);
-  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .03) 0 2px, transparent 2px 5px); }
-.reg .pages { display: flex; width: 100%; height: 100%; }
-.reg .page { position: relative; flex: 1; background: #F3EBD6; overflow: hidden; padding: 64px 26px 0 76px;
-  background-image: repeating-linear-gradient(to bottom, transparent 0 51px, rgba(70, 115, 170, .38) 51px 53px); background-position: 0 40px; }
-.reg .page::before { content: ''; position: absolute; left: 58px; top: 0; bottom: 0; border-left: 2px solid rgba(200, 55, 45, .5); }
-.reg .page:first-child { box-shadow: inset -30px 0 30px -20px rgba(80, 50, 10, .35); }
-.reg .page:last-child { box-shadow: inset 30px 0 30px -20px rgba(80, 50, 10, .35); }
-.reg .page:only-child { box-shadow: none; }
-.reg .page p { font: 400 31px/53px 'Script', cursive; color: var(--pen-blue); white-space: nowrap; }
-.reg .page p s { text-decoration-thickness: 3px; }
-.reg.shut { padding: 0; }
-.reg.shut::after { content: 'STOCK REGISTER'; position: absolute; left: 50%; top: 22%; transform: translateX(-50%); font: 700 26px var(--mono); letter-spacing: .2em; color: rgba(255, 225, 170, .55);
-  border: 2px solid rgba(255, 225, 170, .4); padding: 14px 20px; white-space: nowrap; }
-
-.phone { position: absolute; background: #121214; border-radius: 52px; padding: 14px; box-shadow: var(--shadow); }
-.phone .scr { width: 100%; height: 100%; border-radius: 40px; overflow: hidden; background: #fff; position: relative; }
-.phone .scr::before { content: ''; position: absolute; left: 50%; top: 14px; width: 96px; height: 28px; background: #121214; border-radius: 20px; transform: translateX(-50%); z-index: 3; }
-.mini-table { width: 100%; border-collapse: collapse; font: 500 17px/1 var(--mono); }
-.mini-table th { text-align: left; font-weight: 800; padding: 12px 8px; background: #EDEBE4; }
-.mini-table td { padding: 11px 8px; border-top: 1px solid #ECEAE3; white-space: nowrap; }
-.mini-table .bad { color: var(--red); font-weight: 800; }
-
-.laptop { position: absolute; box-shadow: var(--shadow); border-radius: 26px; }
-.laptop .lid { background: #BFC2C8; border-radius: 26px 26px 6px 6px; padding: 22px; height: 58%; }
-.laptop .lid .scr { background: #fff; width: 100%; height: 100%; border: 10px solid #1A1A1C; border-radius: 10px; overflow: hidden; position: relative; }
-.laptop .base { background: #CDD0D5; border-radius: 6px 6px 26px 26px; height: 42%; padding: 26px 40px; display: flex; flex-direction: column; gap: 18px; }
-.laptop .keys { flex: 1; border-radius: 8px; background-color: #2A2B2E;
-  background-image: linear-gradient(90deg, transparent 0 4px, #CDD0D5 4px 7px, transparent 7px), linear-gradient(transparent 0 4px, #CDD0D5 4px 7px, transparent 7px);
-  background-size: 52px 100%, 100% 46px; }
-.laptop .pad { height: 90px; width: 34%; margin: 0 auto; background: #C2C5CA; border-radius: 10px; }
-
-.xl { width: 100%; border-collapse: collapse; font: 500 22px/1 var(--mono); }
-.xl th { background: #E9F2EA; font-weight: 800; text-align: left; padding: 12px 10px; border: 1px solid #CFDCCF; }
-.xl td { padding: 11px 10px; border: 1px solid #E3E6E3; white-space: nowrap; }
-.xl .rn { background: #F2F2F2; color: #999; width: 34px; text-align: center; }
-
-.calc { position: absolute; background: #2B2D31; border-radius: 26px; padding: 26px; box-shadow: var(--shadow); }
-.calc .disp { background: #B9C4A6; border-radius: 8px; height: 90px; font: 700 52px/90px var(--mono); text-align: right; padding: 0 18px; color: #22261C; }
-.calc .k { margin-top: 22px; height: calc(100% - 112px); border-radius: 8px;
-  background-image: radial-gradient(circle at 50% 50%, #4A4D53 0 26px, transparent 27px); background-size: 25% 25%; }
-
-.pen { position: absolute; height: 26px; border-radius: 13px; box-shadow: 8px 14px 14px rgba(45, 22, 5, .35);
-  background: linear-gradient(180deg, #2B3A8C, #1A2460 60%, #121a48); }
-.pen::before { content: ''; position: absolute; left: -46px; top: 5px; border-right: 50px solid #C9A86B; border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
-.pen::after { content: ''; position: absolute; right: 60px; top: -6px; width: 120px; height: 10px; border-radius: 5px; background: #C8CCD4; }
-
-.photo { position: absolute; background: #fff; padding: 18px 18px 70px; box-shadow: var(--shadow); }
-.photo .in { width: 100%; height: 100%; overflow: hidden; position: relative; }
-
-.shot { position: absolute; background: #fff; padding: 16px; box-shadow: var(--shadow); }
-.shot .in { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F6F7F9; border: 1px solid #E4E6EA; }
-.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 4; }
-.ui-bar { height: 54px; background: #fff; border-bottom: 1px solid #E4E6EA; display: flex; align-items: center; gap: 14px; padding: 0 22px; font: 700 22px var(--sans); }
-.ui-btn { margin-left: auto; background: #16181D; color: #fff; font: 700 18px var(--sans); padding: 10px 16px; border-radius: 8px; }
-.ui-row { display: grid; grid-template-columns: 1.2fr 1.4fr .6fr .6fr; font: 500 19px var(--mono); }
-.ui-row span { padding: 13px 14px; border-bottom: 1px solid #ECEEF1; white-space: nowrap; }
-.ui-row.hd span { font-weight: 800; background: #F0F1F4; }
-.ui-err { color: var(--red); font-weight: 800; }
-
-.glass { position: absolute; border-radius: 50%; box-shadow: var(--shadow);
-  background: radial-gradient(circle at 50% 50%, #8A4B1E 0 52%, #A86330 60%, rgba(255, 255, 255, .55) 63%, rgba(230, 230, 230, .35) 75%, rgba(255, 255, 255, .7) 78%, rgba(200, 200, 200, .2) 80%); }
-.glass::after { content: ''; position: absolute; left: 30%; top: 28%; width: 22%; height: 10%; border-radius: 50%; background: rgba(255, 240, 220, .35); transform: rotate(-30deg); }
-.swipe { font: 700 44px/1 'Hand', cursive; color: var(--red); }
+body { background: #444; -webkit-font-smoothing: antialiased; }
+#deck { display: flex; flex-direction: column; gap: 40px; padding: 40px; align-items: center; }
+.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Nunito', sans-serif; color: var(--o); }
+/* soft confetti dots */
+.slide::before { content: ''; position: absolute; inset: 0; opacity: .5;
+  background-image: radial-gradient(circle, rgba(42, 36, 51, .10) 3px, transparent 3.5px); background-size: 54px 54px; }
+.chip { position: absolute; left: 80px; top: 80px; background: var(--o); color: #fff; font: 900 26px/1 'Nunito'; letter-spacing: .08em; text-transform: uppercase; padding: 14px 22px; border-radius: 999px; z-index: 3; }
+.ttl { position: absolute; left: 80px; right: 80px; top: 150px; font: 900 92px/0.98 'Nunito'; letter-spacing: -2.5px; z-index: 3; }
+.mark { background: var(--hl); border: 5px solid var(--o); border-radius: 18px; padding: 0 14px; box-shadow: 6px 6px 0 var(--o); display: inline-block; transform: rotate(-2deg); }
+.sub { font: 800 38px/1.25 'Nunito'; letter-spacing: -.5px; }
+.ch { position: absolute; z-index: 2; }
+.ch svg { width: 100%; height: auto; display: block; overflow: visible; }
+.bub { position: absolute; background: #fff; border: 5px solid var(--o); border-radius: 36px; padding: 22px 30px; font: 900 38px/1.15 'Nunito'; letter-spacing: -.5px; box-shadow: 7px 8px 0 var(--o); z-index: 4; }
+.bub::after { content: ''; position: absolute; width: 34px; height: 34px; background: #fff; border-right: 5px solid var(--o); border-bottom: 5px solid var(--o); }
+.bub.bl::after { left: 64px; bottom: -21px; transform: rotate(45deg); }
+.bub.br::after { right: 64px; bottom: -21px; transform: rotate(45deg); }
+.bub.tl::after { left: 64px; top: -21px; transform: rotate(225deg); }
+.bub.tr::after { right: 64px; top: -21px; transform: rotate(225deg); }
+.card { position: absolute; background: #fff; border: 5px solid var(--o); border-radius: 30px; box-shadow: 9px 10px 0 var(--o); z-index: 2; }
+.pill { display: inline-block; background: #fff; border: 4px solid var(--o); border-radius: 999px; padding: 12px 22px; font: 900 32px/1 'Nunito'; box-shadow: 5px 5px 0 var(--o); margin: 0 10px 16px 0; }
+.foot { position: absolute; left: 80px; right: 80px; bottom: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+.dots { display: flex; gap: 10px; }
+.dots i { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--o); }
+.dots i.on { background: var(--o); }
+.swipe { font: 900 30px/1 'Nunito'; display: flex; gap: 10px; align-items: center; }
+.hand { font-family: 'Hand', cursive; font-weight: 700; }
+.stamp { position: absolute; font: 1000 40px/1 'Nunito'; color: #fff; border: 5px solid var(--o); border-radius: 18px; padding: 12px 20px; box-shadow: 5px 5px 0 var(--o); z-index: 5; }
 </style>
 </head>
 <body>
-<div id="strip">
-  <svg id="wood" width="10800" height="1350">
-    <filter id="grain" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.0018 0.075" numOctaves="4" seed="9"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.30  0 0 0 0 0.16  0 0 0 0 0.05  0 0 0 1.25 -0.42"/>
-    </filter>
-    <filter id="grain2" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.0009 0.02" numOctaves="2" seed="21"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.33  0 0 0 0 0.15  0 0 0 .9 -0.3"/>
-    </filter>
-    <rect width="10800" height="1350" fill="#B47A45"/>
-    <rect width="10800" height="1350" filter="url(#grain2)"/>
-    <rect width="10800" height="1350" filter="url(#grain)"/>
-    <g stroke="rgba(40,18,4,.55)" stroke-width="3"><line x1="0" y1="338" x2="10800" y2="338"/><line x1="0" y1="676" x2="10800" y2="676"/><line x1="0" y1="1014" x2="10800" y2="1014"/></g>
-    <g stroke="rgba(255,220,170,.12)" stroke-width="2"><line x1="0" y1="341" x2="10800" y2="341"/><line x1="0" y1="679" x2="10800" y2="679"/><line x1="0" y1="1017" x2="10800" y2="1017"/></g>
-  </svg>
+<div id="deck">
 
-  <!-- 1 HOOK -->
-  <div class="sl" style="left:0">
-    <div class="reg" style="left:-90px;top:70px;width:900px;height:800px;transform:rotate(-5deg)">
-      <div class="pages"><div class="page" id="regL"></div><div class="page" id="regR"></div></div>
-    </div>
-    <div class="phone" style="left:830px;top:250px;width:370px;height:760px;transform:rotate(9deg);z-index:3">
-      <div class="scr" style="padding:70px 14px 0">
-        <div style="font:800 22px var(--sans);padding:0 8px 14px">register.csv</div>
-        <table class="mini-table" id="phoneTable"></table>
-        <div style="margin:18px 8px 0;font:700 15px var(--mono);color:#1F9D63">✓ 11 rows read</div>
-      </div>
-    </div>
-    <div class="card" style="left:70px;top:820px;width:820px;height:450px;transform:rotate(-1.2deg);z-index:4">
-      <div class="h" style="font-size:88px">AI read this in<br><span class="hl">[X] seconds.</span></div>
-      <div class="sub" style="margin-top:30px">Here’s exactly how. Step by step.</div>
-      <div class="swipe" style="position:absolute;right:46px;bottom:36px">swipe →</div>
-    </div>
+<!-- 1 HOOK -->
+<section class="slide" style="background:var(--cream)">
+  <div class="ttl">AI read this in<br><span class="mark">[X] seconds.</span></div>
+  <div class="ch" data-c="reg:shocked:up" style="left:40px;top:560px;width:470px"></div>
+  <div class="ch" data-c="phone:cool:wave" style="left:640px;top:610px;width:330px"></div>
+  <div class="bub bl" style="left:70px;top:420px;width:470px;transform:rotate(-2deg)">EXCUSE ME?! Someone types me out every night!</div>
+  <div class="bub br" style="left:620px;top:470px;transform:rotate(3deg)">Done. ✨</div>
+  <div class="sub" style="position:absolute;left:80px;bottom:140px;z-index:3">Here’s exactly how. Step by step.</div>
+</section>
+
+<!-- 2 MEET THE TEAM -->
+<section class="slide" style="background:var(--sky)">
+  <div class="chip">What you need</div>
+  <div class="ttl">Meet the team.</div>
+  <div id="team"></div>
+</section>
+
+<!-- 3 STEP 1 -->
+<section class="slide" style="background:var(--pink)">
+  <div class="chip">Step 1 · The photo</div>
+  <div class="ttl">Bad photo =<br><span class="mark" style="background:#FF9C8F">bad data.</span></div>
+  <div class="card" style="left:70px;top:430px;width:450px;height:520px;background:#5B5566;overflow:hidden;transform:rotate(-3deg)">
+    <div style="position:absolute;inset:0;background:radial-gradient(70% 60% at 75% 25%,rgba(0,0,0,.55),transparent 70%)"></div>
+    <div class="ch" data-c="reg:sweaty:down" style="left:80px;top:150px;width:280px;transform:rotate(-16deg);filter:brightness(.7)"></div>
   </div>
-
-  <!-- 2 WHAT YOU NEED -->
-  <div class="sl" style="left:1080px">
-    <div class="card" style="left:250px;top:150px;width:740px;height:1010px;transform:rotate(1.8deg)">
-      <div class="kicker">Before you start</div>
-      <div class="h" style="margin-top:22px">What you need</div>
-      <div id="kit" style="margin-top:56px"></div>
-    </div>
-    <div class="pen" style="left:640px;top:1220px;width:560px;transform:rotate(-14deg);z-index:6"></div>
+  <div class="stamp" style="left:90px;top:400px;background:var(--red);transform:rotate(-8deg)">✗ NOPE</div>
+  <div class="bub tl" style="left:130px;top:930px;width:400px;font-size:32px;transform:rotate(-2deg)">Tube light + shadow? My worst angle.</div>
+  <div class="card" style="left:560px;top:430px;width:450px;height:520px;background:#FFF1B8;overflow:hidden;transform:rotate(3deg)">
+    <svg viewBox="0 0 120 120" style="position:absolute;right:20px;top:20px;width:110px"><g stroke="#2A2433" stroke-width="5" stroke-linecap="round"><circle cx="60" cy="60" r="24" fill="#FFC93C"/><path d="M60 8v14M60 98v14M8 60h14M98 60h14M23 23l10 10M87 87l10 10M97 23l-10 10M33 87l-10 10"/></g></svg>
+    <div class="ch" data-c="reg:cool:hips" style="left:90px;top:150px;width:280px"></div>
   </div>
-
-  <!-- 3 STEP 1 -->
-  <div class="sl" style="left:2160px">
-    <div class="card" style="left:90px;top:90px;width:900px;height:290px;transform:rotate(-1deg);padding:46px 56px">
-      <div class="kicker">Step 1 · Take the photo right</div>
-      <div class="h" style="margin-top:22px">Bad photo = <span class="hl">bad data.</span></div>
-    </div>
-    <div class="photo" style="left:90px;top:430px;width:430px;height:540px;transform:rotate(-7deg)">
-      <div class="in" style="background:#2b2620">
-        <div class="mini-reg" style="position:absolute;left:30px;top:40px;width:420px;height:420px;transform:perspective(600px) rotateX(28deg) rotate(-14deg);filter:blur(1.6px) brightness(.55)"></div>
-        <div style="position:absolute;inset:0;background:radial-gradient(60% 70% at 78% 28%,rgba(0,0,0,.8),transparent 70%)"></div>
-      </div>
-      <div class="pen-note" style="position:absolute;left:24px;bottom:12px;font-size:44px">✗ shadow, tilted</div>
-    </div>
-    <div class="photo" style="left:560px;top:410px;width:430px;height:540px;transform:rotate(4deg)">
-      <div class="in" style="background:#E7DCC2"><div class="mini-reg" style="position:absolute;left:20px;top:20px;right:20px;bottom:20px"></div></div>
-      <div class="ink-note" style="position:absolute;left:24px;bottom:12px;font-size:44px">✓ flat, clear</div>
-    </div>
-    <div class="sticky" style="left:110px;top:1010px;width:860px;height:270px;transform:rotate(1.2deg)">
-      <div class="ink-note" style="font-size:50px;line-height:1.2;color:var(--ink)">Lay it flat · daylight · one page per photo · all four edges · no shadows</div>
-    </div>
+  <div class="stamp" style="left:840px;top:400px;background:var(--green);transform:rotate(6deg)">✓ YES</div>
+  <div class="bub tr" style="left:590px;top:930px;width:400px;font-size:32px;transform:rotate(2deg)">Flat. Daylight. All 4 edges. Gorgeous.</div>
+  <div style="position:absolute;left:80px;right:80px;top:1110px;z-index:3">
+    <span class="pill">One page per photo</span><span class="pill">No shadows</span><span class="pill">Lay it flat</span>
   </div>
+</section>
 
-  <!-- 4 STEP 2 -->
-  <div class="sl" style="left:3240px">
-    <div class="card" style="left:90px;top:80px;width:880px;height:290px;transform:rotate(.8deg);padding:46px 56px">
-      <div class="kicker">Step 2 · Upload &amp; paste</div>
-      <div class="h" style="margin-top:22px">Paste this prompt.</div>
-    </div>
-    <div class="card" style="left:90px;top:410px;width:840px;height:870px;transform:rotate(-1.4deg);padding:56px 58px">
-      <div style="font:500 34px/1.6 var(--mono)">Read this handwritten register. Convert it into a table with columns: Date, Item, Qty, Unit, Remarks. Give the output as CSV. Write exactly what you see. <span class="hl" style="font-weight:800">If any value is unclear, write UNCLEAR. Don’t guess.</span></div>
-      <svg style="position:absolute;left:470px;top:700px;width:140px;height:120px;overflow:visible" viewBox="0 0 140 120"><path d="M10 110 C 70 112, 120 70, 112 10 M96 28 L112 8 L128 30" fill="none" stroke="#D23A2E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div class="pen-note" style="position:absolute;left:58px;bottom:44px;font-size:52px;transform:rotate(-2deg)">That last instruction matters most.</div>
-    </div>
-    <div class="phone" style="left:900px;top:470px;width:310px;height:640px;transform:rotate(-10deg);z-index:3">
-      <div class="scr" style="background:#F4F4F4;padding:80px 18px 0">
-        <div style="margin-left:auto;width:200px;height:250px;border-radius:18px;overflow:hidden"><div class="mini-reg" style="width:200px;height:250px"></div></div>
-        <div style="margin:14px 0 0 auto;width:250px;background:#2F6FEB;color:#fff;border-radius:18px;padding:14px;font:500 15px/1.4 var(--sans)">Read this handwritten register. Convert it into a table…</div>
-      </div>
-    </div>
+<!-- 4 STEP 2 -->
+<section class="slide" style="background:var(--mint)">
+  <div class="chip">Step 2 · The prompt</div>
+  <div class="ttl">Upload it.<br>Paste <span class="mark">this.</span></div>
+  <div class="card" style="left:70px;top:420px;width:940px;padding:44px 48px;transform:rotate(-1deg)">
+    <div style="font:900 22px/1 'Nunito';letter-spacing:.12em;opacity:.55">COPY · PASTE · SEND</div>
+    <div style="font:800 37px/1.42 'Nunito';margin-top:18px;letter-spacing:-.3px">Read this handwritten register. Convert it into a table with columns: Date, Item, Qty, Unit, Remarks. Give the output as CSV. Write exactly what you see. <span style="background:var(--hl);padding:2px 8px;border-radius:8px;-webkit-box-decoration-break:clone;box-decoration-break:clone;font-weight:1000">If any value is unclear, write UNCLEAR. Don’t guess.</span></div>
   </div>
+  <div class="ch" data-c="reg:proud:hips" style="left:60px;top:910px;width:250px"></div>
+  <div class="bub bl" style="left:320px;top:930px;width:380px;font-size:33px">“Don’t guess.” Finally, some respect.</div>
+  <div class="ch" data-c="phone:happy:wave" style="left:790px;top:930px;width:200px"></div>
+  <div class="bub br" style="left:470px;top:1110px;width:300px;font-size:31px;display:none"></div>
+  <div class="hand" style="position:absolute;right:90px;top:858px;font-size:54px;color:var(--red);transform:rotate(-3deg);z-index:4">↑ that last line matters most</div>
+</section>
 
-  <!-- 5 STEP 3 -->
-  <div class="sl" style="left:4320px">
-    <div class="card" style="left:200px;top:80px;width:800px;height:300px;transform:rotate(-1deg);padding:46px 56px">
-      <div class="kicker">Step 3 · Check</div>
-      <div class="h" style="margin-top:22px;font-size:76px">Check. <span style="color:var(--red)">Everyone skips this step.</span></div>
-    </div>
-    <div class="shot" style="left:220px;top:430px;width:520px;height:560px;transform:rotate(2deg)">
-      <div class="in" style="background:#fff">
-        <img src="assets/check-screenshot.png" onerror="this.remove()" alt="">
-        <table class="xl" id="checkTable" style="font-size:21px"></table>
-        <svg style="position:absolute;left:290px;top:258px;width:150px;height:70px;overflow:visible" viewBox="0 0 150 70"><path d="M20 38 C 8 10, 130 2, 140 30 C 148 60, 30 72, 10 50 C 0 36, 40 14, 100 12" fill="none" stroke="#D23A2E" stroke-width="5" stroke-linecap="round"/></svg>
-      </div>
-    </div>
-    <div class="tape" style="left:410px;top:412px;transform:rotate(-4deg)"></div>
-    <div class="calc" style="left:780px;top:440px;width:270px;height:420px;transform:rotate(-7deg)"><div class="disp">395</div><div class="k"></div></div>
-    <div class="sticky" style="left:600px;top:900px;width:420px;height:330px;transform:rotate(4deg)">
-      <div class="pen-note" style="font-size:42px">AI misreads:<br>1 → 7<br>0 → 6<br>kg → kgs</div>
-    </div>
-    <div class="card" style="left:170px;top:1040px;width:450px;height:250px;transform:rotate(-2deg);padding:34px 38px">
-      <div style="font:700 31px/1.3 var(--sans)">☐ Total Qty for each unit. Match it to the register.</div>
-      <div style="font:700 31px/1.3 var(--sans);margin-top:16px">☐ Fix every UNCLEAR.</div>
-    </div>
+<!-- 5 STEP 3 -->
+<section class="slide" style="background:var(--cream)">
+  <div class="chip">Step 3 · Check</div>
+  <div class="ttl" style="font-size:84px">Check.<br><span style="color:var(--red)">Everyone skips this.</span></div>
+  <div style="position:absolute;left:80px;right:80px;top:400px;z-index:3">
+    <span class="pill">1 → 7</span><span class="pill">0 → 6</span><span class="pill">kg → kgs</span>
+    <span class="hand" style="font-size:44px;color:var(--red);vertical-align:middle">← AI misreads</span>
   </div>
-
-  <!-- 6 STEP 4 -->
-  <div class="sl" style="left:5400px">
-    <div class="card" style="left:80px;top:60px;width:920px;height:370px;transform:rotate(.8deg);padding:46px 56px">
-      <div class="kicker">Step 4 · Into Excel</div>
-      <div class="h" style="margin-top:22px;font-size:74px">Paste the CSV into Excel.</div>
-      <div class="sub" style="margin-top:14px;font-size:32px">Rename the columns to match the field names in your ERP.</div>
-    </div>
-    <div class="laptop" style="left:120px;top:470px;width:860px;height:860px;transform:rotate(-2deg)">
-      <div class="lid"><div class="scr"><table class="xl" id="excel"></table></div></div>
-      <div class="base"><div class="keys"></div><div class="pad"></div></div>
-    </div>
-    <div class="sticky" style="left:580px;top:880px;width:450px;height:360px;transform:rotate(5deg);z-index:4">
-      <div class="pen-note" style="font-size:43px">Item names must match your ERP Item Codes exactly, or the import fails.</div>
-    </div>
-    <div class="sticky" style="left:70px;top:1010px;width:400px;height:250px;transform:rotate(-4deg);background:var(--pink);z-index:4">
-      <div class="pen-note" style="font-size:43px">Check dates stayed DD/MM.</div>
-    </div>
+  <div class="ch" data-c="reg:angry:point" style="left:40px;top:640px;width:380px"></div>
+  <div class="bub bl" style="left:70px;top:510px;width:440px;transform:rotate(-2deg)">That’s a ONE. Not a seven!</div>
+  <div class="ch" data-c="phone:sweaty:down" style="left:700px;top:650px;width:270px"></div>
+  <div class="bub br" style="left:700px;top:540px;transform:rotate(3deg)">Oops. 😅</div>
+  <div class="card" style="left:80px;top:1060px;width:920px;padding:30px 40px;transform:rotate(.6deg)">
+    <div style="font:900 34px/1.35 'Nunito'">☑ Total Qty for each unit. Match the register.</div>
+    <div style="font:900 34px/1.35 'Nunito';margin-top:6px">☑ Fix every UNCLEAR.</div>
   </div>
+</section>
 
-  <!-- 7 STEP 5 -->
-  <div class="sl" style="left:6480px">
-    <div class="card" style="left:80px;top:70px;width:920px;height:400px;transform:rotate(-.8deg);padding:46px 56px">
-      <div class="kicker">Step 5 · Into the ERP</div>
-      <div class="h" style="margin-top:22px;font-size:74px">ERPNext:</div>
-      <div style="font:700 36px/1.4 var(--sans);margin-top:14px">Data Import → choose what you’re importing → upload the file.</div>
-    </div>
-    <div class="shot" style="left:110px;top:520px;width:860px;height:520px;transform:rotate(1.4deg)">
-      <div class="in">
-        <img src="assets/erpnext-import.png" onerror="this.remove()" alt="">
-        <div class="ui-bar">Data Import <span class="ui-btn">Start Import</span></div>
-        <div style="padding:18px 22px;font:700 20px var(--sans);color:var(--red)">⚠ 1 row has errors. Fix before importing.</div>
-        <div class="ui-row hd"><span>Item Code</span><span>Item</span><span>Qty</span><span>UOM</span></div>
-        <div class="ui-row"><span>MS-SHT-2</span><span>MS Sheet 2mm</span><span>30</span><span>Nos</span></div>
-        <div class="ui-row"><span>BRG-6204</span><span>Bearing 6204</span><span>120</span><span>Nos</span></div>
-        <div class="ui-row"><span class="ui-err">PRIMER?</span><span>Primer</span><span>4</span><span>L</span></div>
-        <div class="ui-row"><span>HYD-OIL</span><span>Hydraulic Oil</span><span>20</span><span>L</span></div>
-      </div>
-    </div>
-    <div class="tape" style="left:170px;top:500px;transform:rotate(-8deg)"></div>
-    <div class="tape" style="left:800px;top:510px;transform:rotate(6deg)"></div>
-    <div class="sticky" style="left:540px;top:1000px;width:480px;height:280px;transform:rotate(-3deg);z-index:4">
-      <div class="pen-note" style="font-size:42px">It flags errors before importing anything. Check that screen first.</div>
-    </div>
+<!-- 6 STEP 4 -->
+<section class="slide" style="background:var(--lemon)">
+  <div class="chip">Step 4 · Excel</div>
+  <div class="ttl" style="font-size:84px">Paste the CSV<br>into <span class="mark" style="background:#8FE0A8">Excel.</span></div>
+  <div class="sub" style="position:absolute;left:80px;right:80px;top:380px;z-index:3">Rename the columns to match your ERP’s field names.</div>
+  <div style="position:absolute;left:80px;right:80px;top:500px;z-index:3">
+    <span class="pill">Item → Item Code</span><span class="pill">Unit → UOM</span><span class="pill">Date → Posting Date</span>
   </div>
-
-  <!-- 8 BEFORE / AFTER -->
-  <div class="sl" style="left:7560px">
-    <div class="reg" style="left:40px;top:150px;width:500px;height:700px;transform:rotate(-4deg);padding:14px">
-      <div class="pages"><div class="page" id="regB" style="padding-left:66px"></div></div>
-    </div>
-    <div class="shot" style="left:560px;top:160px;width:470px;height:680px;transform:rotate(3deg)">
-      <div class="in">
-        <img src="assets/erp-after.png" onerror="this.remove()" alt="">
-        <div class="ui-bar" style="font-size:20px">Stock Entry · Submitted</div>
-        <div id="afterRows"></div>
-      </div>
-    </div>
-    <div class="ink-note" style="position:absolute;left:60px;top:50px;color:#FFF3DC;font-size:60px;transform:rotate(-4deg)">before</div>
-    <div class="ink-note" style="position:absolute;left:660px;top:60px;color:#FFF3DC;font-size:60px;transform:rotate(3deg)">after</div>
-    <div class="card" style="left:90px;top:900px;width:900px;height:360px;transform:rotate(-1deg)">
-      <div class="h" style="font-size:104px">Same data.<br><span class="hl">Zero retyping.</span></div>
-    </div>
+  <div class="ch" data-c="excel:smug:hips" style="left:60px;top:740px;width:380px"></div>
+  <div class="bub bl" style="left:430px;top:690px;width:580px;transform:rotate(-1.5deg)">Item names must match your ERP Item Codes <u>exactly</u>. Or the import fails.</div>
+  <div class="card" style="left:560px;top:960px;width:420px;padding:28px 32px;background:#FFC9D4;transform:rotate(3deg)">
+    <div class="hand" style="font-size:50px;line-height:1.05">Psst… check dates stayed DD/MM.</div>
   </div>
+</section>
 
-  <!-- 9 PRASHANT'S TAKE -->
-  <div class="sl" style="left:8640px">
-    <div class="phone" style="left:80px;top:60px;width:300px;height:600px;transform:rotate(-8deg)">
-      <div class="scr" style="background:linear-gradient(180deg,#1d2440,#0b0e1c);color:#fff;text-align:center;padding-top:110px">
-        <div style="font:600 22px var(--sans);opacity:.75">Tuesday</div>
-        <div style="font:300 96px/1.1 var(--display);letter-spacing:-3px">9:00</div>
-        <div style="font:600 22px var(--sans);opacity:.75">PM</div>
-      </div>
-    </div>
-    <div class="glass" style="left:760px;top:90px;width:250px;height:250px"></div>
-    <div class="card" style="left:80px;top:520px;width:920px;height:560px;transform:rotate(1deg);padding:60px 64px">
-      <div class="kicker">Prashant’s take</div>
-      <div class="h" style="margin-top:26px;font-size:66px;line-height:1.08;letter-spacing:-2px">AI doesn’t replace the register. It replaces the person retyping it at <span class="hl">9pm.</span></div>
-      <div class="ink-note" style="position:absolute;right:64px;bottom:40px;font-size:60px">— Prashant</div>
-    </div>
-    <div class="sticky" style="left:470px;top:1060px;width:520px;height:230px;transform:rotate(-3deg);background:var(--pink)">
-      <div class="pen-note" style="font-size:42px">Stock &amp; money entries: always do step 3. Every time.</div>
-    </div>
+<!-- 7 STEP 5 -->
+<section class="slide" style="background:var(--sky)">
+  <div class="chip">Step 5 · ERPNext</div>
+  <div class="ttl">Into the <span class="mark">ERP.</span></div>
+  <div style="position:absolute;left:80px;right:80px;top:300px;z-index:3">
+    <span class="pill">Data Import</span><span class="pill">→ Choose what you’re importing</span><span class="pill">→ Upload the file</span>
   </div>
+  <div class="ch" data-c="erp:strict:hips" style="left:520px;top:620px;width:480px"></div>
+  <div class="bub br" style="left:300px;top:470px;width:650px;transform:rotate(1.5deg)">I flag errors BEFORE importing anything. Check my screen first.</div>
+  <div class="ch" data-c="excel:sweaty:up" style="left:70px;top:760px;width:300px"></div>
+  <div class="hand" style="position:absolute;left:90px;top:1150px;font-size:46px;z-index:4;transform:rotate(-3deg)">(Excel, nervously submitting)</div>
+</section>
 
-  <!-- 10 CTA -->
-  <div class="sl" style="left:9720px">
-    <div class="reg shut" style="left:560px;top:700px;width:560px;height:760px;transform:rotate(9deg)"></div>
-    <div class="card" style="left:80px;top:170px;width:860px;height:640px;transform:rotate(-1.5deg);padding:70px 70px">
-      <div class="h" style="font-size:160px;letter-spacing:-6px">Save this.</div>
-      <div style="font:600 46px/1.3 var(--sans);margin-top:46px;letter-spacing:-.6px">For the next time someone says <span class="hl">“we’ll digitise later.”</span></div>
-    </div>
-    <div class="pen" style="left:140px;top:960px;width:520px;transform:rotate(18deg)"></div>
+<!-- 8 BEFORE / AFTER -->
+<section class="slide" style="background:var(--pink)">
+  <div class="chip">Before / After</div>
+  <div class="card" style="left:70px;top:170px;width:450px;height:640px;background:#EDE6F2;transform:rotate(-2deg)">
+    <div style="font:1000 40px 'Nunito';margin:28px 0 0 32px">BEFORE</div>
+    <div class="ch" data-c="reg:sweaty:up" style="left:70px;top:150px;width:300px"></div>
+    <div class="hand" style="position:absolute;left:30px;bottom:24px;font-size:42px">retyped. every. night.</div>
   </div>
+  <div class="card" style="left:560px;top:170px;width:450px;height:640px;background:#DDF5E3;transform:rotate(2deg)">
+    <div style="font:1000 40px 'Nunito';margin:28px 0 0 32px">AFTER</div>
+    <div class="ch" data-c="reg:cool:down" style="left:20px;top:200px;width:220px"></div>
+    <div class="ch" data-c="erp:happy:wave" style="left:200px;top:220px;width:240px"></div>
+    <div class="hand" style="position:absolute;left:30px;bottom:24px;font-size:42px">best friends now.</div>
+  </div>
+  <div class="ttl" style="top:900px;font-size:110px">Same data.<br><span class="mark">Zero retyping.</span></div>
+</section>
 
-  <div id="light"></div>
+<!-- 9 PRASHANT'S TAKE -->
+<section class="slide" style="background:#ECEFFF">
+  <div class="chip">Prashant’s take</div>
+  <div class="ttl" style="font-size:76px;line-height:1.05;letter-spacing:-2px">AI doesn’t replace the register.<br>It replaces the person retyping it at <span class="mark">9pm.</span></div>
+  <div class="hand" style="position:absolute;right:90px;top:640px;font-size:60px;z-index:3">— Prashant</div>
+  <div class="ch" data-c="reg:sleepy:down" style="left:80px;top:700px;width:330px"></div>
+  <div class="card" style="left:470px;top:780px;width:530px;padding:32px 36px;transform:rotate(2deg)">
+    <div style="font:1000 24px 'Nunito';letter-spacing:.1em;color:var(--red)">⚠ STOCK &amp; MONEY ENTRIES</div>
+    <div style="font:900 40px/1.15 'Nunito';margin-top:10px">Always do step 3. Every. Single. Time.</div>
+  </div>
+</section>
+
+<!-- 10 CTA -->
+<section class="slide" style="background:var(--sun)">
+  <div class="ttl" style="top:130px;font-size:170px;letter-spacing:-6px">Save<br>this.</div>
+  <svg viewBox="0 0 100 130" style="position:absolute;right:110px;top:150px;width:170px;z-index:3;transform:rotate(10deg)"><path d="M14 8 h72 v114 l-36 -28 l-36 28z" fill="#E8584A" stroke="#2A2433" stroke-width="6" stroke-linejoin="round"/></svg>
+  <div class="sub" style="position:absolute;left:80px;right:80px;top:530px;font-size:46px;z-index:3">For the next time someone says <span class="mark" style="font-size:44px;background:#fff">“we’ll digitise later.”</span></div>
+  <div class="ch" data-c="reg:angry:hips" style="left:60px;top:800px;width:330px"></div>
+  <div class="bub bl" style="left:90px;top:700px;font-size:36px;transform:rotate(-2deg);display:none"></div>
+  <div class="bub br" style="left:400px;top:820px;width:330px;transform:rotate(2deg)">“Later” = never. 😤</div>
+  <div class="ch" data-c="phone:happy:wave" style="left:740px;top:840px;width:260px"></div>
+</section>
+
 </div>
 
 <script>
-// Hand-written register lines (messy on purpose: strike-outs, uneven slant).
-const left = ['12/3  MS sheet 2mm  30 nos', '12/3  Bearing 6204  120', '13/3  Hyd. oil  20 L', '13/3  Weld rod 3.15  5 kg', '14/3  Primer  <s>3</s> 4 L', '14/3  Pkg box  200', '15/3  Grease  2 kg', '15/3  Bolt M10  300', '16/3  Nut M10  300', '16/3  Washer  300', '17/3  Tape  12', '17/3  Gloves  24 pr'];
-const right = ['18/3  Drill bit 8mm  10', '18/3  Cutting disc  25', '19/3  Paint (grey)  <s>10</s> 8 L', '19/3  Thinner  5 L', '20/3  Rivet  500', '20/3  Sand paper  50', '21/3  Hinge  40', '21/3  Lock  12', '22/3  Spring  100', '22/3  Cable tie  1 pkt'];
-const lines = (arr, seed) => arr.map((t, i) => `<p style="transform:rotate(${((i * 37 + seed) % 7 - 3) * .35}deg) translateX(${(i * 13 + seed) % 9 - 4}px)">${t.replace(/  /g, ' &nbsp; ')}</p>`).join('');
-document.getElementById('regL').innerHTML = lines(left, 1);
-document.getElementById('regR').innerHTML = lines(right, 5);
-document.getElementById('regB').innerHTML = lines(left.slice(0, 11), 3);
-document.querySelectorAll('.mini-reg').forEach(m => {
-  m.style.background = '#F3EBD6';
-  m.style.backgroundImage = 'repeating-linear-gradient(to bottom, transparent 0 33px, rgba(70,115,170,.4) 33px 35px)';
-  m.style.padding = '18px 14px 0 30px'; m.style.overflow = 'hidden';
-  m.innerHTML = left.slice(0, 8).map(t => `<p style="font:400 22px/35px Script,cursive;color:#1F2F6E;white-space:nowrap">${t}</p>`).join('');
-});
+const O = '#2A2433', SW = 6;
+const blush = (cx, cy) => `<ellipse cx="${cx - 50}" cy="${cy + 22}" rx="13" ry="8" fill="#FF8FA3" opacity=".75"/><ellipse cx="${cx + 50}" cy="${cy + 22}" rx="13" ry="8" fill="#FF8FA3" opacity=".75"/>`;
+const eye = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="8" ry="11" fill="${O}"/><circle cx="${x + 3}" cy="${y - 4}" r="3" fill="#fff"/>`;
+function face(cx, cy, mood) {
+  const s = `stroke="${O}" stroke-width="${SW}" stroke-linecap="round" fill="none"`;
+  const mouthFill = '#7A2E3A';
+  switch (mood) {
+    case 'happy': return eye(cx - 32, cy) + eye(cx + 32, cy) + `<path d="M${cx - 22} ${cy + 22} Q${cx} ${cy + 44} ${cx + 22} ${cy + 22}" ${s}/>` + blush(cx, cy);
+    case 'proud': return `<path d="M${cx - 44} ${cy + 4} Q${cx - 32} ${cy - 10} ${cx - 20} ${cy + 4}" ${s}/><path d="M${cx + 20} ${cy + 4} Q${cx + 32} ${cy - 10} ${cx + 44} ${cy + 4}" ${s}/><path d="M${cx - 26} ${cy + 20} Q${cx} ${cy + 58} ${cx + 26} ${cy + 20} Z" fill="${mouthFill}" stroke="${O}" stroke-width="${SW}" stroke-linejoin="round"/>` + blush(cx, cy);
+    case 'shocked': return `<circle cx="${cx - 34}" cy="${cy - 4}" r="17" fill="#fff" stroke="${O}" stroke-width="5"/><circle cx="${cx - 34}" cy="${cy - 2}" r="6" fill="${O}"/><circle cx="${cx + 34}" cy="${cy - 4}" r="17" fill="#fff" stroke="${O}" stroke-width="5"/><circle cx="${cx + 34}" cy="${cy - 2}" r="6" fill="${O}"/>
+      <path d="M${cx - 52} ${cy - 34} Q${cx - 36} ${cy - 46} ${cx - 20} ${cy - 36}" ${s}/><path d="M${cx + 20} ${cy - 36} Q${cx + 36} ${cy - 46} ${cx + 52} ${cy - 34}" ${s}/>
+      <ellipse cx="${cx}" cy="${cy + 38}" rx="14" ry="19" fill="${mouthFill}" stroke="${O}" stroke-width="5"/>` + blush(cx, cy + 6);
+    case 'angry': return eye(cx - 32, cy + 2) + eye(cx + 32, cy + 2) + `<path d="M${cx - 52} ${cy - 30} L${cx - 16} ${cy - 16}" ${s}/><path d="M${cx + 52} ${cy - 30} L${cx + 16} ${cy - 16}" ${s}/><path d="M${cx - 22} ${cy + 38} Q${cx} ${cy + 20} ${cx + 22} ${cy + 38}" ${s}/>
+      <g transform="translate(${cx + 70} ${cy - 70})" stroke="#E8584A" stroke-width="6" stroke-linecap="round"><path d="M-12 -4 Q0 0 -4 -12M12 -4 Q0 0 4 -12M-12 4 Q0 0 -4 12M12 4 Q0 0 4 12"/></g>`;
+    case 'sweaty': return eye(cx - 32, cy) + eye(cx + 32, cy) + `<path d="M${cx - 50} ${cy - 22} L${cx - 18} ${cy - 32}" ${s}/><path d="M${cx + 50} ${cy - 22} L${cx + 18} ${cy - 32}" ${s}/><path d="M${cx - 22} ${cy + 30} q 7 -8 14 0 t 14 0 t 14 0" ${s}/>
+      <path d="M${cx + 72} ${cy - 40} q -14 22 0 28 q 14 -6 0 -28z" fill="#8FD3FF" stroke="${O}" stroke-width="4"/>` + blush(cx, cy);
+    case 'sleepy': return `<path d="M${cx - 46} ${cy} Q${cx - 32} ${cy + 12} ${cx - 18} ${cy}" ${s}/><path d="M${cx + 18} ${cy} Q${cx + 32} ${cy + 12} ${cx + 46} ${cy}" ${s}/><path d="M${cx - 14} ${cy + 28} Q${cx} ${cy + 38} ${cx + 14} ${cy + 28}" ${s}/>` + blush(cx, cy) +
+      `<text x="${cx + 70}" y="${cy - 50}" font-family="Nunito" font-weight="1000" font-size="44" fill="${O}">z</text><text x="${cx + 100}" y="${cy - 90}" font-family="Nunito" font-weight="1000" font-size="58" fill="${O}">Z</text>`;
+    case 'smug': return `<path d="M${cx - 46} ${cy - 2} L${cx - 18} ${cy - 2}" ${s}/><path d="M${cx + 18} ${cy - 2} L${cx + 46} ${cy - 2}" ${s}/>` + `<ellipse cx="${cx - 32}" cy="${cy + 6}" rx="8" ry="6" fill="${O}"/><ellipse cx="${cx + 32}" cy="${cy + 6}" rx="8" ry="6" fill="${O}"/><path d="M${cx - 18} ${cy + 30} Q${cx + 6} ${cy + 42} ${cx + 28} ${cy + 22}" ${s}/>` + blush(cx, cy);
+    case 'cool': return `<path d="M${cx - 62} ${cy - 10} H${cx + 62}" ${s}/><rect x="${cx - 60}" y="${cy - 12}" width="52" height="30" rx="12" fill="${O}"/><rect x="${cx + 8}" y="${cy - 12}" width="52" height="30" rx="12" fill="${O}"/><path d="M${cx - 50} ${cy - 4} l12 0" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M${cx - 20} ${cy + 32} Q${cx} ${cy + 46} ${cx + 24} ${cy + 28}" ${s}/>` + blush(cx, cy + 6);
+    case 'strict': return `<circle cx="${cx - 34}" cy="${cy}" r="22" fill="#fff" stroke="${O}" stroke-width="5"/><circle cx="${cx + 34}" cy="${cy}" r="22" fill="#fff" stroke="${O}" stroke-width="5"/><path d="M${cx - 12} ${cy} H${cx + 12}" ${s}/>` + `<circle cx="${cx - 34}" cy="${cy + 2}" r="7" fill="${O}"/><circle cx="${cx + 34}" cy="${cy + 2}" r="7" fill="${O}"/><path d="M${cx - 56} ${cy - 34} L${cx - 18} ${cy - 30}" ${s}/><path d="M${cx + 56} ${cy - 40} L${cx + 18} ${cy - 30}" ${s}/><path d="M${cx - 18} ${cy + 40} H${cx + 18}" ${s}/>`;
+  }
+}
+const hand = (x, y) => `<circle cx="${x}" cy="${y}" r="13" fill="#fff" stroke="${O}" stroke-width="5"/>`;
+function limbs(L, R, pose, hipY, legs) {
+  const s = `stroke="${O}" stroke-width="${SW}" stroke-linecap="round" fill="none"`;
+  const [lx, ly] = L, [rx, ry] = R;
+  const P = {
+    down: [[lx - 26, ly + 70, lx - 18, ly + 92], [rx + 26, ry + 70, rx + 18, ry + 92]],
+    up: [[lx - 40, ly - 40, lx - 26, ly - 92], [rx + 40, ry - 40, rx + 26, ry - 92]],
+    hips: [[lx - 50, ly + 20, lx - 6, ly + 46], [rx + 50, ry + 20, rx + 6, ry + 46]],
+    wave: [[lx - 26, ly + 70, lx - 18, ly + 92], [rx + 50, ry - 20, rx + 44, ry - 86]],
+    point: [[lx - 26, ly + 70, lx - 18, ly + 92], [rx + 50, ry - 10, rx + 92, ry - 18]],
+  }[pose];
+  let out = `<path d="M${lx} ${ly} Q${P[0][0]} ${P[0][1]} ${P[0][2]} ${P[0][3]}" ${s}/>` + hand(P[0][2], P[0][3]) +
+            `<path d="M${rx} ${ry} Q${P[1][0]} ${P[1][1]} ${P[1][2]} ${P[1][3]}" ${s}/>` + hand(P[1][2], P[1][3]);
+  if (pose === 'wave') out += `<path d="M${rx + 70} ${ry - 104} q10 -8 20 0 M${rx + 76} ${ry - 82} q12 -4 20 6" ${s} stroke-width="4"/>`;
+  legs.forEach(x => { out += `<path d="M${x} ${hipY} L${x + (x < 150 ? -6 : 6)} ${hipY + 48}" ${s}/><ellipse cx="${x + (x < 150 ? -14 : 14)}" cy="${hipY + 54}" rx="22" ry="11" fill="${O}"/>`; });
+  return out;
+}
+const st = `stroke="${O}" stroke-width="${SW}" stroke-linejoin="round"`;
+const C = {
+  reg: (mood, pose) => `<svg viewBox="-40 -100 380 520">
+    ${limbs([32, 200], [250, 200], pose, 300, [110, 190])}
+    <rect x="76" y="0" width="72" height="44" rx="5" fill="#fff" ${st} transform="rotate(-12 112 22)"/><path d="M88 14 h40 M90 26 h30" stroke="${O}" stroke-width="3" transform="rotate(-12 112 22)"/>
+    <rect x="250" y="110" width="58" height="38" rx="5" fill="#fff" ${st} transform="rotate(16 279 129)"/>
+    <rect x="56" y="24" width="214" height="276" rx="14" fill="#FFF6DF" ${st}/>
+    ${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].map(i => `<path d="M252 ${42 + i * 12.5} h14" stroke="#D9C79F" stroke-width="3"/>`).join('')}
+    <rect x="30" y="34" width="222" height="272" rx="18" fill="#E8584A" ${st}/>
+    <path d="M30 52 a18 18 0 0 1 18 -18 h14 v272 h-14 a18 18 0 0 1 -18 -18z" fill="#C2433A" ${st}/>
+    <rect x="96" y="60" width="128" height="40" rx="9" fill="#FFE7A8" stroke="${O}" stroke-width="4"/>
+    <text x="160" y="88" text-anchor="middle" font-family="Nunito" font-weight="1000" font-size="20" letter-spacing="2" fill="${O}">REGISTER</text>
+    <circle cx="208" cy="262" r="20" fill="none" stroke="#7B4A22" stroke-width="5" opacity=".35"/>
+    <path d="M70 290 l14 -10 l8 12" stroke="#FFF6DF" stroke-width="4" fill="none" opacity=".7"/>
+    ${face(152, 180, mood)}
+  </svg>`,
+  phone: (mood, pose) => `<svg viewBox="-40 -100 340 520">
+    ${limbs([42, 200], [218, 200], pose, 318, [100, 160])}
+    <path d="M70 -2 l-14 -26 M190 -2 l14 -26" stroke="${O}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M226 -40 l6 -16 l6 16 l16 6 l-16 6 l-6 16 l-6 -16 l-16 -6z" fill="#FFD84D" stroke="${O}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M14 10 l4 -10 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4z" fill="#FFD84D" stroke="${O}" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="40" y="0" width="180" height="320" rx="42" fill="#3A3D57" ${st}/>
+    <rect x="56" y="18" width="148" height="284" rx="30" fill="#D6F3FF" stroke="${O}" stroke-width="4"/>
+    <rect x="108" y="28" width="44" height="12" rx="6" fill="#3A3D57"/>
+    <text x="130" y="272" text-anchor="middle" font-family="Nunito" font-weight="1000" font-size="30" fill="#4AA3D6">AI</text>
+    ${face(130, 150, mood)}
+  </svg>`,
+  excel: (mood, pose) => `<svg viewBox="-40 -100 360 500">
+    ${limbs([30, 190], [250, 190], pose, 290, [110, 170])}
+    <rect x="30" y="20" width="220" height="270" rx="20" fill="#EAF8EE" ${st}/>
+    <path d="M30 40 a20 20 0 0 1 20 -20 h180 a20 20 0 0 1 20 20 v26 h-220z" fill="#2FA35F" ${st}/>
+    <text x="140" y="56" text-anchor="middle" font-family="Nunito" font-weight="1000" font-size="24" letter-spacing="3" fill="#fff">EXCEL</text>
+    <g stroke="#A8D9B6" stroke-width="3"><path d="M103 66 V288 M177 66 V288 M32 120 H248 M32 236 H248"/></g>
+    ${face(140, 175, mood)}
+  </svg>`,
+  erp: (mood, pose) => `<svg viewBox="-40 -60 400 460">
+    ${limbs([30, 120], [290, 120], pose, 290, [130, 190])}
+    <rect x="135" y="216" width="50" height="44" fill="#A9AEC4" ${st}/>
+    <rect x="96" y="254" width="128" height="20" rx="10" fill="#A9AEC4" ${st}/>
+    <path d="M160 262 l-14 18 l14 30 l14 -30z" fill="#E8584A" stroke="${O}" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="30" y="20" width="260" height="200" rx="22" fill="#3A3D57" ${st}/>
+    <rect x="46" y="36" width="228" height="168" rx="12" fill="#FFF3D6" stroke="${O}" stroke-width="4"/>
+    <text x="64" y="66" font-family="Nunito" font-weight="1000" font-size="20" letter-spacing="2" fill="#B38A3A">ERP</text>
+    ${face(160, 128, mood)}
+  </svg>`,
+};
+document.querySelectorAll('[data-c]').forEach(el => { const [k, m, p] = el.dataset.c.split(':'); el.innerHTML = C[k](m, p); });
 
-// Demo data. Replace with what's on the real register so slide 1 tells the truth.
-const rows = [['12/03', 'MS Sheet 2mm', '30', 'Nos'], ['12/03', 'Bearing 6204', '120', 'Nos'], ['13/03', 'Hydraulic Oil', '20', 'L'], ['13/03', 'Weld Rod 3.15', '5', 'Kg'], ['14/03', 'Primer', 'UNCLEAR', 'L'], ['14/03', 'Packing Box', '200', 'Nos'], ['15/03', 'Grease', '2', 'Kg'], ['15/03', 'Bolt M10', '300', 'Nos'], ['16/03', 'Nut M10', '300', 'Nos']];
-const tr = r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="${r[2] === '??' ? 'bad' : ''}" style="text-align:right">${r[2]}</td><td>${r[3]}</td></tr>`;
-document.getElementById('phoneTable').innerHTML = `<tr><th>Date</th><th>Item</th><th style="text-align:right">Qty</th><th>Unit</th></tr>` + rows.map(r => tr([r[0], r[1].length > 11 ? r[1].slice(0, 10) + '…' : r[1], r[2] === 'UNCLEAR' ? '??' : r[2], r[3]])).join('');
-document.getElementById('checkTable').innerHTML = `<tr><th>Date</th><th>Item</th><th>Qty</th><th>Unit</th></tr>` +
-  [['12/03', 'MS Sheet', '30', 'Nos'], ['12/03', 'Bearing', '120', 'Nos'], ['13/03', 'Hyd. Oil', '20', 'L'], ['13/03', 'Weld Rod', '5', 'Kg'], ['14/03', 'Primer', 'UNCLEAR', 'L'], ['14/03', 'Pkg Box', '700', 'Nos'], ['15/03', 'Grease', '2', 'Kg'], ['15/03', 'Bolt M10', '300', 'Nos'], ['16/03', 'Nut M10', '300', 'Nos'], ['16/03', 'Washer', '300', 'Nos']]
-  .map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td style="text-align:right;${r[2] === 'UNCLEAR' ? 'color:#D23A2E;font-weight:800' : ''}">${r[2]}</td><td>${r[3]}</td></tr>`).join('');
-document.getElementById('excel').innerHTML = `<tr><th class="rn"></th><th>Posting Date</th><th style="outline:4px solid #D23A2E;outline-offset:-4px">Item Code</th><th>Qty</th><th>UOM</th></tr>` +
-  [['12-03-2026', 'MS-SHT-2', '30', 'Nos'], ['12-03-2026', 'BRG-6204', '120', 'Nos'], ['13-03-2026', 'HYD-OIL', '20', 'L'], ['13-03-2026', 'WLD-315', '5', 'Kg'], ['14-03-2026', 'PRM-GRY', '4', 'L'], ['14-03-2026', 'PKG-BOX', '200', 'Nos']]
-  .map((r, i) => `<tr><td class="rn">${i + 2}</td><td>${r[0]}</td><td>${r[1]}</td><td style="text-align:right">${r[2]}</td><td>${r[3]}</td></tr>`).join('');
-document.getElementById('afterRows').innerHTML = `<div class="ui-row hd" style="grid-template-columns:1.3fr .7fr .6fr"><span>Item Code</span><span>Qty</span><span>UOM</span></div>` +
-  [['MS-SHT-2', '30', 'Nos'], ['BRG-6204', '120', 'Nos'], ['HYD-OIL', '20', 'L'], ['WLD-315', '5', 'Kg'], ['PRM-GRY', '4', 'L'], ['PKG-BOX', '200', 'Nos'], ['GRS-01', '2', 'Kg'], ['BLT-M10', '300', 'Nos'], ['NUT-M10', '300', 'Nos'], ['WSH-M10', '300', 'Nos'], ['TAPE-01', '12', 'Nos']]
-  .map(r => `<div class="ui-row" style="grid-template-columns:1.3fr .7fr .6fr"><span>${r[0]}</span><span>${r[1]}</span><span>${r[2]}</span></div>`).join('');
+// slide 2 team grid
+const team = [['phone:happy:wave', 'A phone camera', ''], ['reg:smug:hips', 'One page of your register', 'Just one. I’m sensitive.'], ['phone:proud:up', 'Any AI that accepts photos', 'ChatGPT, Claude or Gemini'], ['excel:happy:wave', 'Your ERP, or just Excel', '']];
+document.getElementById('team').innerHTML = team.map(([c, t, s], i) => {
+  const x = 70 + (i % 2) * 480, y = 300 + Math.floor(i / 2) * 480, r = [-1.5, 1.5, 1, -1][i];
+  const [k, m, p] = c.split(':');
+  return `<div class="card" style="left:${x}px;top:${y}px;width:450px;height:450px;transform:rotate(${r}deg);overflow:hidden">
+    <div style="position:absolute;left:0;right:0;top:6px;height:290px;display:flex;justify-content:center"><div style="width:${k === 'reg' ? 220 : k === 'excel' ? 220 : 196}px">${C[k](m, p)}</div></div>
+    <div style="position:absolute;left:28px;right:28px;bottom:26px"><div style="font:1000 36px/1.08 Nunito;letter-spacing:-.6px">${t}</div>${s ? `<div style="font:800 26px/1.2 Nunito;opacity:.6;margin-top:6px">${s}</div>` : ''}</div></div>`;
+}).join('');
 
-document.getElementById('kit').innerHTML = [
-  ['A phone camera', ''], ['One page of your register', ''], ['Any AI that accepts photos', 'ChatGPT, Claude or Gemini'], ['Your ERP, or just Excel', '']
-].map(([t, s]) => `<div style="display:flex;gap:26px;align-items:flex-start;padding:26px 0;border-top:2px dashed #DDD6C6">
-  <span style="flex:none;position:relative;width:52px;height:52px;border:4px solid var(--ink);border-radius:6px;margin-top:4px">
-    <svg viewBox="0 0 60 56" style="position:absolute;left:-6px;top:-22px;width:72px;height:68px"><path d="M6 30 C 14 36, 18 42, 22 50 C 30 30, 42 14, 56 4" fill="none" stroke="#D23A2E" stroke-width="6" stroke-linecap="round"/></svg></span>
-  <span><span style="font:700 46px/1.1 var(--display);letter-spacing:-1px">${t}</span>${s ? `<span style="display:block;font:500 32px/1.3 var(--sans);color:var(--soft);margin-top:8px">${s}</span>` : ''}</span></div>`).join('');
+// footer: dots + swipe
+const slides = [...document.querySelectorAll('.slide')];
+slides.forEach((s, i) => s.insertAdjacentHTML('beforeend', `<div class="foot"><div class="dots">${slides.map((_, j) => `<i class="${j === i ? 'on' : ''}"></i>`).join('')}</div>${i < slides.length - 1 ? '<div class="swipe">swipe →</div>' : ''}</div>`));
 </script>
 </body>
 </html>
