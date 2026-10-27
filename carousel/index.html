@@ -5,375 +5,356 @@
 <title>Register to ERP</title>
 <style>
 @font-face { font-family: 'Hand'; src: url(fonts/Caveat.woff2) format('woff2'); font-weight: 100 900; }
+@font-face { font-family: 'Script'; src: url(fonts/Kalam.woff2) format('woff2'); font-weight: 100 900; }
 @font-face { font-family: 'JBM'; src: url(fonts/JetBrainsMono-Medium.ttf); font-weight: 500; }
 @font-face { font-family: 'JBM'; src: url(fonts/JetBrainsMono-Bold.ttf); font-weight: 700; }
 @font-face { font-family: 'JBM'; src: url(fonts/JetBrainsMono-ExtraBold.ttf); font-weight: 800; }
 
 :root {
-  --bg: #F6F5F1;
-  --card: #FFFFFF;
-  --ink: #0E1022;
-  --body: #4A4D63;
-  --line: #E3E1DA;
-  --night: #0F0C24;
-  --purple: #996EFF;
-  --purple-deep: #6A3DF0;
-  --purple-soft: #EFE9FF;
-  --red: #E5484D;
-  --green: #1F9D63;
-  --amber: #F2A93B;
+  --ink: #16181D;
+  --soft: #5A5650;
+  --paper: #FCFAF4;
+  --sticky: #FFE873;
+  --pink: #FFC9B8;
+  --red: #D23A2E;
+  --pen-blue: #1F2F6E;
+  --hl: rgba(255, 214, 10, .72);
+  --shadow: 14px 22px 30px rgba(45, 22, 5, .40), 2px 4px 5px rgba(45, 22, 5, .28);
   --display: 'Inter Display', 'Inter', sans-serif;
   --sans: 'Inter', sans-serif;
   --mono: 'JBM', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #333; font-synthesis: none; -webkit-font-smoothing: antialiased; }
-#deck { display: flex; flex-direction: column; gap: 40px; padding: 40px; align-items: center; }
+body { background: #222; font-synthesis: none; -webkit-font-smoothing: antialiased; }
+#strip { position: relative; width: 10800px; height: 1350px; overflow: hidden; font-family: var(--sans); color: var(--ink); }
+#wood { position: absolute; inset: 0; }
+#light { position: absolute; inset: 0; pointer-events: none; z-index: 900;
+  background: linear-gradient(160deg, rgba(255, 240, 210, .16), transparent 40%, rgba(30, 12, 0, .18)); }
+.sl { position: absolute; top: 0; width: 1080px; height: 1350px; }
 
-.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--sans); }
-.slide.dark { background: var(--night); color: #fff; }
-.slide.dark::before { content: ''; position: absolute; inset: 0; background: radial-gradient(70% 50% at 85% 0%, rgba(153, 110, 255, .28), transparent 70%); }
-.slide.violet { background: var(--purple-deep); color: #fff; }
+.card { position: absolute; background: var(--paper); box-shadow: var(--shadow); padding: 54px 60px; border-radius: 3px; }
+.card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 255, 255, .4), transparent 40%, rgba(0, 0, 0, .04)); pointer-events: none; }
+.sticky { position: absolute; background: var(--sticky); box-shadow: var(--shadow); padding: 36px 38px; }
+.sticky::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 34px; background: rgba(0, 0, 0, .05); }
+.pen-note { font: 700 46px/1.15 'Hand', cursive; color: var(--red); }
+.ink-note { font: 700 46px/1.15 'Hand', cursive; color: var(--pen-blue); }
+.tape { position: absolute; width: 150px; height: 44px; background: rgba(240, 232, 205, .78); box-shadow: 0 1px 3px rgba(0, 0, 0, .15); z-index: 5; }
 
-.top { position: absolute; left: 88px; right: 88px; top: 64px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
-.brand { display: flex; align-items: center; gap: 12px; font: 700 28px/1 var(--display); letter-spacing: -.5px; }
-.brand svg { width: 38px; height: 36px; }
-.count { font: 700 26px/1 var(--mono); opacity: .55; }
-.rail { position: absolute; left: 88px; right: 88px; top: 122px; display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; z-index: 5; }
-.rail i { height: 6px; border-radius: 3px; background: currentColor; opacity: .14; }
-.rail i.on { background: var(--purple); opacity: 1; }
-.swipe { position: absolute; right: 88px; bottom: 64px; font: 600 28px/1 var(--sans); display: flex; gap: 12px; align-items: center; opacity: .6; z-index: 5; }
-.swipe svg { width: 34px; height: 20px; }
+.kicker { font: 700 24px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+.h { font: 800 82px/1.0 var(--display); letter-spacing: -2.6px; color: var(--ink); }
+.sub { font: 500 36px/1.3 var(--sans); color: var(--soft); letter-spacing: -.3px; }
+.hl { background: linear-gradient(178deg, transparent 10%, var(--hl) 10% 90%, transparent 90%); padding: 0 10px; margin: 0 -6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
-.wrap { position: absolute; left: 88px; right: 88px; top: 200px; z-index: 2; }
-.pill { display: inline-flex; align-items: center; gap: 12px; font: 700 26px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase;
-  color: var(--purple-deep); background: var(--purple-soft); padding: 12px 18px; border-radius: 999px; }
-.dark .pill { color: #fff; background: rgba(153, 110, 255, .25); }
-h1 { font: 800 92px/1.0 var(--display); letter-spacing: -3px; margin-top: 30px; }
-h1 .p { color: var(--purple-deep); }
-.dark h1 .p { color: var(--purple); }
-.lead { font: 500 38px/1.35 var(--sans); color: var(--body); margin-top: 26px; letter-spacing: -.3px; }
-.dark .lead { color: #B9B4D6; }
+.reg { position: absolute; background: #6B1E22; border-radius: 10px; padding: 16px; box-shadow: var(--shadow);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .03) 0 2px, transparent 2px 5px); }
+.reg .pages { display: flex; width: 100%; height: 100%; }
+.reg .page { position: relative; flex: 1; background: #F3EBD6; overflow: hidden; padding: 64px 26px 0 76px;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 51px, rgba(70, 115, 170, .38) 51px 53px); background-position: 0 40px; }
+.reg .page::before { content: ''; position: absolute; left: 58px; top: 0; bottom: 0; border-left: 2px solid rgba(200, 55, 45, .5); }
+.reg .page:first-child { box-shadow: inset -30px 0 30px -20px rgba(80, 50, 10, .35); }
+.reg .page:last-child { box-shadow: inset 30px 0 30px -20px rgba(80, 50, 10, .35); }
+.reg .page:only-child { box-shadow: none; }
+.reg .page p { font: 400 31px/53px 'Script', cursive; color: var(--pen-blue); white-space: nowrap; }
+.reg .page p s { text-decoration-thickness: 3px; }
+.reg.shut { padding: 0; }
+.reg.shut::after { content: 'STOCK REGISTER'; position: absolute; left: 50%; top: 22%; transform: translateX(-50%); font: 700 26px var(--mono); letter-spacing: .2em; color: rgba(255, 225, 170, .55);
+  border: 2px solid rgba(255, 225, 170, .4); padding: 14px 20px; white-space: nowrap; }
 
-.register { position: absolute; background: #F4ECD8; border-radius: 6px; padding: 30px 26px 30px 70px; overflow: hidden;
-  background-image: repeating-linear-gradient(to bottom, transparent 0 45px, rgba(70, 115, 170, .35) 45px 47px);
-  box-shadow: 0 40px 60px -20px rgba(0, 0, 0, .6); }
-.register::before { content: ''; position: absolute; left: 52px; top: 0; bottom: 0; border-left: 2px solid rgba(200, 55, 45, .55); }
-.register p { font: 600 36px/47px 'Hand', cursive; color: #22306A; white-space: nowrap; }
-.standin { position: absolute; font: 700 16px/1 var(--mono); letter-spacing: .1em; background: rgba(0, 0, 0, .55); color: #fff; padding: 8px 10px; border-radius: 4px; z-index: 6; }
+.phone { position: absolute; background: #121214; border-radius: 52px; padding: 14px; box-shadow: var(--shadow); }
+.phone .scr { width: 100%; height: 100%; border-radius: 40px; overflow: hidden; background: #fff; position: relative; }
+.phone .scr::before { content: ''; position: absolute; left: 50%; top: 14px; width: 96px; height: 28px; background: #121214; border-radius: 20px; transform: translateX(-50%); z-index: 3; }
+.mini-table { width: 100%; border-collapse: collapse; font: 500 17px/1 var(--mono); }
+.mini-table th { text-align: left; font-weight: 800; padding: 12px 8px; background: #EDEBE4; }
+.mini-table td { padding: 11px 8px; border-top: 1px solid #ECEAE3; white-space: nowrap; }
+.mini-table .bad { color: var(--red); font-weight: 800; }
 
-.table { position: absolute; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 70px -24px rgba(10, 0, 50, .7); color: var(--ink); }
-.table table { border-collapse: collapse; width: 100%; font: 500 23px/1 var(--mono); }
-.table th { text-align: left; font: 700 18px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--purple-deep); background: var(--purple-soft); padding: 18px 16px; }
-.table td { padding: 17px 16px; border-top: 1px solid #EEECF5; white-space: nowrap; }
-.table td.n { text-align: right; font-weight: 700; }
-.table .bad { color: var(--red); font-weight: 800; }
-.table .foot { display: flex; justify-content: space-between; padding: 16px 20px; font: 700 18px var(--mono); letter-spacing: .08em; color: var(--green); border-top: 1px solid #EEECF5; }
+.laptop { position: absolute; box-shadow: var(--shadow); border-radius: 26px; }
+.laptop .lid { background: #BFC2C8; border-radius: 26px 26px 6px 6px; padding: 22px; height: 58%; }
+.laptop .lid .scr { background: #fff; width: 100%; height: 100%; border: 10px solid #1A1A1C; border-radius: 10px; overflow: hidden; position: relative; }
+.laptop .base { background: #CDD0D5; border-radius: 6px 6px 26px 26px; height: 42%; padding: 26px 40px; display: flex; flex-direction: column; gap: 18px; }
+.laptop .keys { flex: 1; border-radius: 8px; background-color: #2A2B2E;
+  background-image: linear-gradient(90deg, transparent 0 4px, #CDD0D5 4px 7px, transparent 7px), linear-gradient(transparent 0 4px, #CDD0D5 4px 7px, transparent 7px);
+  background-size: 52px 100%, 100% 46px; }
+.laptop .pad { height: 90px; width: 34%; margin: 0 auto; background: #C2C5CA; border-radius: 10px; }
 
-.shot { position: absolute; background: #fff; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgba(14, 16, 34, .35); }
-.dark .shot { border-color: rgba(255, 255, 255, .12); background: #1E1A45; }
-.shot .bar { height: 46px; display: flex; gap: 10px; align-items: center; padding: 0 18px; background: #F1F0EC; border-bottom: 1px solid var(--line); }
-.dark .shot .bar { background: #262055; border-color: rgba(255, 255, 255, .1); }
-.shot .bar i { width: 13px; height: 13px; border-radius: 50%; background: #D5D2CB; }
-.dark .shot .bar i { background: rgba(255, 255, 255, .2); }
-.shot .bar b { margin-left: 12px; font: 600 18px var(--mono); color: #8B8DA0; }
-.shot .body { position: absolute; top: 46px; left: 0; right: 0; bottom: 0; display: grid; place-items: center; text-align: center; padding: 20px; }
-.shot .body div { font: 600 28px/1.35 var(--sans); color: #9A9CAE; }
-.shot .body code { display: block; margin-top: 10px; font: 500 20px var(--mono); color: #B4B6C4; }
-.shot img { position: absolute; top: 46px; left: 0; width: 100%; height: calc(100% - 46px); object-fit: cover; z-index: 7; }
-.shot.bare img { top: 0; height: 100%; }
+.xl { width: 100%; border-collapse: collapse; font: 500 22px/1 var(--mono); }
+.xl th { background: #E9F2EA; font-weight: 800; text-align: left; padding: 12px 10px; border: 1px solid #CFDCCF; }
+.xl td { padding: 11px 10px; border: 1px solid #E3E6E3; white-space: nowrap; }
+.xl .rn { background: #F2F2F2; color: #999; width: 34px; text-align: center; }
 
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 40px 36px; min-height: 380px; display: flex; flex-direction: column; }
-.card .ic { width: 96px; height: 96px; border-radius: 18px; background: var(--purple-soft); display: grid; place-items: center; }
-.card .ic svg { width: 56px; height: 56px; }
-.card h3 { font: 700 48px/1.08 var(--display); letter-spacing: -1.4px; margin-top: auto; }
-.card p { font: 500 30px/1.35 var(--sans); color: var(--body); margin-top: 12px; }
-svg.icon * { fill: none; stroke: var(--purple-deep); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.calc { position: absolute; background: #2B2D31; border-radius: 26px; padding: 26px; box-shadow: var(--shadow); }
+.calc .disp { background: #B9C4A6; border-radius: 8px; height: 90px; font: 700 52px/90px var(--mono); text-align: right; padding: 0 18px; color: #22261C; }
+.calc .k { margin-top: 22px; height: calc(100% - 112px); border-radius: 8px;
+  background-image: radial-gradient(circle at 50% 50%, #4A4D53 0 26px, transparent 27px); background-size: 25% 25%; }
 
-.checks { list-style: none; }
-.checks li { display: flex; align-items: center; gap: 22px; font: 600 36px/1.2 var(--sans); letter-spacing: -.4px; padding: 20px 0; border-top: 1px solid var(--line); }
-.checks li:first-child { border-top: 0; }
-.checks li .ck { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--purple-deep); display: grid; place-items: center; }
-.checks li .ck svg { width: 24px; height: 24px; }
-.checks li .num { flex: none; width: 50px; font: 800 30px var(--mono); color: var(--purple-deep); }
+.pen { position: absolute; height: 26px; border-radius: 13px; box-shadow: 8px 14px 14px rgba(45, 22, 5, .35);
+  background: linear-gradient(180deg, #2B3A8C, #1A2460 60%, #121a48); }
+.pen::before { content: ''; position: absolute; left: -46px; top: 5px; border-right: 50px solid #C9A86B; border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
+.pen::after { content: ''; position: absolute; right: 60px; top: -6px; width: 120px; height: 10px; border-radius: 5px; background: #C8CCD4; }
 
-.callout { border-radius: 20px; padding: 30px 34px; display: flex; gap: 24px; align-items: flex-start; }
-.callout .ic { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font: 800 30px var(--display); color: #fff; }
-.callout p { font: 600 33px/1.3 var(--sans); letter-spacing: -.3px; }
-.callout p b { font-weight: 800; }
-.callout.warn { background: #FFF4E2; border: 2px solid #F5D5A0; }
-.callout.warn .ic { background: var(--amber); }
-.callout.info { background: var(--purple-soft); border: 2px solid #DCD0FF; }
-.callout.info .ic { background: var(--purple-deep); }
+.photo { position: absolute; background: #fff; padding: 18px 18px 70px; box-shadow: var(--shadow); }
+.photo .in { width: 100%; height: 100%; overflow: hidden; position: relative; }
 
-.cmp { position: absolute; top: 540px; left: 88px; right: 88px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.cmp .box { position: relative; height: 390px; border-radius: 22px; overflow: hidden; background: #2A2833; }
-.cmp .box.good { background: #DCE8DF; }
-.cmp .tag { position: absolute; left: 20px; top: 20px; z-index: 4; font: 800 24px/1 var(--display); color: #fff; padding: 12px 18px; border-radius: 999px; }
-.cmp .bad-t { background: var(--red); }
-.cmp .good-t { background: var(--green); }
+.shot { position: absolute; background: #fff; padding: 16px; box-shadow: var(--shadow); }
+.shot .in { position: relative; width: 100%; height: 100%; overflow: hidden; background: #F6F7F9; border: 1px solid #E4E6EA; }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 4; }
+.ui-bar { height: 54px; background: #fff; border-bottom: 1px solid #E4E6EA; display: flex; align-items: center; gap: 14px; padding: 0 22px; font: 700 22px var(--sans); }
+.ui-btn { margin-left: auto; background: #16181D; color: #fff; font: 700 18px var(--sans); padding: 10px 16px; border-radius: 8px; }
+.ui-row { display: grid; grid-template-columns: 1.2fr 1.4fr .6fr .6fr; font: 500 19px var(--mono); }
+.ui-row span { padding: 13px 14px; border-bottom: 1px solid #ECEEF1; white-space: nowrap; }
+.ui-row.hd span { font-weight: 800; background: #F0F1F4; }
+.ui-err { color: var(--red); font-weight: 800; }
 
-.code { position: absolute; left: 88px; right: 88px; top: 520px; background: #17133A; border: 1px solid rgba(153, 110, 255, .4); border-radius: 22px; overflow: hidden; z-index: 2; }
-.code .bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; border-bottom: 1px solid rgba(153, 110, 255, .25); font: 700 22px var(--mono); letter-spacing: .08em; color: #B9B4D6; }
-.code .bar span:last-child { color: var(--purple); }
-.code .txt { padding: 34px 34px 40px; font: 500 35px/1.55 var(--mono); color: #E9E6FF; }
-.code .k { color: #C9B5FF; font-weight: 700; }
-.code .mark { background: var(--purple); color: #fff; font-weight: 800; padding: 2px 8px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-
-.mis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.mis div { background: #fff; border: 1px solid var(--line); border-radius: 18px; height: 120px; display: flex; align-items: center; justify-content: center; gap: 18px; }
-.mis .w { font: 700 62px/1 'Hand', cursive; color: #22306A; }
-.mis .r { font: 800 46px/1 var(--mono); color: var(--red); }
-.mis svg { width: 34px; height: 20px; color: #B4B6C4; }
-
-.map .row { display: grid; grid-template-columns: 1fr 70px 1fr; align-items: center; margin-top: 10px; }
-.map .head { display: grid; grid-template-columns: 1fr 70px 1fr; font: 700 22px var(--mono); letter-spacing: .08em; color: #8B8DA0; text-transform: uppercase; }
-.map .c { font: 700 32px var(--mono); padding: 18px 24px; border-radius: 14px; background: #fff; border: 1px solid var(--line); }
-.map .c.to { background: var(--purple-soft); border-color: #DCD0FF; color: var(--purple-deep); }
-.map .c.hot { border: 3px solid var(--amber); }
-.map svg { width: 40px; height: 22px; margin: auto; color: #A5A7B8; }
-
-.crumbs { display: flex; align-items: center; gap: 14px; }
-.crumbs span { font: 700 28px/1.2 var(--sans); padding: 18px 22px; border-radius: 14px; background: #fff; border: 1px solid var(--line); letter-spacing: -.3px; }
-.crumbs span:first-child { background: var(--ink); color: #fff; border-color: var(--ink); }
-.crumbs svg { flex: none; width: 30px; height: 18px; color: #A5A7B8; }
-
-.q { position: absolute; left: 88px; right: 88px; top: 250px; }
-.q .mark { font: 800 220px/0.7 var(--display); color: rgba(255, 255, 255, .25); height: 120px; }
-.q p { font: 700 74px/1.12 var(--display); letter-spacing: -2.4px; }
-.q p .dim { color: rgba(255, 255, 255, .62); }
-.q .by { display: flex; align-items: center; gap: 20px; margin-top: 50px; font: 600 32px var(--sans); }
-.q .by i { width: 64px; height: 3px; background: #fff; opacity: .6; }
+.glass { position: absolute; border-radius: 50%; box-shadow: var(--shadow);
+  background: radial-gradient(circle at 50% 50%, #8A4B1E 0 52%, #A86330 60%, rgba(255, 255, 255, .55) 63%, rgba(230, 230, 230, .35) 75%, rgba(255, 255, 255, .7) 78%, rgba(200, 200, 200, .2) 80%); }
+.glass::after { content: ''; position: absolute; left: 30%; top: 28%; width: 22%; height: 10%; border-radius: 50%; background: rgba(255, 240, 220, .35); transform: rotate(-30deg); }
+.swipe { font: 700 44px/1 'Hand', cursive; color: var(--red); }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <symbol id="logo" viewBox="-6 0 274 250">
-      <g fill="none" stroke="#996EFF" stroke-width="12" stroke-linejoin="round">
-        <path d="M20 60 L130 12 L240 60 L130 108 Z" fill="#996EFF"/>
-        <path d="M20 60 L20 85 L130 133 L240 85 L240 60"/>
-        <path d="M20 125 L130 173 L240 125 L240 150 L130 198 L20 150 Z"/>
-      </g>
-      <g fill="#996EFF"><circle cx="252" cy="106" r="13"/><circle cx="8" cy="166" r="13"/></g>
-    </symbol>
-    <symbol id="arr" viewBox="0 0 34 20"><path d="M2 10 H30 M22 2 L31 10 L22 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="chk" viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  </defs>
-</svg>
+<div id="strip">
+  <svg id="wood" width="10800" height="1350">
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0018 0.075" numOctaves="4" seed="9"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.30  0 0 0 0 0.16  0 0 0 0 0.05  0 0 0 1.25 -0.42"/>
+    </filter>
+    <filter id="grain2" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0009 0.02" numOctaves="2" seed="21"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.33  0 0 0 0 0.15  0 0 0 .9 -0.3"/>
+    </filter>
+    <rect width="10800" height="1350" fill="#B47A45"/>
+    <rect width="10800" height="1350" filter="url(#grain2)"/>
+    <rect width="10800" height="1350" filter="url(#grain)"/>
+    <g stroke="rgba(40,18,4,.55)" stroke-width="3"><line x1="0" y1="338" x2="10800" y2="338"/><line x1="0" y1="676" x2="10800" y2="676"/><line x1="0" y1="1014" x2="10800" y2="1014"/></g>
+    <g stroke="rgba(255,220,170,.12)" stroke-width="2"><line x1="0" y1="341" x2="10800" y2="341"/><line x1="0" y1="679" x2="10800" y2="679"/><line x1="0" y1="1017" x2="10800" y2="1017"/></g>
+  </svg>
 
-<div id="deck">
-
-<!-- 1 HOOK -->
-<section class="slide dark" data-swipe>
-  <div class="register" style="left:70px;top:210px;width:560px;height:620px;transform:rotate(-6deg)">
-    <p>12/3 &nbsp;MS sheet 2mm &nbsp;30 nos</p><p>12/3 &nbsp;Bearing 6204 &nbsp;120</p><p>13/3 &nbsp;Hyd. oil &nbsp;20 L</p><p>13/3 &nbsp;Weld rod 3.15 &nbsp;5 kg</p><p>14/3 &nbsp;Primer &nbsp;<s>3</s> 4 L</p><p>14/3 &nbsp;Pkg box &nbsp;200</p><p>15/3 &nbsp;Grease &nbsp;2 kg</p><p>15/3 &nbsp;Bolt M10 &nbsp;300</p><p>16/3 &nbsp;Nut M10 &nbsp;300</p><p>16/3 &nbsp;Washer &nbsp;300</p><p>17/3 &nbsp;Tape &nbsp;12</p>
-  </div>
-  <span class="standin" style="left:96px;top:868px">STAND-IN · REPLACE WITH REAL PHOTO</span>
-  <div class="table" style="left:440px;top:300px;width:560px;transform:rotate(2deg)">
-    <table><tr><th>Date</th><th>Item</th><th style="text-align:right">Qty</th><th>Unit</th></tr><tbody id="hookRows"></tbody></table>
-    <div class="foot"><span>REGISTER.CSV</span><span>✓ DONE</span></div>
-  </div>
-  <div class="wrap" style="top:930px">
-    <h1 style="font-size:100px;margin:0">AI read this in<br><span style="background:var(--purple);color:#fff;padding:0 18px;border-radius:14px">[X]</span> <span class="p">seconds.</span></h1>
-    <div class="lead" style="margin-top:28px;color:#fff;opacity:.75">Here’s exactly how. Step by step.</div>
-  </div>
-</section>
-
-<!-- 2 WHAT YOU NEED -->
-<section class="slide" data-swipe>
-  <div class="wrap">
-    <span class="pill">Before you start</span>
-    <h1>What you need</h1>
-    <div class="grid2" style="margin-top:60px">
-      <div class="card"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><circle cx="12" cy="9" r="3"/><path d="M10 18.5h4"/></svg></div><h3>A phone camera</h3></div>
-      <div class="card"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z"/><path d="M15 2v4h4"/><path d="M9 11c2-1 4 1 6 0M9 15c2 1 4-1 6 0"/></svg></div><h3>One page of your register</h3></div>
-      <div class="card"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M3 5h18v12H10l-5 4v-4H3z"/><path d="M8 11l2-2 2 2 3-3 2 2"/></svg></div><h3>Any AI that accepts photos</h3><p>ChatGPT, Claude or Gemini</p></div>
-      <div class="card"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16M15 4v16"/></svg></div><h3>Your ERP, or just Excel</h3></div>
+  <!-- 1 HOOK -->
+  <div class="sl" style="left:0">
+    <div class="reg" style="left:-90px;top:70px;width:900px;height:800px;transform:rotate(-5deg)">
+      <div class="pages"><div class="page" id="regL"></div><div class="page" id="regR"></div></div>
     </div>
-  </div>
-</section>
-
-<!-- 3 STEP 1 -->
-<section class="slide" data-swipe>
-  <div class="wrap">
-    <span class="pill">Step 1 · Take the photo right</span>
-    <h1>Bad photo = <span class="p">bad data.</span></h1>
-  </div>
-  <div class="cmp">
-    <div class="box">
-      <span class="tag bad-t">✕ Unusable</span>
-      <div class="register" style="left:40px;top:70px;width:420px;height:420px;transform:perspective(700px) rotateX(24deg) rotate(-12deg);filter:blur(1.4px) brightness(.62)">
-        <p>12/3 MS sheet 30</p><p>12/3 Bearing 120</p><p>13/3 Hyd. oil 20 L</p><p>13/3 Weld rod 5 kg</p><p>14/3 Primer 4 L</p><p>14/3 Pkg box 200</p><p>15/3 Grease 2 kg</p>
-      </div>
-      <div style="position:absolute;inset:0;background:radial-gradient(60% 70% at 80% 30%,rgba(0,0,0,.75),transparent 70%)"></div>
-    </div>
-    <div class="box good">
-      <span class="tag good-t">✓ Usable</span>
-      <div class="register" style="left:46px;top:90px;width:360px;height:360px;box-shadow:0 10px 20px -8px rgba(0,0,0,.25)">
-        <p>12/3 MS sheet 30</p><p>12/3 Bearing 120</p><p>13/3 Hyd. oil 20 L</p><p>13/3 Weld rod 5 kg</p><p>14/3 Primer 4 L</p><p>14/3 Pkg box 200</p>
+    <div class="phone" style="left:830px;top:250px;width:370px;height:760px;transform:rotate(9deg);z-index:3">
+      <div class="scr" style="padding:70px 14px 0">
+        <div style="font:800 22px var(--sans);padding:0 8px 14px">register.csv</div>
+        <table class="mini-table" id="phoneTable"></table>
+        <div style="margin:18px 8px 0;font:700 15px var(--mono);color:#1F9D63">✓ 11 rows read</div>
       </div>
     </div>
-  </div>
-  <ul class="checks" style="position:absolute;left:88px;right:88px;top:960px">
-    <li><span class="ck"><svg><use href="#chk"/></svg></span>Lay the page flat, in daylight</li>
-    <li><span class="ck"><svg><use href="#chk"/></svg></span>One page per photo, all four edges</li>
-    <li><span class="ck"><svg><use href="#chk"/></svg></span>No shadows</li>
-  </ul>
-</section>
-
-<!-- 4 STEP 2 -->
-<section class="slide dark" data-swipe>
-  <div class="wrap">
-    <span class="pill">Step 2 · The prompt</span>
-    <h1>Upload the photo.<br><span class="p">Paste this.</span></h1>
-  </div>
-  <div class="code">
-    <div class="bar"><span>PROMPT</span><span>COPY EXACTLY</span></div>
-    <div class="txt">Read this handwritten register. Convert it into a table with columns: <span class="k">Date, Item, Qty, Unit, Remarks</span>. Give the output as CSV. Write exactly what you see. <span class="mark">If any value is unclear, write UNCLEAR. Don’t guess.</span></div>
-  </div>
-  <div style="position:absolute;left:88px;right:88px;top:1150px;display:flex;gap:18px;align-items:center;font:700 38px/1.2 var(--display);letter-spacing:-.6px;z-index:2">
-    <svg viewBox="0 0 24 24" style="width:40px;height:40px;flex:none"><path d="M12 20V5M5 11l7-7 7 7" fill="none" stroke="#996EFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    That last instruction matters most.
-  </div>
-</section>
-
-<!-- 5 STEP 3 -->
-<section class="slide" data-swipe>
-  <div class="wrap">
-    <span class="pill">Step 3 · Check</span>
-    <h1>Everyone skips<br>this step. <span class="p">Don’t.</span></h1>
-    <div class="lead" style="margin-top:22px">AI misreads handwriting:</div>
-    <div class="mis" style="margin-top:22px">
-      <div><span class="w">1</span><svg><use href="#arr"/></svg><span class="r">7</span></div>
-      <div><span class="w">0</span><svg><use href="#arr"/></svg><span class="r">6</span></div>
-      <div><span class="w">kg</span><svg><use href="#arr"/></svg><span class="r">kgs</span></div>
+    <div class="card" style="left:70px;top:820px;width:820px;height:450px;transform:rotate(-1.2deg);z-index:4">
+      <div class="h" style="font-size:88px">AI read this in<br><span class="hl">[X] seconds.</span></div>
+      <div class="sub" style="margin-top:30px">Here’s exactly how. Step by step.</div>
+      <div class="swipe" style="position:absolute;right:46px;bottom:36px">swipe →</div>
     </div>
   </div>
-  <div class="shot" style="left:88px;right:88px;top:752px;height:300px">
-    <div class="bar"><i></i><i></i><i></i><b>ai-output.csv</b></div>
-    <img src="assets/check-screenshot.png" onerror="this.remove()" alt="">
-    <div class="body"><div>Real screenshot: one actual error circled in red<code>assets/check-screenshot.png</code></div></div>
-  </div>
-  <ul class="checks" style="position:absolute;left:88px;right:88px;top:1078px">
-    <li style="font-size:32px;padding:14px 0"><span class="num">01</span>Total Qty for each unit. Match it to the register.</li>
-    <li style="font-size:32px;padding:14px 0"><span class="num">02</span>Fix every UNCLEAR.</li>
-  </ul>
-</section>
 
-<!-- 6 STEP 4 -->
-<section class="slide" data-swipe>
-  <div class="wrap">
-    <span class="pill">Step 4 · Into Excel</span>
-    <h1>Paste the CSV<br>into <span class="p">Excel.</span></h1>
-    <div class="lead">Rename the columns to match the field names in your ERP.</div>
-    <div class="map" style="margin-top:40px">
-      <div class="head"><span>AI output</span><span></span><span>ERP field (e.g. ERPNext)</span></div>
-      <div class="row"><span class="c">Date</span><svg><use href="#arr"/></svg><span class="c to">Posting Date</span></div>
-      <div class="row"><span class="c">Item</span><svg><use href="#arr"/></svg><span class="c to hot">Item Code</span></div>
-      <div class="row"><span class="c">Qty</span><svg><use href="#arr"/></svg><span class="c to">Qty</span></div>
-      <div class="row"><span class="c">Unit</span><svg><use href="#arr"/></svg><span class="c to">UOM</span></div>
+  <!-- 2 WHAT YOU NEED -->
+  <div class="sl" style="left:1080px">
+    <div class="card" style="left:250px;top:150px;width:740px;height:1010px;transform:rotate(1.8deg)">
+      <div class="kicker">Before you start</div>
+      <div class="h" style="margin-top:22px">What you need</div>
+      <div id="kit" style="margin-top:56px"></div>
     </div>
-    <div class="callout warn" style="margin-top:28px;padding:24px 30px">
-      <span class="ic">!</span>
-      <p><b>Item names must match your ERP Item Codes exactly</b>, or the import fails. Also check that dates stayed DD/MM.</p>
-    </div>
+    <div class="pen" style="left:640px;top:1220px;width:560px;transform:rotate(-14deg);z-index:6"></div>
   </div>
-</section>
 
-<!-- 7 STEP 5 -->
-<section class="slide" data-swipe>
-  <div class="wrap">
-    <span class="pill">Step 5 · Into the ERP</span>
-    <h1>Into <span class="p">ERPNext.</span></h1>
-    <div class="crumbs" style="margin-top:44px">
-      <span>Data Import</span><svg><use href="#arr"/></svg><span>Choose what you’re importing</span><svg><use href="#arr"/></svg><span>Upload</span>
+  <!-- 3 STEP 1 -->
+  <div class="sl" style="left:2160px">
+    <div class="card" style="left:90px;top:90px;width:900px;height:290px;transform:rotate(-1deg);padding:46px 56px">
+      <div class="kicker">Step 1 · Take the photo right</div>
+      <div class="h" style="margin-top:22px">Bad photo = <span class="hl">bad data.</span></div>
+    </div>
+    <div class="photo" style="left:90px;top:430px;width:430px;height:540px;transform:rotate(-7deg)">
+      <div class="in" style="background:#2b2620">
+        <div class="mini-reg" style="position:absolute;left:30px;top:40px;width:420px;height:420px;transform:perspective(600px) rotateX(28deg) rotate(-14deg);filter:blur(1.6px) brightness(.55)"></div>
+        <div style="position:absolute;inset:0;background:radial-gradient(60% 70% at 78% 28%,rgba(0,0,0,.8),transparent 70%)"></div>
+      </div>
+      <div class="pen-note" style="position:absolute;left:24px;bottom:12px;font-size:44px">✗ shadow, tilted</div>
+    </div>
+    <div class="photo" style="left:560px;top:410px;width:430px;height:540px;transform:rotate(4deg)">
+      <div class="in" style="background:#E7DCC2"><div class="mini-reg" style="position:absolute;left:20px;top:20px;right:20px;bottom:20px"></div></div>
+      <div class="ink-note" style="position:absolute;left:24px;bottom:12px;font-size:44px">✓ flat, clear</div>
+    </div>
+    <div class="sticky" style="left:110px;top:1010px;width:860px;height:270px;transform:rotate(1.2deg)">
+      <div class="ink-note" style="font-size:50px;line-height:1.2;color:var(--ink)">Lay it flat · daylight · one page per photo · all four edges · no shadows</div>
     </div>
   </div>
-  <div class="shot" style="left:88px;right:88px;top:560px;height:440px">
-    <div class="bar"><i></i><i></i><i></i><b>ERPNext · Data Import</b></div>
-    <img src="assets/erpnext-import.png" onerror="this.remove()" alt="">
-    <div class="body"><div>Real screenshot of the Data Import screen, with demo data<code>assets/erpnext-import.png</code></div></div>
-  </div>
-  <div class="callout info" style="position:absolute;left:88px;right:88px;top:1036px">
-    <span class="ic">i</span>
-    <p>It flags errors <b>before</b> importing anything. <b>Check that screen first.</b></p>
-  </div>
-</section>
 
-<!-- 8 BEFORE / AFTER -->
-<section class="slide dark" data-swipe>
-  <div class="wrap"><span class="pill">Before / After</span></div>
-  <div style="position:absolute;left:88px;top:300px;font:700 24px var(--mono);letter-spacing:.08em;color:#B9B4D6;z-index:2">BEFORE · REGISTER</div>
-  <div style="position:absolute;left:556px;top:300px;font:700 24px var(--mono);letter-spacing:.08em;color:var(--purple);z-index:2">AFTER · ERP</div>
-  <div class="shot bare" style="left:88px;top:346px;width:436px;height:560px">
-    <img src="assets/register.jpg" onerror="this.remove()" alt="">
-    <div class="register" style="left:0;top:0;right:0;bottom:0;border-radius:0;box-shadow:none"><p>12/3 MS sheet 30</p><p>12/3 Bearing 120</p><p>13/3 Hyd. oil 20 L</p><p>13/3 Weld rod 5 kg</p><p>14/3 Primer 4 L</p><p>14/3 Pkg box 200</p><p>15/3 Grease 2 kg</p><p>15/3 Bolt M10 300</p><p>16/3 Nut M10 300</p><p>16/3 Washer 300</p><p>17/3 Tape 12</p></div>
-    <span class="standin" style="left:14px;bottom:14px">STAND-IN</span>
+  <!-- 4 STEP 2 -->
+  <div class="sl" style="left:3240px">
+    <div class="card" style="left:90px;top:80px;width:880px;height:290px;transform:rotate(.8deg);padding:46px 56px">
+      <div class="kicker">Step 2 · Upload &amp; paste</div>
+      <div class="h" style="margin-top:22px">Paste this prompt.</div>
+    </div>
+    <div class="card" style="left:90px;top:410px;width:840px;height:870px;transform:rotate(-1.4deg);padding:56px 58px">
+      <div style="font:500 34px/1.6 var(--mono)">Read this handwritten register. Convert it into a table with columns: Date, Item, Qty, Unit, Remarks. Give the output as CSV. Write exactly what you see. <span class="hl" style="font-weight:800">If any value is unclear, write UNCLEAR. Don’t guess.</span></div>
+      <svg style="position:absolute;left:470px;top:700px;width:140px;height:120px;overflow:visible" viewBox="0 0 140 120"><path d="M10 110 C 70 112, 120 70, 112 10 M96 28 L112 8 L128 30" fill="none" stroke="#D23A2E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pen-note" style="position:absolute;left:58px;bottom:44px;font-size:52px;transform:rotate(-2deg)">That last instruction matters most.</div>
+    </div>
+    <div class="phone" style="left:900px;top:470px;width:310px;height:640px;transform:rotate(-10deg);z-index:3">
+      <div class="scr" style="background:#F4F4F4;padding:80px 18px 0">
+        <div style="margin-left:auto;width:200px;height:250px;border-radius:18px;overflow:hidden"><div class="mini-reg" style="width:200px;height:250px"></div></div>
+        <div style="margin:14px 0 0 auto;width:250px;background:#2F6FEB;color:#fff;border-radius:18px;padding:14px;font:500 15px/1.4 var(--sans)">Read this handwritten register. Convert it into a table…</div>
+      </div>
+    </div>
   </div>
-  <div class="shot" style="left:556px;top:346px;width:436px;height:560px">
-    <div class="bar"><i></i><i></i><i></i><b>Stock Entry</b></div>
-    <img src="assets/erp-after.png" onerror="this.remove()" alt="">
-    <div class="body"><div>Same data,<br>in the ERP<code>assets/erp-after.png</code></div></div>
-  </div>
-  <div style="position:absolute;left:500px;top:590px;width:80px;height:80px;border-radius:50%;background:var(--purple);display:grid;place-items:center;z-index:8;box-shadow:0 0 0 10px var(--night)">
-    <svg style="width:36px;height:22px;color:#fff"><use href="#arr"/></svg>
-  </div>
-  <div class="wrap" style="top:960px">
-    <h1 style="margin:0;font-size:104px">Same data.<br><span class="p">Zero retyping.</span></h1>
-  </div>
-</section>
 
-<!-- 9 PRASHANT'S TAKE -->
-<section class="slide violet" data-swipe>
-  <div class="q">
-    <div class="mark">“</div>
-    <p><span class="dim">AI doesn’t replace the register.</span><br>It replaces the person retyping it at 9pm.</p>
-    <div class="by"><i></i>Prashant, AlfaStack</div>
+  <!-- 5 STEP 3 -->
+  <div class="sl" style="left:4320px">
+    <div class="card" style="left:200px;top:80px;width:800px;height:300px;transform:rotate(-1deg);padding:46px 56px">
+      <div class="kicker">Step 3 · Check</div>
+      <div class="h" style="margin-top:22px;font-size:76px">Check. <span style="color:var(--red)">Everyone skips this step.</span></div>
+    </div>
+    <div class="shot" style="left:220px;top:430px;width:520px;height:560px;transform:rotate(2deg)">
+      <div class="in" style="background:#fff">
+        <img src="assets/check-screenshot.png" onerror="this.remove()" alt="">
+        <table class="xl" id="checkTable" style="font-size:21px"></table>
+        <svg style="position:absolute;left:290px;top:258px;width:150px;height:70px;overflow:visible" viewBox="0 0 150 70"><path d="M20 38 C 8 10, 130 2, 140 30 C 148 60, 30 72, 10 50 C 0 36, 40 14, 100 12" fill="none" stroke="#D23A2E" stroke-width="5" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="tape" style="left:410px;top:412px;transform:rotate(-4deg)"></div>
+    <div class="calc" style="left:780px;top:440px;width:270px;height:420px;transform:rotate(-7deg)"><div class="disp">395</div><div class="k"></div></div>
+    <div class="sticky" style="left:600px;top:900px;width:420px;height:330px;transform:rotate(4deg)">
+      <div class="pen-note" style="font-size:42px">AI misreads:<br>1 → 7<br>0 → 6<br>kg → kgs</div>
+    </div>
+    <div class="card" style="left:170px;top:1040px;width:450px;height:250px;transform:rotate(-2deg);padding:34px 38px">
+      <div style="font:700 31px/1.3 var(--sans)">☐ Total Qty for each unit. Match it to the register.</div>
+      <div style="font:700 31px/1.3 var(--sans);margin-top:16px">☐ Fix every UNCLEAR.</div>
+    </div>
   </div>
-  <div style="position:absolute;left:88px;right:88px;top:1030px;background:rgba(15,12,36,.35);border-radius:20px;padding:30px 34px;display:flex;gap:22px;align-items:center">
-    <span style="flex:none;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--purple-deep);display:grid;place-items:center;font:800 30px var(--display)">!</span>
-    <p style="font:600 33px/1.3 var(--sans)">For stock and money entries, always do step 3. <b style="font-weight:800">Every time.</b></p>
-  </div>
-</section>
 
-<!-- 10 CTA -->
-<section class="slide dark">
-  <div class="wrap" style="top:260px">
-    <svg viewBox="0 0 24 24" style="width:120px;height:120px"><path d="M6 3h12v18l-6-4.5L6 21z" fill="#996EFF"/></svg>
-    <h1 style="font-size:150px;letter-spacing:-6px;margin-top:40px">Save this.</h1>
-    <div class="lead" style="font-size:46px;line-height:1.3;color:#fff;margin-top:40px;max-width:860px">For the next time someone says <span style="color:var(--purple)">“we’ll digitise later.”</span></div>
+  <!-- 6 STEP 4 -->
+  <div class="sl" style="left:5400px">
+    <div class="card" style="left:80px;top:60px;width:920px;height:370px;transform:rotate(.8deg);padding:46px 56px">
+      <div class="kicker">Step 4 · Into Excel</div>
+      <div class="h" style="margin-top:22px;font-size:74px">Paste the CSV into Excel.</div>
+      <div class="sub" style="margin-top:14px;font-size:32px">Rename the columns to match the field names in your ERP.</div>
+    </div>
+    <div class="laptop" style="left:120px;top:470px;width:860px;height:860px;transform:rotate(-2deg)">
+      <div class="lid"><div class="scr"><table class="xl" id="excel"></table></div></div>
+      <div class="base"><div class="keys"></div><div class="pad"></div></div>
+    </div>
+    <div class="sticky" style="left:580px;top:880px;width:450px;height:360px;transform:rotate(5deg);z-index:4">
+      <div class="pen-note" style="font-size:43px">Item names must match your ERP Item Codes exactly, or the import fails.</div>
+    </div>
+    <div class="sticky" style="left:70px;top:1010px;width:400px;height:250px;transform:rotate(-4deg);background:var(--pink);z-index:4">
+      <div class="pen-note" style="font-size:43px">Check dates stayed DD/MM.</div>
+    </div>
   </div>
-  <div style="position:absolute;left:88px;right:88px;bottom:150px;border-top:1px solid rgba(255,255,255,.15);padding-top:40px;display:flex;align-items:center;gap:20px;z-index:2">
-    <svg style="width:64px;height:60px"><use href="#logo"/></svg>
-    <span style="font:800 46px var(--display);letter-spacing:-1px">AlfaStack</span>
-  </div>
-</section>
 
+  <!-- 7 STEP 5 -->
+  <div class="sl" style="left:6480px">
+    <div class="card" style="left:80px;top:70px;width:920px;height:400px;transform:rotate(-.8deg);padding:46px 56px">
+      <div class="kicker">Step 5 · Into the ERP</div>
+      <div class="h" style="margin-top:22px;font-size:74px">ERPNext:</div>
+      <div style="font:700 36px/1.4 var(--sans);margin-top:14px">Data Import → choose what you’re importing → upload the file.</div>
+    </div>
+    <div class="shot" style="left:110px;top:520px;width:860px;height:520px;transform:rotate(1.4deg)">
+      <div class="in">
+        <img src="assets/erpnext-import.png" onerror="this.remove()" alt="">
+        <div class="ui-bar">Data Import <span class="ui-btn">Start Import</span></div>
+        <div style="padding:18px 22px;font:700 20px var(--sans);color:var(--red)">⚠ 1 row has errors. Fix before importing.</div>
+        <div class="ui-row hd"><span>Item Code</span><span>Item</span><span>Qty</span><span>UOM</span></div>
+        <div class="ui-row"><span>MS-SHT-2</span><span>MS Sheet 2mm</span><span>30</span><span>Nos</span></div>
+        <div class="ui-row"><span>BRG-6204</span><span>Bearing 6204</span><span>120</span><span>Nos</span></div>
+        <div class="ui-row"><span class="ui-err">PRIMER?</span><span>Primer</span><span>4</span><span>L</span></div>
+        <div class="ui-row"><span>HYD-OIL</span><span>Hydraulic Oil</span><span>20</span><span>L</span></div>
+      </div>
+    </div>
+    <div class="tape" style="left:170px;top:500px;transform:rotate(-8deg)"></div>
+    <div class="tape" style="left:800px;top:510px;transform:rotate(6deg)"></div>
+    <div class="sticky" style="left:540px;top:1000px;width:480px;height:280px;transform:rotate(-3deg);z-index:4">
+      <div class="pen-note" style="font-size:42px">It flags errors before importing anything. Check that screen first.</div>
+    </div>
+  </div>
+
+  <!-- 8 BEFORE / AFTER -->
+  <div class="sl" style="left:7560px">
+    <div class="reg" style="left:40px;top:150px;width:500px;height:700px;transform:rotate(-4deg);padding:14px">
+      <div class="pages"><div class="page" id="regB" style="padding-left:66px"></div></div>
+    </div>
+    <div class="shot" style="left:560px;top:160px;width:470px;height:680px;transform:rotate(3deg)">
+      <div class="in">
+        <img src="assets/erp-after.png" onerror="this.remove()" alt="">
+        <div class="ui-bar" style="font-size:20px">Stock Entry · Submitted</div>
+        <div id="afterRows"></div>
+      </div>
+    </div>
+    <div class="ink-note" style="position:absolute;left:60px;top:50px;color:#FFF3DC;font-size:60px;transform:rotate(-4deg)">before</div>
+    <div class="ink-note" style="position:absolute;left:660px;top:60px;color:#FFF3DC;font-size:60px;transform:rotate(3deg)">after</div>
+    <div class="card" style="left:90px;top:900px;width:900px;height:360px;transform:rotate(-1deg)">
+      <div class="h" style="font-size:104px">Same data.<br><span class="hl">Zero retyping.</span></div>
+    </div>
+  </div>
+
+  <!-- 9 PRASHANT'S TAKE -->
+  <div class="sl" style="left:8640px">
+    <div class="phone" style="left:80px;top:60px;width:300px;height:600px;transform:rotate(-8deg)">
+      <div class="scr" style="background:linear-gradient(180deg,#1d2440,#0b0e1c);color:#fff;text-align:center;padding-top:110px">
+        <div style="font:600 22px var(--sans);opacity:.75">Tuesday</div>
+        <div style="font:300 96px/1.1 var(--display);letter-spacing:-3px">9:00</div>
+        <div style="font:600 22px var(--sans);opacity:.75">PM</div>
+      </div>
+    </div>
+    <div class="glass" style="left:760px;top:90px;width:250px;height:250px"></div>
+    <div class="card" style="left:80px;top:520px;width:920px;height:560px;transform:rotate(1deg);padding:60px 64px">
+      <div class="kicker">Prashant’s take</div>
+      <div class="h" style="margin-top:26px;font-size:66px;line-height:1.08;letter-spacing:-2px">AI doesn’t replace the register. It replaces the person retyping it at <span class="hl">9pm.</span></div>
+      <div class="ink-note" style="position:absolute;right:64px;bottom:40px;font-size:60px">— Prashant</div>
+    </div>
+    <div class="sticky" style="left:470px;top:1060px;width:520px;height:230px;transform:rotate(-3deg);background:var(--pink)">
+      <div class="pen-note" style="font-size:42px">Stock &amp; money entries: always do step 3. Every time.</div>
+    </div>
+  </div>
+
+  <!-- 10 CTA -->
+  <div class="sl" style="left:9720px">
+    <div class="reg shut" style="left:560px;top:700px;width:560px;height:760px;transform:rotate(9deg)"></div>
+    <div class="card" style="left:80px;top:170px;width:860px;height:640px;transform:rotate(-1.5deg);padding:70px 70px">
+      <div class="h" style="font-size:160px;letter-spacing:-6px">Save this.</div>
+      <div style="font:600 46px/1.3 var(--sans);margin-top:46px;letter-spacing:-.6px">For the next time someone says <span class="hl">“we’ll digitise later.”</span></div>
+    </div>
+    <div class="pen" style="left:140px;top:960px;width:520px;transform:rotate(18deg)"></div>
+  </div>
+
+  <div id="light"></div>
 </div>
 
 <script>
-// Demo rows. Replace with what's actually on the register photo so slide 1 is truthful.
-const rows = [
-  ['12/03', 'MS Sheet 2mm', '30', 'Nos'],
-  ['12/03', 'Bearing 6204', '120', 'Nos'],
-  ['13/03', 'Hydraulic Oil', '20', 'L'],
-  ['13/03', 'Weld Rod 3.15', '5', 'Kg'],
-  ['14/03', 'Primer', 'UNCLEAR', 'L'],
-  ['14/03', 'Packing Box', '200', 'Nos'],
-  ['15/03', 'Grease', '2', 'Kg'],
-];
-document.getElementById('hookRows').innerHTML = rows.map(r =>
-  `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="n${r[2] === 'UNCLEAR' ? ' bad' : ''}">${r[2]}</td><td>${r[3]}</td></tr>`).join('');
-
-const slides = [...document.querySelectorAll('.slide')];
-slides.forEach((s, i) => {
-  s.insertAdjacentHTML('beforeend', `
-    <div class="top"><div class="brand"><svg><use href="#logo"/></svg>AlfaStack</div><div class="count">${String(i + 1).padStart(2, '0')} / ${slides.length}</div></div>
-    <div class="rail">${slides.map((_, j) => `<i class="${j <= i ? 'on' : ''}"></i>`).join('')}</div>
-    ${s.hasAttribute('data-swipe') ? '<div class="swipe">Swipe <svg><use href="#arr"/></svg></div>' : ''}`);
+// Hand-written register lines (messy on purpose: strike-outs, uneven slant).
+const left = ['12/3  MS sheet 2mm  30 nos', '12/3  Bearing 6204  120', '13/3  Hyd. oil  20 L', '13/3  Weld rod 3.15  5 kg', '14/3  Primer  <s>3</s> 4 L', '14/3  Pkg box  200', '15/3  Grease  2 kg', '15/3  Bolt M10  300', '16/3  Nut M10  300', '16/3  Washer  300', '17/3  Tape  12', '17/3  Gloves  24 pr'];
+const right = ['18/3  Drill bit 8mm  10', '18/3  Cutting disc  25', '19/3  Paint (grey)  <s>10</s> 8 L', '19/3  Thinner  5 L', '20/3  Rivet  500', '20/3  Sand paper  50', '21/3  Hinge  40', '21/3  Lock  12', '22/3  Spring  100', '22/3  Cable tie  1 pkt'];
+const lines = (arr, seed) => arr.map((t, i) => `<p style="transform:rotate(${((i * 37 + seed) % 7 - 3) * .35}deg) translateX(${(i * 13 + seed) % 9 - 4}px)">${t.replace(/  /g, ' &nbsp; ')}</p>`).join('');
+document.getElementById('regL').innerHTML = lines(left, 1);
+document.getElementById('regR').innerHTML = lines(right, 5);
+document.getElementById('regB').innerHTML = lines(left.slice(0, 11), 3);
+document.querySelectorAll('.mini-reg').forEach(m => {
+  m.style.background = '#F3EBD6';
+  m.style.backgroundImage = 'repeating-linear-gradient(to bottom, transparent 0 33px, rgba(70,115,170,.4) 33px 35px)';
+  m.style.padding = '18px 14px 0 30px'; m.style.overflow = 'hidden';
+  m.innerHTML = left.slice(0, 8).map(t => `<p style="font:400 22px/35px Script,cursive;color:#1F2F6E;white-space:nowrap">${t}</p>`).join('');
 });
+
+// Demo data. Replace with what's on the real register so slide 1 tells the truth.
+const rows = [['12/03', 'MS Sheet 2mm', '30', 'Nos'], ['12/03', 'Bearing 6204', '120', 'Nos'], ['13/03', 'Hydraulic Oil', '20', 'L'], ['13/03', 'Weld Rod 3.15', '5', 'Kg'], ['14/03', 'Primer', 'UNCLEAR', 'L'], ['14/03', 'Packing Box', '200', 'Nos'], ['15/03', 'Grease', '2', 'Kg'], ['15/03', 'Bolt M10', '300', 'Nos'], ['16/03', 'Nut M10', '300', 'Nos']];
+const tr = r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="${r[2] === '??' ? 'bad' : ''}" style="text-align:right">${r[2]}</td><td>${r[3]}</td></tr>`;
+document.getElementById('phoneTable').innerHTML = `<tr><th>Date</th><th>Item</th><th style="text-align:right">Qty</th><th>Unit</th></tr>` + rows.map(r => tr([r[0], r[1].length > 11 ? r[1].slice(0, 10) + '…' : r[1], r[2] === 'UNCLEAR' ? '??' : r[2], r[3]])).join('');
+document.getElementById('checkTable').innerHTML = `<tr><th>Date</th><th>Item</th><th>Qty</th><th>Unit</th></tr>` +
+  [['12/03', 'MS Sheet', '30', 'Nos'], ['12/03', 'Bearing', '120', 'Nos'], ['13/03', 'Hyd. Oil', '20', 'L'], ['13/03', 'Weld Rod', '5', 'Kg'], ['14/03', 'Primer', 'UNCLEAR', 'L'], ['14/03', 'Pkg Box', '700', 'Nos'], ['15/03', 'Grease', '2', 'Kg'], ['15/03', 'Bolt M10', '300', 'Nos'], ['16/03', 'Nut M10', '300', 'Nos'], ['16/03', 'Washer', '300', 'Nos']]
+  .map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td style="text-align:right;${r[2] === 'UNCLEAR' ? 'color:#D23A2E;font-weight:800' : ''}">${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+document.getElementById('excel').innerHTML = `<tr><th class="rn"></th><th>Posting Date</th><th style="outline:4px solid #D23A2E;outline-offset:-4px">Item Code</th><th>Qty</th><th>UOM</th></tr>` +
+  [['12-03-2026', 'MS-SHT-2', '30', 'Nos'], ['12-03-2026', 'BRG-6204', '120', 'Nos'], ['13-03-2026', 'HYD-OIL', '20', 'L'], ['13-03-2026', 'WLD-315', '5', 'Kg'], ['14-03-2026', 'PRM-GRY', '4', 'L'], ['14-03-2026', 'PKG-BOX', '200', 'Nos']]
+  .map((r, i) => `<tr><td class="rn">${i + 2}</td><td>${r[0]}</td><td>${r[1]}</td><td style="text-align:right">${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+document.getElementById('afterRows').innerHTML = `<div class="ui-row hd" style="grid-template-columns:1.3fr .7fr .6fr"><span>Item Code</span><span>Qty</span><span>UOM</span></div>` +
+  [['MS-SHT-2', '30', 'Nos'], ['BRG-6204', '120', 'Nos'], ['HYD-OIL', '20', 'L'], ['WLD-315', '5', 'Kg'], ['PRM-GRY', '4', 'L'], ['PKG-BOX', '200', 'Nos'], ['GRS-01', '2', 'Kg'], ['BLT-M10', '300', 'Nos'], ['NUT-M10', '300', 'Nos'], ['WSH-M10', '300', 'Nos'], ['TAPE-01', '12', 'Nos']]
+  .map(r => `<div class="ui-row" style="grid-template-columns:1.3fr .7fr .6fr"><span>${r[0]}</span><span>${r[1]}</span><span>${r[2]}</span></div>`).join('');
+
+document.getElementById('kit').innerHTML = [
+  ['A phone camera', ''], ['One page of your register', ''], ['Any AI that accepts photos', 'ChatGPT, Claude or Gemini'], ['Your ERP, or just Excel', '']
+].map(([t, s]) => `<div style="display:flex;gap:26px;align-items:flex-start;padding:26px 0;border-top:2px dashed #DDD6C6">
+  <span style="flex:none;position:relative;width:52px;height:52px;border:4px solid var(--ink);border-radius:6px;margin-top:4px">
+    <svg viewBox="0 0 60 56" style="position:absolute;left:-6px;top:-22px;width:72px;height:68px"><path d="M6 30 C 14 36, 18 42, 22 50 C 30 30, 42 14, 56 4" fill="none" stroke="#D23A2E" stroke-width="6" stroke-linecap="round"/></svg></span>
+  <span><span style="font:700 46px/1.1 var(--display);letter-spacing:-1px">${t}</span>${s ? `<span style="display:block;font:500 32px/1.3 var(--sans);color:var(--soft);margin-top:8px">${s}</span>` : ''}</span></div>`).join('');
 </script>
 </body>
 </html>
