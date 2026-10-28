@@ -6,4 +6,3 @@ work/*.mkv
 work/*.log
 work/frames/
 __pycache__/
-bears_*.mp4
