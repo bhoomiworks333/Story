@@ -36,6 +36,7 @@ def bear(src_t, panel):
     elif panel == "argon": f = f[558:1078]
     return Image.fromarray(f)
 
+BEAR_H = round(BH * W / BW)                            # full clip at full width: 1080 x 1357
 def closeup(im, width=W, scale=1.4):              # panel 858x520 -> zoomed, centre-cropped to `width`
     big = im.resize((round(im.width * scale), round(im.height * scale)), Image.LANCZOS)
     x = (big.width - width) // 2
@@ -128,8 +129,21 @@ def pip(face):                                         # Version B: head-and-sho
     ImageDraw.Draw(box).rounded_rectangle((0, 0, PIP_W + 7, PIP_H + 7), 40, fill=(255, 255, 255, 255))
     box.paste(reg, (4, 4), PIP_MASK); return gfx.shadowed(box, blur=16, offset=6, alpha=140)
 
+# ---- full-screen bear section (both versions, "Same prompt" -> "each other"): no face, no subtitles ----
+def bear_fullscreen(t):
+    st = bear_state(t)
+    if st is None:                                     # Version A opens the section on the X post
+        c = Image.new("RGBA", (W, H), DARK); put(c, pop(G["xpost"], t, T2, 0.2), W / 2, H / 2); return c
+    panel, src = st; im = bear(src, panel)
+    c = blurred_fill(bear(src, "full")).convert("RGBA")
+    if panel == "full": c.paste(im.resize((W, BEAR_H), Image.LANCZOS), (0, (H - BEAR_H) // 2))
+    else:
+        im = closeup(im); c.paste(im, (0, (H - im.height) // 2))
+    c.alpha_composite(G["credit"], (28, 150)); return c
+
 # ---- per-frame composition ----
 def frame_A(t, face):
+    if T2 <= t < T_WORST: return bear_fullscreen(t)
     full = t < T2 or t >= T_THREE
     if full:
         c = face_full(face, t).convert("RGBA")
@@ -154,8 +168,8 @@ def frame_A(t, face):
     if s: put(c, sub_img(s), W / 2, sy)
     return c
 
-BEAR_H = round(BH * W / BW)                            # full clip at full width: 1080 x 1357
 def frame_B(t, face):
+    if T2 <= t < T_WORST: return bear_fullscreen(t)
     if T_THREE <= t < T_ITS:                           # full-screen face for the "three times the money" line
         c = face.convert("RGBA"); put(c, pop(G["punch"], t, T_THREE), W / 2, 300)
         s = sub_at(t)
