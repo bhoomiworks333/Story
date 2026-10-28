@@ -121,7 +121,7 @@ def face_bottom(face):                                 # Version A split: hair-t
     bg = reg.crop((0, 160, W, 930)).filter(ImageFilter.GaussianBlur(25))
     bg.paste(fg, ((W - fg.width) // 2, 0)); return bg
 
-PIP_W, PIP_H, PIP_X, PIP_Y = 420, 540, 36, 1295
+PIP_W, PIP_H, PIP_X, PIP_Y = 380, 480, 36, 1380
 PIP_MASK = gfx.rounded_mask(PIP_W, PIP_H, 36)
 def pip(face):                                         # Version B: head-and-shoulders box (rows 240-1290 of the face)
     reg = face.crop((70, 240, 1010, 240 + round(940 * PIP_H / PIP_W))).resize((PIP_W, PIP_H), Image.LANCZOS)
@@ -143,7 +143,7 @@ def bear_fullscreen(t):
 
 # ---- per-frame composition ----
 def frame_A(t, face):
-    if T2 <= t < T_WORST: return bear_fullscreen(t)
+    if T2 + 1.5 <= t < T_CLAUDE: return bear_fullscreen(t)
     full = t < T2 or t >= T_THREE
     if full:
         c = face_full(face, t).convert("RGBA")
@@ -168,29 +168,27 @@ def frame_A(t, face):
     if s: put(c, sub_img(s), W / 2, sy)
     return c
 
+B_CLIP_H = 1500                                        # full clip zoomed to 1194x1500, centre-cropped to 1080 wide
+B_CLIP_W = round(BW * B_CLIP_H / BH)
 def frame_B(t, face):
-    if T2 <= t < T_WORST: return bear_fullscreen(t)
-    if T_THREE <= t < T_ITS:                           # full-screen face for the "three times the money" line
-        c = face.convert("RGBA"); put(c, pop(G["punch"], t, T_THREE), W / 2, 300)
-        s = sub_at(t)
-        if s: put(c, sub_img(s), W / 2, 1430)
-        return c
-    st = bear_state(t)
-    src_img = bear(st[1], "full") if st else bear(9.0, "full")
-    c = blurred_fill(src_img).convert("RGBA")
-    if t >= T_WORST and t < T_THREE:
+    st = bear_state(t) if t < T_WORST or t >= T_ITS else None
+    c = blurred_fill(bear(st[1] if st else 9.0, "full")).convert("RGBA")
+    if T_WORST <= t < T_ITS:                           # price card stays up through "three times the money"
         put(c, price_layer(t), W / 2, 640)
+        if t >= T_THREE: put(c, pop(G["punch"], t, T_THREE), W / 2, 1110)
     elif st:
         panel, src = st; im = bear(src, panel)
-        if panel == "full": c.paste(im.resize((W, BEAR_H), Image.LANCZOS), (0, 0))
+        if panel == "full":
+            im = im.resize((B_CLIP_W, B_CLIP_H), Image.LANCZOS); x = (B_CLIP_W - W) // 2
+            c.paste(im.crop((x, 0, x + W, B_CLIP_H)), (0, 0))
         else:
-            im = closeup(im); c.paste(im, (0, 300))
+            im = closeup(im); c.paste(im, (0, 260))
         c.alpha_composite(G["credit"], (28, 150))
     c.alpha_composite(pip(face), (PIP_X - 32, PIP_Y - 32))
-    if t < T2: put(c, pop(G["hook_B"], t, 0.0), W / 2, 680)
-    if t >= T_WHICH: put(c, pop(G["cta"], t, T_WHICH), W / 2, 680)
+    if t < T2: put(c, pop(G["hook_B"], t, 0.0), W / 2, 690)
+    if t >= T_WHICH: put(c, pop(G["cta"], t, T_WHICH), W / 2, 690)
     s = sub_at(t)
-    if s: put(c, sub_img(s), W / 2, 1222)
+    if s: put(c, sub_img(s), W / 2, 1318)
     return c
 
 if __name__ == "__main__":
