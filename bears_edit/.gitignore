@@ -1,3 +1,9 @@
 src/
+models/
 work/*.wav
+work/*.mp4
+work/*.mkv
+work/*.log
 work/frames/
+__pycache__/
+bears_*.mp4
