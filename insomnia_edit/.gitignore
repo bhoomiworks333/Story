@@ -1,0 +1,7 @@
+# Raw footage and derived media stay local (too large for git)
+source/
+source_raw/
+*.mp4
+*.mov
+*.MOV
+*.wav
