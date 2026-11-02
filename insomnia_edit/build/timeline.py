@@ -9,7 +9,7 @@ for w in words:
 words[-2].update(s=38.60, e=39.20); words[-1].update(s=39.30, e=40.40)
 SPEECH_END = 40.45; CLIP_END = 40.98; HOLD = 1.5; PAD = 0.12; MAXGAP = 0.35
 SPEED = 1.12          # whole reel sped up (user request); hold after AWAKE stays 1.5s real time
-FIRST_WORD = "carried" # line 1 removed: user adds their own adverse-case clip in front
+FIRST_WORD = "if"      # full script; user adds their own hook text overlay on the opening
 
 w_ = wave.open(f"{E}/review/audio_D_c3.wav"); sr = w_.getframerate()
 a = np.frombuffer(w_.readframes(w_.getnframes()), np.int16).astype(float) / 32768
@@ -88,7 +88,8 @@ t_paper_end = fr(W("bag")["oe"] + 0.15)
 t_want = fr(W("want")["os"] - 0.05)
 total = fr(total)
 walk = [  # (clip, src_in, out_start, out_end)
-    ("clipA_1102", 6.00, 0.0, c_half),
+    ("clipA_1102", 5.85, 0.0, c_carried),
+    ("clipB_c1",   6.50, c_carried, c_half),
     ("clipC_c2",   0.15, c_half, c_moment),
     ("clipC_c2",   7.00, c_moment, c_mac),
     ("clipB_c1",   8.78, c_mac, blk_start),
@@ -103,7 +104,7 @@ sections += [{"type":"black","a":blk_start,"b":blk_end},
              {"type":"paper","a":t_paper,"b":t_paper_end},
              {"type":"full","a":t_paper_end,"b":total,"cta_from":t_want}]
 tl = dict(fps=FPS, keep=keep, cuts=cuts, words=words, aroll_len=round(aroll_len,3), total=total,
-          freeze=round(total-aroll_len,3), sections=sections, speed=SPEED, first_word=FIRST_WORD, cta_start=t_want)
+          freeze=round(total-aroll_len,3), sections=sections, speed=SPEED, first_word=FIRST_WORD, hook_window=c_carried, cta_start=t_want)
 json.dump(tl, open(f"{E}/build/timeline.json","w"), indent=1)
 print(f"start trim at {start}s (camera setup before)")
 print("CUTS (source seconds):")

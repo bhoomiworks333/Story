@@ -9,7 +9,7 @@ MODE = sys.argv[1] if len(sys.argv) > 1 else "draft"
 E = "/home/user/Story/insomnia_edit"; SRC = f"{E}/source"; T = f"{E}/build/tmp"; os.makedirs(T, exist_ok=True)
 tl = json.load(open(f"{E}/build/timeline.json")); gr = json.load(open(f"{E}/build/grade.json"))
 FPS = tl["fps"]; W, H = 1080, 1920; TOTAL = tl["total"]; SPEED = tl.get("speed", 1.0)
-SLATE = 2.0   # reminder card where the user's adverse-case clip goes (line 1 was removed)
+SLATE = 0.0   # no reminder card: full script, user adds their own hook text
 FONT = f"{E}/fonts/Montserrat-Bold.ttf"
 ASSETS = f"{E}/assets"
 INT = ["-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p", "-r", str(FPS)]
@@ -261,7 +261,7 @@ def build_paper_rec(sec):
 
 # ---------- subtitles / text (ASS) ----------
 CHUNKS = [  # (words, highlight)
-    ("Carried your laptop", 0), ("around", 0),
+    ("If you use Claude Code,", 0), ("you've done this.", 0), ("Carried your laptop", 0), ("around", 0),
     ("half open,", 1), ("because the moment", 0), ("you close it,", 0), ("your Mac sleeps", 0), ("and the task stops.", 0),
     ("There's a free repo", 0), ("on GitHub", 0), ("that fixes this.", 0), ("It's called", 0), ("Insomnia.", 1),
     ("It sits in your", 0), ("menu bar", 0), ("as a small eye icon.", 0), ("You set how long", 0), ("your Mac should", 0),
@@ -320,7 +320,7 @@ def build_audio():
     run(["ffmpeg", "-v", "error", "-y", "-i", v, "-af", f"{af},{ln},aresample=48000", f"{T}/voice_norm.wav"])
     # separate pass: adelay chained after loudnorm silently does nothing in this ffmpeg build (verified)
     run(["ffmpeg", "-v", "error", "-y", "-i", f"{T}/voice_norm.wav", "-af",
-         f"adelay={int(SLATE*1000)}:all=1,apad=whole_dur={TOTAL+SLATE},atrim=0:{TOTAL+SLATE}", f"{T}/voice.wav"])
+         f"adelay={max(1, int(SLATE*1000))}:all=1,apad=whole_dur={TOTAL+SLATE},atrim=0:{TOTAL+SLATE}", f"{T}/voice.wav"])
     d = float(run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f"{T}/voice.wav"]).stdout)
     assert abs(d - (TOTAL + SLATE)) < 0.05, f"voice length {d} != {TOTAL+SLATE}"
     # music / SFX get mixed here once the files are supplied (Step 6)
@@ -330,8 +330,9 @@ def build_audio():
 def compose(audio, out):
     secs = tl["sections"]; inputs = []; fc = []; labels = []; cnt = [0]
     def inp(path, pre=()): inputs.extend([*pre, "-i", path]); cnt[0] += 1; return cnt[0] - 1
-    i_sl = inp(build_slate(), ("-loop", "1", "-framerate", str(FPS), "-t", str(SLATE)))
-    fc.append(f"[{i_sl}:v]format=yuv420p,setsar=1[slate]"); labels.append("[slate]")
+    if SLATE > 0:
+        i_sl = inp(build_slate(), ("-loop", "1", "-framerate", str(FPS), "-t", str(SLATE)))
+        fc.append(f"[{i_sl}:v]format=yuv420p,setsar=1[slate]"); labels.append("[slate]")
     i_full = inp(f"{T}/aroll_full.mp4"); i_bot = inp(f"{T}/aroll_bot.mp4")
     wi = 0
     for k, s in enumerate(secs):
