@@ -85,7 +85,7 @@ t_paper_end = fr(W("bag")["oe"] + 0.15)
 t_want = fr(W("want")["os"] - 0.05)
 total = fr(total)
 walk = [  # (clip, src_in, out_start, out_end)
-    ("clipA_1102", 5.50, 0.0, c_carried),
+    ("clipA_1102", 5.85, 0.0, c_carried),
     ("clipB_c1",   6.50, c_carried, c_half),
     ("clipC_c2",   0.15, c_half, c_moment),
     ("clipC_c2",   7.00, c_moment, c_mac),

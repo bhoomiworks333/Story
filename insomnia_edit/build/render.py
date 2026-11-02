@@ -22,8 +22,15 @@ def run(cmd):
 LOOK = ("curves=master='0/0.035 0.25/0.265 0.5/0.51 0.75/0.735 1/0.95',"   # lift shadows, pull highlights, light contrast
         "colorbalance=rm=0.015:bm=-0.02:rh=-0.01:bh=0.0,"                   # slight warmth in mids, no hot highlights
         "eq=saturation=1.03")
+# Walking shots: v1 brightened + lifted blacks -> milky and clipped. v2 keeps their exposure, adds gentle
+# S-contrast with only a hint of lift, protects highlights, light sharpen. Only white balance is matched.
+LOOK_WALK = ("curves=master='0/0.012 0.25/0.235 0.5/0.5 0.75/0.765 1/0.955',"
+             "colorbalance=rm=0.012:bm=-0.015,eq=saturation=1.07,unsharp=5:5:0.45:5:5:0")
 def grade(key, denoise=False):
     g = gr[key]
+    if not key.startswith("clipD"):
+        gam = min(1.04, max(0.97, 1 / g["gamma"]))          # tiny exposure nudge only, no big brightening
+        return f"colorchannelmixer=rr={g['rr']}:gg={g['gg']}:bb={g['bb']},eq=gamma={gam:.3f},{LOOK_WALK}"
     f = f"colorchannelmixer=rr={g['rr']}:gg={g['gg']}:bb={g['bb']},eq=gamma={1/g['gamma']:.3f},{LOOK}"
     if denoise: f = "hqdn3d=1.5:1.5:4:4," + f
     return f
