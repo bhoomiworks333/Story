@@ -90,15 +90,20 @@ def asset_card(name):
     """Every asset comes from the real repo/README. Missing user screenshots render as a labelled placeholder."""
     if name == "header":
         p = f"{ASSETS}/repo_header.png"
-        if os.path.exists(p):
-            main = rounded(fit(Image.open(p).convert("RGBA"), *ASSET_BOX))
+        if os.path.exists(p):   # user's screenshot: two enlarged crops so name + stars read on a phone
+            src = Image.open(p).convert("RGBA"); bgc = src.getpixel((5, 110))
+            a = src.crop((0, 0, 330, 72)); b = src.crop((596, 138, 926, 196))
+            a = a.resize((a.width*2, a.height*2), Image.LANCZOS); b = b.resize((b.width*2, b.height*2), Image.LANCZOS)
+            main = Image.new("RGBA", (max(a.width, b.width) + 60, a.height + b.height + 70), bgc)
+            main.alpha_composite(a, (30, 20)); main.alpha_composite(b, ((main.width - b.width)//2, a.height + 45))
+            main = rounded(fit(main, *ASSET_BOX))
         else:
             ph = Image.new("RGBA", (900, 300), (255, 255, 255, 255)); d = ImageDraw.Draw(ph)
             d.rectangle([4, 4, 895, 295], outline=(200, 60, 60, 255), width=6)
             f = ImageFont.truetype(FONT, 38); d.text((450, 150), "PLACEHOLDER: repo header\nscreenshot from you", font=f, fill=(200, 60, 60), anchor="mm", align="center")
             main = rounded(ph)
         bp = f"{ASSETS}/readme_badges.png"   # real README badges: License MIT · macOS 26+ · Status experimental
-        label = rounded(fit(Image.open(bp).convert("RGBA"), 640, 60), 8) if os.path.exists(bp) else text_card(["macOS 26+ · experimental"], size=40)
+        label = rounded(fit(Image.open(bp).convert("RGBA"), 860, 80), 8) if os.path.exists(bp) else text_card(["macOS 26+ · experimental"], size=40)
         c = Image.new("RGBA", (max(main.width, label.width), main.height + 28 + label.height), (0, 0, 0, 0))
         m2, pad = with_shadow(main); c = Image.new("RGBA", (m2.width, m2.height + label.height), (0, 0, 0, 0))
         c.alpha_composite(m2); l2, lp = with_shadow(label, blur=14, off=6, alpha=60)
@@ -312,7 +317,12 @@ def build_audio():
     js = json.loads(r.stderr[r.stderr.rfind("{"):r.stderr.rfind("}")+1])
     ln = (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
           f"measured_LRA={js['input_lra']}:measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true")
-    run(["ffmpeg", "-v", "error", "-y", "-i", v, "-af", f"{af},{ln},aresample=48000,adelay={int(SLATE*1000)}:all=1,apad=whole_dur={TOTAL+SLATE},atrim=0:{TOTAL+SLATE}", f"{T}/voice.wav"])
+    run(["ffmpeg", "-v", "error", "-y", "-i", v, "-af", f"{af},{ln},aresample=48000", f"{T}/voice_norm.wav"])
+    # separate pass: adelay chained after loudnorm silently does nothing in this ffmpeg build (verified)
+    run(["ffmpeg", "-v", "error", "-y", "-i", f"{T}/voice_norm.wav", "-af",
+         f"adelay={int(SLATE*1000)}:all=1,apad=whole_dur={TOTAL+SLATE},atrim=0:{TOTAL+SLATE}", f"{T}/voice.wav"])
+    d = float(run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f"{T}/voice.wav"]).stdout)
+    assert abs(d - (TOTAL + SLATE)) < 0.05, f"voice length {d} != {TOTAL+SLATE}"
     # music / SFX get mixed here once the files are supplied (Step 6)
     return f"{T}/voice.wav"
 
