@@ -8,7 +8,8 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 MODE = sys.argv[1] if len(sys.argv) > 1 else "draft"
 E = "/home/user/Story/insomnia_edit"; SRC = f"{E}/source"; T = f"{E}/build/tmp"; os.makedirs(T, exist_ok=True)
 tl = json.load(open(f"{E}/build/timeline.json")); gr = json.load(open(f"{E}/build/grade.json"))
-FPS = tl["fps"]; W, H = 1080, 1920; TOTAL = tl["total"]
+FPS = tl["fps"]; W, H = 1080, 1920; TOTAL = tl["total"]; SPEED = tl.get("speed", 1.0)
+SLATE = 2.0   # reminder card where the user's adverse-case clip goes (line 1 was removed)
 FONT = f"{E}/fonts/Montserrat-Bold.ttf"
 ASSETS = f"{E}/assets"
 INT = ["-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p", "-r", str(FPS)]
@@ -42,7 +43,8 @@ def build_aroll():
         fc.append(f"[0:v]trim={a}:{b},setpts=PTS-STARTPTS[v{i}]")
         fade = f"afade=t=in:d=0.008,afade=t=out:st={b-a-0.008:.3f}:d=0.008"
         fc.append(f"[0:a]atrim={a}:{b},asetpts=PTS-STARTPTS,{fade}[a{i}]")
-    fc.append("".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[cv][ca]")
+    fc.append("".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[cv0][ca0]")
+    fc.append(f"[cv0]setpts=PTS/{SPEED}[cv]"); fc.append(f"[ca0]atempo={SPEED}[ca]")
     g = grade("clipD_c3@20.0", denoise=True)
     fr = tl["freeze"]
     fc.append(f"[cv]fps={FPS},{g},tpad=stop_mode=clone:stop_duration={fr},split[f0][b0]")
@@ -203,9 +205,58 @@ def build_paper(sec):
         p.stdin.write(fr.convert("RGB").resize((W, H), Image.LANCZOS, box=box).tobytes())
     p.stdin.close(); p.wait()
 
+
+# ---------- reminder card (user's adverse-case clip goes here) ----------
+def build_slate():
+    im = Image.new("RGB", (W, H), (20, 20, 20)); d = ImageDraw.Draw(im)
+    d.rectangle([40, 40, W-41, H-41], outline=(255, 214, 0), width=10)
+    f1 = ImageFont.truetype(FONT, 78); f2 = ImageFont.truetype(FONT, 42)
+    d.text((W//2, H//2 - 120), "ADD YOUR\nADVERSE CASE\nCLIP HERE", font=f1, fill=(255, 214, 0), anchor="mm", align="center", spacing=18)
+    d.text((W//2, H//2 + 170), "Replace this 2s card.", font=f2, fill=(235, 235, 235), anchor="mm")
+    d.text((W//2, H//2 + 240), "Next line: \"Carried your laptop around...\"", font=f2, fill=(170, 170, 170), anchor="mm")
+    p = f"{T}/slate.png"; im.save(p); return p
+
+# ---------- warning line on the user's real screen recording ----------
+REC = f"{SRC}/screenrec_repo.mp4"
+def build_paper_rec(sec):
+    """Plays the recording into the warning line (0.5s), then holds that frame: zoom 100->115%, yellow swipe."""
+    S = 2; PW, PH = W*S, H*S; rw, rh = 598, 904; sc = PW / rw
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", "0.5", "-t", "0.5", "-i", REC, "-vf", f"fps={FPS}",
+                          "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], capture_output=True).stdout
+    frames = [Image.frombytes("RGB", (rw, rh), raw[i:i+rw*rh*3]) for i in range(0, len(raw) - rw*rh*3 + 1, rw*rh*3)]
+    hold = Image.open(f"{E}/review/rec_1.0.png").convert("RGB")
+    bg = tuple(int(x) for x in np.median(np.asarray(hold)[850:900, :, :].reshape(-1, 3), 0))
+    def place(im):
+        b = Image.new("RGB", (PW, PH), bg); r = im.resize((PW, round(rh*sc)), Image.LANCZOS); y0 = (PH - r.height)//2
+        b.paste(r, (0, y0)); return b, y0
+    base, y0 = place(hold); base_np = np.asarray(base).astype(np.float32)
+    # bold sentence in recording coords: line 1 (x 60-540, y 528-552), line 2 "bag." (x 60-102, y 560-584)
+    lines = [(round(60*sc), y0 + round(528*sc), round(540*sc), y0 + round(552*sc)),
+             (round(60*sc), y0 + round(560*sc), round(102*sc), y0 + round(584*sc))]
+    focus = (PW//2, (lines[0][1] + lines[1][3])//2)
+    n = round((sec["b"] - sec["a"]) * FPS); p = pipe_writer(f"{T}/paper.mp4", W, H)
+    play = len(frames); total_len = sum(l[2] - l[0] for l in lines); hold_n = n - play
+    for k in range(n):
+        if k < play:
+            p.stdin.write(place(frames[k])[0].resize((W, H), Image.LANCZOS).tobytes()); continue
+        t = (k - play) / FPS; arr = np.asarray(base).copy()
+        pr = min(1, max(0, (t - 0.25) / 0.5)); remain = pr * total_len
+        for (x0, ya, x1, yb) in lines:
+            seg = min(remain, x1 - x0); remain -= seg
+            if seg <= 0: continue
+            pd = 5*S; r0, r1, c0, c1 = ya - pd, yb + pd, x0 - pd, x0 + int(seg)
+            reg = base_np[r0:r1, c0:c1]; L = (0.2126*reg[..., 0] + 0.7152*reg[..., 1] + 0.0722*reg[..., 2]) / 255
+            tt = np.clip((L - 0.12) / 0.45, 0, 1)[..., None]
+            arr[r0:r1, c0:c1] = (np.array([255, 214, 0]) * (1 - tt) + np.array([18, 18, 18]) * tt).astype(np.uint8)
+        z = 1 + 0.15 * (0.5 - 0.5 * math.cos(math.pi * min(1, t / max(1e-6, hold_n / FPS))))
+        cw, ch = PW / z, PH / z; cx = PW/2; cy = PH/2 + (focus[1] - PH/2) * (z - 1) / 0.15
+        cy = min(max(cy, ch/2), PH - ch/2)
+        p.stdin.write(Image.fromarray(arr).resize((W, H), Image.LANCZOS, box=(cx - cw/2, cy - ch/2, cx + cw/2, cy + ch/2)).tobytes())
+    p.stdin.close(); p.wait()
+
 # ---------- subtitles / text (ASS) ----------
 CHUNKS = [  # (words, highlight)
-    ("If you use Claude Code,", 0), ("you've done this.", 0), ("Carried your laptop", 0), ("around", 0),
+    ("Carried your laptop", 0), ("around", 0),
     ("half open,", 1), ("because the moment", 0), ("you close it,", 0), ("your Mac sleeps", 0), ("and the task stops.", 0),
     ("There's a free repo", 0), ("on GitHub", 0), ("that fixes this.", 0), ("It's called", 0), ("Insomnia.", 1),
     ("It sits in your", 0), ("menu bar", 0), ("as a small eye icon.", 0), ("You set how long", 0), ("your Mac should", 0),
@@ -216,7 +267,7 @@ def ass_time(t):
     t = max(0, t); h = int(t // 3600); m = int(t % 3600 // 60); s = t % 60; return f"{h}:{m:02d}:{s:05.2f}"
 def build_ass():
     words = tl["words"]; norm = lambda x: x.lower().strip(".,?!'\"").replace("’", "'")
-    wi = 0; events = []
+    wi = [i for i, w in enumerate(words) if w["w"] == tl.get("first_word", words[0]["w"])][0]; events = []
     for text, hl in CHUNKS:
         n = len(text.split()); ws = words[wi:wi+n]
         assert [norm(w["w"]) for w in ws] == [norm(x) for x in text.split()], (text, [w["w"] for w in ws])
@@ -230,9 +281,8 @@ def build_ass():
         if a >= paper["a"] - 0.01 and b <= paper["b"] + 0.3: continue          # hidden under the paper effect
         a = max(a, 0); mid = (a + b) / 2
         style = ("HL" if hl else "Sub") + ("Seam" if split["a"] <= mid < split["b"] else "")
-        lines.append(f"Dialogue: 1,{ass_time(a)},{ass_time(b)},{style},,0,0,0,,{text}")
-    lines.append(f"Dialogue: 2,{ass_time(0)},{ass_time(tl['hook_end'])},Hook,,0,0,0,,Every Claude Code user\\Nhas done this")
-    lines.append(f"Dialogue: 2,{ass_time(tl['cta_start'])},{ass_time(TOTAL)},Hook,,0,0,0,,Comment AWAKE {{\\fnDejaVu Sans}}↓")
+        lines.append(f"Dialogue: 1,{ass_time(a+SLATE)},{ass_time(b+SLATE)},{style},,0,0,0,,{text}")
+    lines.append(f"Dialogue: 2,{ass_time(tl['cta_start']+SLATE)},{ass_time(TOTAL+SLATE)},Hook,,0,0,0,,Comment AWAKE {{\\fnDejaVu Sans}}↓")
     seam_mv = H - PANEL_H - 40
     hdr = f"""[Script Info]
 ScriptType: v4.00+
@@ -262,14 +312,16 @@ def build_audio():
     js = json.loads(r.stderr[r.stderr.rfind("{"):r.stderr.rfind("}")+1])
     ln = (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:"
           f"measured_LRA={js['input_lra']}:measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true")
-    run(["ffmpeg", "-v", "error", "-y", "-i", v, "-af", f"{af},{ln},aresample=48000", f"{T}/voice.wav"])
+    run(["ffmpeg", "-v", "error", "-y", "-i", v, "-af", f"{af},{ln},aresample=48000,adelay={int(SLATE*1000)}:all=1,apad=whole_dur={TOTAL+SLATE},atrim=0:{TOTAL+SLATE}", f"{T}/voice.wav"])
     # music / SFX get mixed here once the files are supplied (Step 6)
     return f"{T}/voice.wav"
 
 # ---------- compose ----------
 def compose(audio, out):
-    secs = tl["sections"]; inputs = []; fc = []; labels = []
-    def inp(path): inputs.extend(["-i", path]); return len(inputs)//2 - 1
+    secs = tl["sections"]; inputs = []; fc = []; labels = []; cnt = [0]
+    def inp(path, pre=()): inputs.extend([*pre, "-i", path]); cnt[0] += 1; return cnt[0] - 1
+    i_sl = inp(build_slate(), ("-loop", "1", "-framerate", str(FPS), "-t", str(SLATE)))
+    fc.append(f"[{i_sl}:v]format=yuv420p,setsar=1[slate]"); labels.append("[slate]")
     i_full = inp(f"{T}/aroll_full.mp4"); i_bot = inp(f"{T}/aroll_bot.mp4")
     wi = 0
     for k, s in enumerate(secs):
@@ -289,13 +341,13 @@ def compose(audio, out):
     enc = ["-c:v", "libx264", "-crf", "18", "-preset", "slow" if MODE == "final" else "medium", "-pix_fmt", "yuv420p",
            "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart"]
     run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(fc), "-map", "[v]", "-map", f"{ia}:a",
-         *enc, "-t", str(TOTAL), out])
+         *enc, "-t", str(TOTAL + SLATE), out])
 
 if __name__ == "__main__":
     print("A-roll..."); build_aroll()
     for i, s in enumerate([s for s in tl["sections"] if s["type"] == "walk"]): build_walk(i, s)
     print("panels..."); build_top_panel(next(s for s in tl["sections"] if s["type"] == "split"))
-    build_paper(next(s for s in tl["sections"] if s["type"] == "paper"))
+    build_paper_rec(next(s for s in tl["sections"] if s["type"] == "paper"))
     build_ass(); print("audio..."); a = build_audio()
     out = f"{E}/insomnia_{'draft' if MODE == 'draft' else 'final'}.mp4"
     print("compose..."); compose(a, out); print("wrote", out)

@@ -8,6 +8,8 @@ for w in words:
 # Re-aligned tail (energy + second alignment pass): "comment" ~38.60-39.20, "awake" ~39.30-40.40
 words[-2].update(s=38.60, e=39.20); words[-1].update(s=39.30, e=40.40)
 SPEECH_END = 40.45; CLIP_END = 40.98; HOLD = 1.5; PAD = 0.12; MAXGAP = 0.35
+SPEED = 1.12          # whole reel sped up (user request); hold after AWAKE stays 1.5s real time
+FIRST_WORD = "carried" # line 1 removed: user adds their own adverse-case clip in front
 
 w_ = wave.open(f"{E}/review/audio_D_c3.wav"); sr = w_.getframerate()
 a = np.frombuffer(w_.readframes(w_.getnframes()), np.int16).astype(float) / 32768
@@ -36,7 +38,8 @@ still_i = [i for i in its if words[i+1]["w"]=="still"][0]
 protected = {idx("there's"), still_i}
 
 cuts = []  # (start, end, reason)
-for i in range(1, len(words)):
+first_i = [i for i,w in enumerate(words) if w['w']==FIRST_WORD][0]
+for i in range(first_i + 1, len(words)):
     gap0, gap1 = words[i-1]["e"], words[i]["s"]
     if i in protected: continue
     # search quiet runs in a slightly widened window, but never past neighbouring word centres
@@ -46,7 +49,7 @@ for i in range(1, len(words)):
         if qe - qs > MAXGAP:
             cs, ce = round(qs + PAD, 2), round(qe - PAD, 2)
             cuts.append((cs, ce, f'{words[i-1]["w"]} | {words[i]["w"]}'))
-start = round(words[0]["s"] - PAD, 2)
+start = round(words[first_i]["s"] - PAD, 2)
 keep = []; t = start
 for cs, ce, _ in cuts:
     keep.append((t, cs)); t = ce
@@ -54,11 +57,11 @@ keep.append((t, CLIP_END))
 def out(tsrc):
     o = 0.0
     for k0, k1 in keep:
-        if tsrc < k0: return o  # inside a cut -> snaps to next kept point
-        if tsrc <= k1: return o + (tsrc - k0)
+        if tsrc < k0: return o / SPEED  # inside a cut -> snaps to next kept point
+        if tsrc <= k1: return (o + (tsrc - k0)) / SPEED
         o += k1 - k0
-    return o
-aroll_len = sum(k1-k0 for k0,k1 in keep)
+    return o / SPEED
+aroll_len = sum(k1-k0 for k0,k1 in keep) / SPEED
 total = out(SPEECH_END) + HOLD
 fr = lambda x: round(round(x*FPS)/FPS, 4)
 for w in words: w["os"], w["oe"] = round(out(w["s"]),3), round(out(w["e"]),3)
@@ -85,8 +88,7 @@ t_paper_end = fr(W("bag")["oe"] + 0.15)
 t_want = fr(W("want")["os"] - 0.05)
 total = fr(total)
 walk = [  # (clip, src_in, out_start, out_end)
-    ("clipA_1102", 5.85, 0.0, c_carried),
-    ("clipB_c1",   6.50, c_carried, c_half),
+    ("clipA_1102", 6.00, 0.0, c_half),
     ("clipC_c2",   0.15, c_half, c_moment),
     ("clipC_c2",   7.00, c_moment, c_mac),
     ("clipB_c1",   8.78, c_mac, blk_start),
@@ -101,7 +103,7 @@ sections += [{"type":"black","a":blk_start,"b":blk_end},
              {"type":"paper","a":t_paper,"b":t_paper_end},
              {"type":"full","a":t_paper_end,"b":total,"cta_from":t_want}]
 tl = dict(fps=FPS, keep=keep, cuts=cuts, words=words, aroll_len=round(aroll_len,3), total=total,
-          freeze=round(total-aroll_len,3), sections=sections, hook_end=c_carried, cta_start=t_want)
+          freeze=round(total-aroll_len,3), sections=sections, speed=SPEED, first_word=FIRST_WORD, cta_start=t_want)
 json.dump(tl, open(f"{E}/build/timeline.json","w"), indent=1)
 print(f"start trim at {start}s (camera setup before)")
 print("CUTS (source seconds):")
@@ -109,4 +111,4 @@ for cs,ce,r in cuts: print(f"  {cs:6.2f}-{ce:6.2f}  ({ce-cs:.2f}s)  between '{r}
 ti=idx("there's"); print(f"protected pauses kept: before There's {words[ti]['s']-words[ti-1]['e']:.2f}s, before It's still {words[still_i]['s']-words[still_i-1]['e']:.2f}s")
 print(f"A-roll {aroll_len:.2f}s + freeze {total-aroll_len:.2f}s = total {total:.2f}s")
 for s in sections: print(f"  {s['type']:6s} {s['a']:6.2f}-{s['b']:6.2f} ({s['b']-s['a']:.2f}s) {s.get('clip','')} {s.get('src','')}")
-for a_ in sections[7]["assets"]: print(f"     asset {a_[0]:10s} {a_[1]:6.2f}-{a_[2]:6.2f} ({a_[2]-a_[1]:.2f}s)")
+for a_ in next(x for x in sections if x["type"]=="split")["assets"]: print(f"     asset {a_[0]:10s} {a_[1]:6.2f}-{a_[2]:6.2f} ({a_[2]-a_[1]:.2f}s)")
