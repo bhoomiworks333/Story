@@ -1,0 +1,7 @@
+# Large or regenerable media. Originals stay outside git (raw/ holds copies of the uploads,
+# including a third-party example reel that should not be pushed).
+raw/
+face/
+cut.mov
+audio.wav
+cut16.wav
