@@ -1,0 +1,1 @@
+curves=master='0/0.015 0.25/0.27 0.75/0.735 1/0.95',colorbalance=rs=0.03:bs=-0.03:rm=0.025:bm=-0.025:rh=0.01:bh=-0.02,eq=saturation=1.05

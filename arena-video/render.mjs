@@ -22,7 +22,7 @@ const from = args.includes('--from') ? +args[args.indexOf('--from') + 1] : null;
 const to = args.includes('--to') ? +args[args.indexOf('--to') + 1] : null;
 const tag = (format === 'vertical' ? '' : '-' + format) + (from != null || to != null ? `-${from ?? 0}-${to ?? 'end'}` : '');
 
-const browser = await puppeteer.launch({ headless: 'new', args: ['--allow-file-access-from-files', '--force-color-profile=srgb'] });
+const browser = await puppeteer.launch({ headless: 'new', executablePath: process.env.CHROME_PATH || undefined, args: ['--allow-file-access-from-files', '--force-color-profile=srgb', ...(process.env.CHROME_PATH ? ['--no-sandbox'] : [])] });
 const page = await browser.newPage();
 const errors = [];
 page.on('pageerror', e => errors.push(e.message));

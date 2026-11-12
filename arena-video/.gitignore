@@ -5,3 +5,9 @@ face/
 cut.mov
 audio.wav
 cut16.wav
+node_modules/
+frames*/
+still*.jpg
+review/stills/
+package-lock.json
+package.json
