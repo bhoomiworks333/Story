@@ -499,8 +499,8 @@
     [34.2, 35.5, blind],
     [35.5, 37.0, onlyTask],
     [37.0, 37.88, link],
-    [37.88, 39.8, comment],
-    [39.8, 99, t => graves(t, 39.8)],
+    [37.88, 40.37, comment],
+    [40.37, 99, t => graves(t, 40.37)],
   ];
   window.SCENES = SCENES;
 
@@ -511,7 +511,7 @@
     'and each one', 'tackles it', 'in a', 'different way.', 'Then they', 'attack each', "other's answers.", 'A judge', 'scores every', 'round',
     'until', 'one answer is', '*left standing.', 'One thing', 'nobody tells you,', 'the skill', 'is free,', 'but the full', 'run of 100', 'makes almost',
     '*600 calls', 'on your', 'Claude limits.', 'So for', 'everyday stuff,', 'use quick mode.', "That's", '*16 agents', 'only.', 'And make', 'your task clear',
-    'because', 'the agents', "*can't see your chat,", 'only the task', 'you give them.', 'Want the link?', 'Comment', "*'ARENA'", "and I'll", 'send it to you.',
+    'because', 'the agents', "*can't see your chat,", 'only the task', 'you give them.', 'Want the link?', 'Comment', "*'ARENA'", "and I'll", 'send it to you.', 'Because trust me.',
   ];
   let GROUPS = null;
   function buildGroups() {
@@ -536,8 +536,8 @@
   // ---------------------------------------------------------------- the one beat
   window.VIDEO = {
     fps: 30,
-    duration: 40.3,       // length of cut-audio.wav
-    faceFrames: 1209,     // JPGs in face/
+    duration: 41.3,       // length of cut-audio.wav
+    faceFrames: 1239,     // JPGs in face/
     capWords: 3,
     hook: ['Stop re-asking Claude', 'Make <span class="y">100</span> of it fight'],
     hookEnd: 2.2,
