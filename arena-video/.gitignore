@@ -14,3 +14,8 @@ package.json
 video*.mp4
 mix-preview.wav
 review/arena-preview-*.mp4
+music/src.wav
+music/bed-*-raw.wav
+mix-*.wav
+voice-comp.wav
+cut-words-raw2.json

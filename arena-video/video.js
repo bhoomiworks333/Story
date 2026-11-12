@@ -34,7 +34,7 @@
   #cap{top:913px}
   #cap .pill{background:#141414;color:#fff;border-radius:14px;padding:14px 30px 16px;font-family:IN;font-weight:800;font-size:58px;letter-spacing:-0.01em;box-shadow:0 0 0 4px #141414,0 14px 30px -10px rgba(0,0,0,.6)}
   #cap .hl{background:#FFD600;color:#141414;border-radius:10px;padding:2px 14px 4px;margin:0 -8px;display:inline-block}
-  #hook{top:200px;left:50px;right:50px}
+  #hook{top:244px;left:50px;right:50px}
   #hook .box{background:#141414;color:#fff;font-family:IN;font-weight:900;font-size:72px;white-space:nowrap;border-radius:16px;padding:30px 40px 34px;box-shadow:10px 10px 0 #FFD600;letter-spacing:-0.025em;line-height:1.08}
   #hook .y{color:#FFD600}`;
   document.head.insertAdjacentHTML('beforeend', `<style>${css}</style>`);
@@ -135,7 +135,7 @@
   const dim = a => rect(0, 0, LW, LH, `rgba(20,20,20,${a})`);
 
   // grid of 100 small wrestlers
-  const gx = i => 10 + (i % 10) * 25.4, gy = i => 60 + Math.floor(i / 10) * 16;
+  const gx = i => 10 + (i % 10) * 25.4, gy = i => 70 + Math.floor(i / 10) * 15.2;
   const PERM = (() => { const a = [...Array(100).keys()], r = rng(42); for (let i = 99; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; })();
   const TINT = i => `hsl(${(i * 37) % 360},62%,48%)`;
 
@@ -187,7 +187,7 @@
     const a = Wd(11), b = Wd(16);
     const n = t < a ? 1 : Math.min(100, 1 + Math.floor(99 * Math.pow(pr(t, a, b), 1.9)));
     crowd(t, n, k => (k === 0 ? 3.62 : a + Math.pow(k / 99, 1 / 1.9) * (b - a)));
-    T(135, 47, `×${n}`, { size: 56, color: C.y, chip: true });
+    T(135, 60, `×${n}`, { size: 56, color: C.y, chip: true });
   }
 
   const IMG = (src, x, y, w, h, extra = '') => OV.push(`<img src="assets/${src}" style="position:absolute;left:${R(x)}px;top:${R(y)}px;width:${w}px;height:${h}px;${extra}">`);
@@ -258,14 +258,14 @@
     const list = [[Wd(41), 'REASONING', 'FIRST\nPRINCIPLES', C.blue], [Wd(43), 'WORKFLOW', 'DRAFT,\nCRITIQUE,\nREWRITE', C.green], [Wd(47), 'STRATEGY', 'EDGE CASES\nFIRST', C.purple]];
     list.forEach(([ts, kind, label, col], i) => {
       const cx = 45 + i * 90;
-      sprite('up', cx - 18, 150, { sc: 3, L: col });
+      sprite('up', cx - 18, 156, { sc: 3, L: col });
       if (t < ts) return;
       const p = bounce(pr(t, ts, ts + .3)), oy = (1 - p) * -120;
-      box(cx - 41, 62 + oy, 82, 80, C.paper); rect(cx - 39, 64 + oy, 78, 14, col);
-      T(cx, 71.5 + oy, kind, { font: 'IN', weight: 800, size: 26, color: '#fff' });
-      T(cx, 110 + oy, label, { size: 22, style: 'text-align:center;line-height:1.45' });
+      box(cx - 41, 70 + oy, 82, 80, C.paper); rect(cx - 39, 72 + oy, 78, 14, col);
+      T(cx, 79.5 + oy, kind, { font: 'IN', weight: 800, size: 26, color: '#fff' });
+      T(cx, 118 + oy, label, { size: 22, style: 'text-align:center;line-height:1.45' });
     });
-    if (t >= Wd(48)) T(135, 47, '2,160 DIFFERENT CARDS', { size: 22, color: C.y, chip: true, op: eo(pr(t, Wd(48), Wd(48) + .15)) });
+    if (t >= Wd(48)) T(135, 60, '2,160 DIFFERENT CARDS', { size: 22, color: C.y, chip: true, op: eo(pr(t, Wd(48), Wd(48) + .15)) });
   }
 
   function faceoff(t) {
@@ -307,12 +307,12 @@
     ground();
     const a = Wd(65), tt = frozen ? a + .7 : t;
     const p = bounce(pr(tt, a, a + .35)), oy = (1 - p) * 30;
-    sprite('up', 105, 114 + oy, { sc: 5, L: C.y });
-    sprite('trophy', 111, 62 + oy, { sc: 4 });
-    rect(115, 66 + oy, 4, 4, '#fff6c8');
+    sprite('up', 105, 122 + oy, { sc: 5, L: C.y });
+    sprite('trophy', 111, 72 + oy, { sc: 4 });
+    rect(115, 76 + oy, 4, 4, '#fff6c8');
     const r = rng(9);
     for (let i = 0; i < 46; i++) { const x = r() * LW, sp = 40 + r() * 60, y = -10 + ((tt - a) * sp + r() * 240) % 250; rect(x, y, 3, 3, [C.y, C.red, C.blue, '#fff', C.green][i % 5]); }
-    T(135, 47, 'LEFT: <span style="color:#FFD600">1</span>', { size: 44, color: '#fff', chip: true, tf: `scale(${1 + .4 * (1 - eo(pr(tt, a, a + .2)))})` });
+    T(135, 60, 'LEFT: <span style="color:#FFD600">1</span>', { size: 44, color: '#fff', chip: true, tf: `scale(${1 + .4 * (1 - eo(pr(tt, a, a + .2)))})` });
   }
   function knockout(t) {
     if (t >= Wd(65)) return winnerScene(t, false);
@@ -324,14 +324,14 @@
       if (r < alive) sprite('front', gx(i), gy(i), { L: TINT(i) });
       else sprite('front', gx(i) - 2, gy(i) + 4, { rot: true, grey: true, L: TINT(i) });
     }
-    if (k >= 0) T(135, 47, `LEFT: ${alive}`, { size: 44, color: '#fff', chip: true, tf: `scale(${1 + .25 * (1 - eo(pr(t, koT(k), koT(k) + .12)))})` });
+    if (k >= 0) T(135, 60, `LEFT: ${alive}`, { size: 44, color: '#fff', chip: true, tf: `scale(${1 + .25 * (1 - eo(pr(t, koT(k), koT(k) + .12)))})` });
   }
 
   function freeze(t) {
     winnerScene(t, true);
     const a = Wd(66), z = 1 + .55 * eo(pr(t, a, a + .55));
     document.getElementById('zw').style.transform = `scale(${z})`;
-    document.getElementById('zw').style.transformOrigin = `${135 * S}px ${98 * S}px`;
+    document.getElementById('zw').style.transformOrigin = `${135 * S}px ${106 * S}px`;
     if (t >= a) {
       const on = Math.floor((t - a) * 3.5) % 2 === 0;
       T(135, 196, '⚠ NOBODY TELLS YOU', { size: 30, color: on ? C.ink : '#fff', layer: OV2, style: `background:${on ? C.y : '#141414'};padding:16px 20px 10px;box-shadow:6px 6px 0 #141414` });
@@ -352,7 +352,7 @@
 
   function fullRun(t) {
     ground(); crowd(t, 100, null);
-    if (t >= Wd(77)) T(135, 47, t >= Wd(80) ? 'FULL RUN: <span style="color:#FFD600">100</span>' : 'FULL RUN', { size: 40, color: '#fff', chip: true });
+    if (t >= Wd(77)) T(135, 60, t >= Wd(80) ? 'FULL RUN: <span style="color:#FFD600">100</span>' : 'FULL RUN', { size: 40, color: '#fff', chip: true });
   }
 
   function gauge(t) {
@@ -396,11 +396,11 @@
     ground();
     const a = Wd(96) + .02, p = eo(pr(t, a, a + .3));
     if (t < a) { crowd(t, 100, null); }
-    const w = 252 - 82 * p, h = 178 - 30 * p, x = 135 - w / 2, y = 62 + (1 - p) * -4;
+    const w = 252 - 82 * p, h = 150 - 4 * p, x = 135 - w / 2, y = 70;
     for (const [dx, col] of [[0, '#f4ede0'], [3, C.red], [6, '#f4ede0']]) { rect(x + dx, y + dx, w - 2 * dx, 2, col); rect(x + dx, y + h - dx - 2, w - 2 * dx, 2, col); rect(x + dx, y + dx, 2, h - 2 * dx, col); rect(x + w - dx - 2, y + dx, 2, h - 2 * dx, col); }
     [[x, y], [x + w - 4, y], [x, y + h - 4], [x + w - 4, y + h - 4]].forEach(([px, py]) => rect(px - 2, py - 2, 8, 8, C.ink));
-    if (t >= a) for (let i = 0; i < 16; i++) { const ti = a + i * .012; if (t < ti) continue; sprite('front', 135 - 64 + (i % 4) * 34 - 12 + 12, y + 8 + Math.floor(i / 4) * 34, { sc: 2, L: TINT(i * 6) }); }
-    if (t >= Wd(97)) T(135, 47, t >= Wd(98) ? '<span style="color:#FFD600">16</span> AGENTS · 91 CALLS' : '<span style="color:#FFD600">16</span> AGENTS', { size: 38, color: '#fff', chip: true, tf: `scale(${1.4 - .4 * eo(pr(t, Wd(97), Wd(97) + .15))})` });
+    if (t >= a) for (let i = 0; i < 16; i++) { const ti = a + i * .012; if (t < ti) continue; sprite('front', 135 - 64 + (i % 4) * 34 - 12 + 12, y + 6 + Math.floor(i / 4) * 34, { sc: 2, L: TINT(i * 6) }); }
+    if (t >= Wd(97)) T(135, 60, t >= Wd(98) ? '<span style="color:#FFD600">16</span> AGENTS · 91 CALLS' : '<span style="color:#FFD600">16</span> AGENTS', { size: 38, color: '#fff', chip: true, tf: `scale(${1.4 - .4 * eo(pr(t, Wd(97), Wd(97) + .15))})` });
   }
 
   function checkMark(x, y) { [[0, 3], [1, 4], [2, 5], [3, 4], [4, 3], [5, 2], [6, 1], [7, 0]].forEach(([dx, dy]) => rect(x + dx, y + dy, 2, 2, C.green)); }
@@ -433,15 +433,15 @@
     ground(); dim(.62);
     const a = Wd(112);
     X.fillStyle = 'rgba(255,240,170,.22)'; X.beginPath(); X.moveTo(120, 0); X.lineTo(150, 0); X.lineTo(205, 120); X.lineTo(65, 120); X.closePath(); X.fill();
-    box(80, 64, 110, 56, '#ffffff', { border: C.y, sh: '#7a6a10' });
-    T(135, 80, 'task.md', { font: 'JB', weight: 700, size: 30 });
-    T(135, 102, 'the only thing\nthey see', { font: 'IN', weight: 800, size: 24, style: 'text-align:center;line-height:1.2' });
+    box(80, 72, 110, 52, '#ffffff', { border: C.y, sh: '#7a6a10' });
+    T(135, 86, 'task.md', { font: 'JB', weight: 700, size: 30 });
+    T(135, 108, 'the only thing\nthey see', { font: 'IN', weight: 800, size: 24, style: 'text-align:center;line-height:1.2' });
     [0, 1, 2].forEach(i => {
       const x = 46 + i * 70;
       sprite('front', x, 150, { sc: 3, L: [C.blue, C.green, C.purple][i], blind: true });
       for (let k = 0; k < 6; k++) { const f = (k / 6 + (t - a) * 1.5) % 1, px = 135 + (x + 18 - 135) * f, py = 122 + (150 - 122) * f; rect(px - 1, py - 1, 2, 2, C.y); }
     });
-    if (t >= a) T(135, 47, 'ONLY THE TASK', { size: 36, color: C.y, chip: true });
+    if (t >= a) T(135, 60, 'ONLY THE TASK', { size: 36, color: C.y, chip: true });
   }
 
   function link(t) {
