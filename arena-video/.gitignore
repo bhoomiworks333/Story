@@ -11,3 +11,6 @@ still*.jpg
 review/stills/
 package-lock.json
 package.json
+video*.mp4
+mix-preview.wav
+review/arena-preview-*.mp4
