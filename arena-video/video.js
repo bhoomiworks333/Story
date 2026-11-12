@@ -190,21 +190,21 @@
     T(135, 47, `×${n}`, { size: 56, color: C.y, chip: true });
   }
 
+  const IMG = (src, x, y, w, h, extra = '') => OV.push(`<img src="assets/${src}" style="position:absolute;left:${R(x)}px;top:${R(y)}px;width:${w}px;height:${h}px;${extra}">`);
   function repo(t) {
     ground(); dim(.4);
-    const p = bounce(pr(t, Wd(18), Wd(18) + .35)), oy = (1 - p) * -200;
-    if (t < Wd(18)) return;
-    X.save(); X.translate(0, R(oy));
-    box(12, 56, 246, 160, '#ffffff'); rect(14, 58, 242, 14, '#eef1f4'); rect(14, 72, 242, 2, C.ink);
+    const a = Wd(18);
+    if (t < a) return;
+    const p = bounce(pr(t, a, a + .35)), oy = R((1 - p) * -200 / S) * S;
+    X.save(); X.translate(0, oy / S);
+    box(12, 56, 246, 162, '#ffffff'); rect(14, 58, 242, 14, '#eef1f4'); rect(14, 72, 242, 2, C.ink);
     [[20, '#d33b2c'], [27, '#e8b02a'], [34, '#3f9a4a']].forEach(([x, c]) => rect(x, 63, 4, 4, c));
-    rect(26, 84, 10, 12, '#57606a'); rect(28, 86, 6, 8, '#ffffff'); rect(28, 92, 6, 2, '#57606a');
-    rect(26, 136, 218, 1, '#d0d7de');
     X.restore();
-    const y0 = oy / S;
-    T(135, 65 + y0, 'github.com/Jakeschincariol/arena-skill', { font: 'JB', weight: 400, size: 22, color: '#57606a' });
-    T(40, 90.5 + y0, '<span style="color:#0969da">Jakeschincariol</span> / <b style="color:#0969da">arena-skill</b>', { font: 'IN', weight: 500, size: 38, align: 'l' });
-    T(40, 106 + y0, 'Public', { font: 'IN', weight: 700, size: 22, color: '#57606a', align: 'l', style: 'border:3px solid #d0d7de;border-radius:99px;padding:4px 14px' });
-    T(28, 160 + y0, 'When Claude keeps giving you bad answers,\nmake 100 versions of it fight to the death.\nFree, MIT, no signup, no API key.', { font: 'IN', weight: 500, size: 31, align: 'l', style: 'line-height:1.35' });
+    T(135, 65 + oy / S, 'github.com/Jakeschincariol/arena-skill', { font: 'JB', weight: 400, size: 22, color: '#57606a' });
+    IMG('repo-name.png', 80, 312 + oy, 660, 100);
+    const sp = eo(pr(t, a + .45, a + .65));
+    IMG('repo-star.png', 80, 424 + oy, 490, 120, `transform:scale(${1 + .08 * Math.sin(sp * Math.PI)});transform-origin:0 50%;outline:${sp > 0 ? 8 : 0}px solid #FFD600;outline-offset:6px;border-radius:12px`);
+    IMG('repo-about-760.png', 80, 556 + oy, 700, 293);
   }
 
   function title(t) {
@@ -370,16 +370,13 @@
 
   function table(t) {
     ground(); dim(.35);
-    const a = 27.4, p = eo(pr(t, a, a + .2));
-    box(14, 54 + (1 - p) * 20, 242, 162, '#ffffff');
-    const oy = (1 - p) * 20;
-    T(28, 70 + oy, 'README → What it costs', { font: 'IN', weight: 800, size: 30, color: '#57606a', align: 'l' });
-    const row = (y, c1, c2, c3, bg) => {
-      if (bg) rect(22, y - 8 + oy, 226, 17, bg);
-      T(30, y + oy, c1, { font: 'JB', weight: 700, size: 34, align: 'l' }); T(150, y + oy, c2, { font: 'JB', weight: 700, size: 34 }); T(238, y + oy, c3, { font: 'JB', weight: 700, size: 34, align: 'r' });
-    };
-    row(92, 'agents', 'rounds', 'calls'); rect(22, 101 + oy, 226, 1, '#d0d7de');
-    row(114, '100', '7', '595', C.y); row(134, '64', '6', '379'); row(152, '32', '5', '187'); row(172, '16 --quick', '4', '91', '#d6f0da'); row(192, '8', '3', '43');
+    const a = 27.1, p = eo(pr(t, a, a + .2)), oy = R((1 - p) * 20) * S;
+    box(12, 56, 246, 162, '#ffffff');
+    T(28, 72 + oy / S, 'README → What it costs', { font: 'IN', weight: 800, size: 34, color: '#57606a', align: 'l' });
+    IMG('readme-cost.png', 70, 340 + oy, 940, 452);
+    const hl = (ts, row, col) => { if (t < ts) return; const q = eo(pr(t, ts, ts + .15)); OV.push(`<div style="position:absolute;left:66px;top:${R(340 + oy + row * 75.6)}px;width:948px;height:76px;background:${col};mix-blend-mode:multiply;outline:6px solid #141414;opacity:${q}"></div>`); };
+    hl(a + .15, 1, 'rgba(255,214,0,.85)');
+    hl(27.9, 4, 'rgba(120,220,140,.7)');
   }
 
   function everyday(t) {
@@ -493,9 +490,9 @@
     [21.0, 22.9, freeze],
     [22.9, 24.2, freeSkill],
     [24.2, 25.8, fullRun],
-    [25.8, 27.4, gauge],
-    [27.4, 28.42, table],
-    [28.42, 29.5, everyday],
+    [25.8, 27.1, gauge],
+    [27.1, 28.5, table],
+    [28.5, 29.5, everyday],
     [29.5, 30.7, t => terminal(t, '/arena --quick write the headline for my pricing page', 29.6, 30.45, [7, 14])],
     [30.7, 32.4, quickRing],
     [32.4, 34.2, taskMd],
