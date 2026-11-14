@@ -3,3 +3,4 @@ work/
 face/
 *.wav
 *.mov
+__pycache__/
