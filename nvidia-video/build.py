@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 W, H, FPS = 1080, 1920, 30
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 words = json.load(open("cut-words.json"))
-DUR = 34.0; NF = 1020
+NF = int(subprocess.run(["ffprobe","-v","error","-count_frames","-select_streams","v","-show_entries","stream=nb_read_frames","-of","csv=p=0","work/cut.mov"],capture_output=True,text=True).stdout); DUR = NF / FPS
 GRADE = "eq=contrast=1.07:brightness=-0.012:saturation=1.0:gamma=0.98"
 F_BOLD = "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf"
 F_SEMI = "/usr/share/fonts/opentype/inter/Inter-SemiBold.otf"
@@ -145,10 +145,10 @@ CAPS = chunks()
 T_THE = wt("the") - 0.03
 T_GONE = wt("gone") - 0.03
 T_ITS = wt("It's") - 0.03
-T_BBC = wt("Jobs") + 0.50          # end of "Jobs", into the silent beat
+T_BBC = wt("reason") - 0.20        # cut on "The reason?"
 T_ONE = wt("One") - 0.03
-T_CFO = wt("The", 23) - 0.03
-T_AND = wt("and", 26) - 0.03
+T_CFO = wt("The", wt("third")) - 0.03
+T_AND = wt("and", wt("company")) - 0.03
 T_WITHOUT = wt("without") - 0.03
 T_SO = wt("So") - 0.03
 HOOK_END = T_THE

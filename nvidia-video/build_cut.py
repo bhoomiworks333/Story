@@ -3,6 +3,7 @@
 # (last frame held; only used where a full-screen headline covers the face).
 import json, subprocess
 SRC = "raw/take1_original.mp4"
+SPEED = 1.1  # playback speed of the whole take
 snap = lambda x: round(x * 30) / 30
 segs = json.load(open("segments.json"))
 vf, af, n, last_end = [], [], 0, None
@@ -17,7 +18,7 @@ for s in segs:
         af.append(f"[0:a:0]atrim={a:.4f}:{b:.4f},asetpts=PTS-STARTPTS,aresample=48000,pan=mono|c0=0.5*c0+0.5*c1,"
                   f"afade=t=in:d=0.03,afade=t=out:st={b-a-0.03:.4f}:d=0.03[a{n}]")
     n += 1
-fc = ";".join(vf + af) + ";" + "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]"
+fc = ";".join(vf + af) + ";" + "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[vc][ac];[vc]setpts=PTS/{SPEED},fps=30[v];[ac]atempo={SPEED}[a]"
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", SRC, "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
     "-r", "30", "-c:v", "libx264", "-crf", "16", "-preset", "medium", "-pix_fmt", "yuv420p", "-c:a", "pcm_s16le", "work/cut.mov"], check=True)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "work/cut.mov", "-map", "0:a", "-c:a", "pcm_s16le", "cut-audio.wav"], check=True)
