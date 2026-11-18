@@ -6,7 +6,7 @@ SR = 48000; N = int(round(C.DUR * SR)); rng = np.random.default_rng(7)
 # ---- voice: segments laid on the frame grid ----
 voice = np.zeros(N)
 for s in C.S:
-    a, _ = sf.read(f"work/{s['id']}_v.wav")
+    a, _ = sf.read(f"work/{s['id']}_vfast.wav" if s.get("speed", 1) != 1 else f"work/{s['id']}_v.wav")
     i = int(round(s["start"] * SR)); n = int(round(s["n"] / C.FPS * SR))
     a = a[:n]; voice[i:i + len(a)] += a
 

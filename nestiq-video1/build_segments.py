@@ -17,13 +17,15 @@ for s in S: P[s["id"]]=solve(s)
 # keep line 6's two halves identical in framing so the join reads as one take
 b=P["L6b"]; a=[s for s in S if s["id"]=="L6a"][0]
 P["L6a"]=solve(a,sc0=b[0],cx_t=b[4],eye_t=b[3])
+ONLY=__import__("sys").argv[1:]
 for s in S:
+    if ONLY and s["id"] not in ONLY: continue
     sc,tx,ty,ey,cx,fw=P[s["id"]]
     r,g,bb=s["skin"]; k=.75
     gr,gg,gb=[min(1.25,max(.8,1+k*(t/v-1))) for t,v in zip(TARGET,(r,g,bb))]
     s.update(scale=sc,tx=tx,ty=ty,eye=ey,cx=cx,facew=fw,gains=[gr,gg,gb])
     Wp=int(round(1080*sc/2))*2; Hp=int(round(1920*sc/2))*2
-    vf=(f"fps=30,scale={Wp}:{Hp}:flags=lanczos,crop=1080:1920:{int(-tx)}:{int(-ty)},"
+    vf=(f"setpts=(PTS-STARTPTS)/{s.get('speed',1.0)},fps=30,scale={Wp}:{Hp}:flags=lanczos,crop=1080:1920:{int(-tx)}:{int(-ty)},"
         f"colorchannelmixer=rr={gr:.3f}:gg={gg:.3f}:bb={gb:.3f},"
         "curves=all='0/0 0.5/0.5 0.82/0.80 1/0.93',eq=saturation=1.04,format=yuv420p")
     subprocess.run(["ffmpeg","-v","error","-y","-ss",f"{s['in']:.4f}","-i",U+s["src"],"-t",f"{s['out']-s['in']:.4f}",

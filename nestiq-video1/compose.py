@@ -9,10 +9,10 @@ S = json.load(open("segments.json"))
 EYES = {"L1": 900, "L2": 919, "L3": 898, "L4": 957, "L5": 863, "L6a": 946, "L6b": 946, "L7": 872}
 t0 = 0.0
 for s in S:
-    s["n"] = round((s["out"] - s["in"]) * FPS); s["start"] = t0; t0 += s["n"] / FPS
+    s["n"] = round((s["out"] - s["in"]) / s.get("speed", 1.0) * FPS); s["start"] = t0; t0 += s["n"] / FPS
 DUR = t0
 SEG = {s["id"]: s for s in S}
-def T(seg, src): s = SEG[seg]; return s["start"] + src - s["in"]
+def T(seg, src): s = SEG[seg]; return s["start"] + (src - s["in"]) / s.get("speed", 1.0)
 
 # ---- captions: (segment, text, source start, keyword or None, keyword source time) ----
 C = [
@@ -38,7 +38,7 @@ C = [
  ("L5", "And most owners", 19.435, None, 0),
  ("L5", "don't even notice it,", 20.80, None, 0),
  ("L5", "it becomes normal.", 22.58, "normal", 23.28),
- ("L5", "But that bothers us.", 24.085, None, 0),
+ ("L5", "But that bothered us.", 24.085, None, 0),
  ("L6a", "So on this page,", 0.155, None, 0),
  ("L6a", "we'll break down", 1.025, None, 0),
  ("L6a", "these factory problems", 1.976, None, 0),
@@ -77,7 +77,18 @@ F_V1 = ImageFont.truetype(FB, 72)
 F_BRAND = ImageFont.truetype(FB, 44)
 WHITE, BLACK, ORANGE = (255, 255, 255), (0, 0, 0), (0xF9, 0x73, 0x16)
 
+BR = (T("L3", 2.10) - 0.03, None)           # B-roll: laser cutting a sheet, until Graphic 1 starts
+_BRF = None
+def broll_at(t):
+    global _BRF
+    if _BRF is None:
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", "broll/broll_top.mp4", "-f", "rawvideo",
+                              "-pix_fmt", "rgb24", "-"], capture_output=True).stdout
+        _BRF = np.frombuffer(raw, np.uint8).reshape(-1, 960, 1080, 3)
+    return Image.fromarray(_BRF[min(len(_BRF) - 1, int((t - BR[0]) * FPS))])
+
 def graphic_at(t):
+    if BR[0] <= t < G1[0]: return broll_at(t)
     if G1[0] <= t < G1[1]: return G.draw_g1(t - G1[0], G1C)
     if G2[0] <= t < G2[1]: return G.draw_g2(t - G2[0], G2C)
     if G3[0] <= t < G3[1] + 1: return G.draw_g3(t - G3[0], G3C)
