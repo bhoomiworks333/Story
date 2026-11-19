@@ -21,9 +21,9 @@ def whoosh(d):
 pop=lambda f: sweep(f,f*2.2,.08)*env(int(SR*.08),.002,.04)
 add(0.0,ring(1.25),.18,.3)
 for t in [13.75,41.35]: add(t-.25,whoosh(.55),.35)
-add(54.2,whoosh(.7),.4)
+
 for t,f in [(46.1,500),(47.5,700),(48.44,780),(49.26,860),(49.88,940)]: add(t,pop(f),.45)
 add(53.26,bell(1320,1.2),.22); add(53.26,bell(1980,1.0),.12)
-add(54.55,bell(880,2.5),.18); add(54.7,bell(1318,2.3),.12)
+
 buf=np.clip(buf,-1,1); w=wave.open('sfx.wav','wb'); w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
 w.writeframes((buf*32767).astype('<i2').tobytes()); w.close()

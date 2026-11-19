@@ -114,6 +114,7 @@ def draw_proof(img, t):
 # ---------- end card ----------
 LOGO = Image.open(f"{S}/logo.png").convert("RGBA")
 def draw_end(img, t):
+    return  # end card removed at user request
     t0 = 54.4
     if t < t0: return
     d = ImageDraw.Draw(img)
