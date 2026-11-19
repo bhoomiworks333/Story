@@ -56,6 +56,7 @@ def draw_sub(img, t):
 
 # ---------- hook ----------
 def draw_hook(img, t):
+    return  # hook text removed at user request
     if t >= 4.4: return
     a = 1.0 if t < 4.1 else 1 - (t - 4.1) / 0.3
     d = ImageDraw.Draw(img)
