@@ -64,6 +64,7 @@ def put(t, sig, g):
     i = int(t * SR); j = min(N, i + len(sig)); sfx[i:j] += g * sig[:j - i] / np.abs(sig).max()
 for i, tt_ in enumerate(C.CUE["tray"]): put(tt_, tap(700 + 30 * i, 0.08, 0.3), 0.45)      # parts appear
 for d in C.CUE["drops"]: put(d + 0.32, tap(380 + rng.uniform(-40, 40)), 1.0)               # parts land
+put(C.CUE["scrap_go"] + 0.8, tap(140, 0.22, 0.15), 1.0)                                    # scrap lands in the bin
 for sq in C.CUE["squares"]: put(sq + 0.75, tap(520, 0.14, 0.2), 1.0)                       # squares into the hole
 def rms_db(x): return 20 * np.log10(np.sqrt(np.mean(x[np.abs(x) > 1e-6] ** 2)) + 1e-12)
 v_db = rms_db(voice)

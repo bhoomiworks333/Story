@@ -47,19 +47,67 @@ def setup(full):
     if full: G.W, G.H, G.SX, G.SY = 1080, 1920, 85, 700
     else:    G.W, G.H, G.SX, G.SY = 1080, 960, 85, 300
 
-def gap_glow(im, positions, rots, amount, t):
-    if amount <= 0: return
-    mask = Image.new("L", im.size, 0); md = ImageDraw.Draw(mask)
-    x0, y0 = G.u2p(0, 0); x1, y1 = G.u2p(G.SW, G.SH)
-    md.rounded_rectangle([x0, y0, x1, y1], radius=6 * G.SS, fill=255)
-    for n in G.PARTS:
-        for pts in G.poly_px(n, positions[n], rots[n]): md.polygon(pts, fill=0)
-    pulse = 0.85 + 0.15 * math.sin(t * 4.0)
-    red = Image.new("RGB", im.size, G.RED)
-    im.paste(red, (0, 0), mask.filter(ImageFilter.GaussianBlur(10 * G.SS)).point(lambda v: int(v * 0.45 * amount)))
-    im.paste(red, (0, 0), mask.point(lambda v: int(v * 0.55 * amount * pulse)))
-    # the frame's hole counts as scrap too
-    fx, fy = positions["frame"]; a, b = G.u2p(fx + G.hx, fy + G.hy); c, e = G.u2p(fx + G.hx + G.hw, fy + G.hy + G.hh)
+_MASK = {}
+def gap_mask():
+    key = (G.SX, G.SY, G.H)
+    if key not in _MASK:
+        mask = Image.new("L", (G.W * G.SS, G.H * G.SS), 0); md = ImageDraw.Draw(mask)
+        x0, y0 = G.u2p(0, 0); x1, y1 = G.u2p(G.SW, G.SH)
+        md.rounded_rectangle([x0, y0, x1, y1], radius=6 * G.SS, fill=255)
+        for n in G.PARTS:
+            for pts in G.poly_px(n, ROWS[n], ROWS_ROT[n]): md.polygon(pts, fill=0)
+        # the frame's hole is scrap too
+        (fx, fy), r = ROWS["frame"], math.radians(ROWS_ROT["frame"]); ca, sa = math.cos(r), math.sin(r)
+        md.polygon([G.u2p(fx + 5 + (x - 5) * ca - (y - 3) * sa, fy + 3 + (x - 5) * sa + (y - 3) * ca)
+                    for x, y in [(G.hx, G.hy), (G.hx + G.hw, G.hy), (G.hx + G.hw, G.hy + G.hh), (G.hx, G.hy + G.hh)]],
+                   fill=255)
+        bbox = (int(x0), int(y0), int(x1), int(y1))
+        _MASK[key] = (mask, bbox, mask.crop(bbox))
+    return _MASK[key]
+
+def gap_glow(im, amount, t, hole=0.0):
+    mask, _, _ = gap_mask()
+    if amount > 0:
+        pulse = 0.85 + 0.15 * math.sin(t * 4.0)
+        red = Image.new("RGB", im.size, G.RED)
+        im.paste(red, (0, 0), mask.filter(ImageFilter.GaussianBlur(10 * G.SS)).point(lambda v: int(v * 0.45 * amount)))
+        im.paste(red, (0, 0), mask.point(lambda v: int(v * 0.55 * amount * pulse)))
+    if hole > 0:   # the scrap has left: the gaps are now empty holes in the sheet
+        im.paste(Image.new("RGB", im.size, G.BG), (0, 0), mask.point(lambda v: int(v * hole)))
+        x0, y0 = G.u2p(0, 0); x1, y1 = G.u2p(G.SW, G.SH)
+        c = tuple(int(lerp(G.BG[i], 110, hole)) for i in range(3))
+        ImageDraw.Draw(im).rounded_rectangle([x0, y0, x1, y1], radius=6 * G.SS, outline=c, width=3 * G.SS)
+
+BIN = (540, 1325)            # scrap bin, below the sheet (full layout, px)
+def draw_bin(im, alpha, lid, wobble):
+    if alpha <= 0: return
+    S = G.SS; cx, cy = BIN[0] * S, BIN[1] * S
+    layer = Image.new("RGBA", im.size, (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
+    a = int(255 * alpha); body = (82, 82, 86, a); line = (150, 150, 156, a)
+    w2, h, top = 78 * S, 150 * S, cy - 60 * S
+    ox = wobble * 6 * S
+    ld.polygon([(cx - w2 + ox, top), (cx + w2 + ox, top), (cx + w2 * 0.8 + ox, top + h), (cx - w2 * 0.8 + ox, top + h)],
+               fill=body, outline=line)
+    for k in (-1, 0, 1):
+        ld.line([(cx + k * 34 * S + ox, top + 24 * S), (cx + k * 28 * S + ox, top + h - 22 * S)], fill=line, width=6 * S)
+    ly = top - 14 * S - lid * 34 * S; lx = cx + ox - lid * 26 * S
+    ld.rounded_rectangle([lx - w2 - 10 * S, ly, lx + w2 + 10 * S, ly + 16 * S], radius=6 * S, fill=line)
+    ld.rounded_rectangle([lx - 26 * S, ly - 14 * S, lx + 26 * S, ly + 2 * S], radius=6 * S, fill=line)
+    im.paste(layer, (0, 0), layer)
+
+def flying_scrap(im, p):
+    """red gap pieces leave the sheet and fall into the bin, p = 0..1"""
+    if p <= 0 or p >= 1: return
+    _, (x0, y0, x1, y1), crop = gap_mask()
+    e = p * p                                             # accelerate like a fall
+    sc = lerp(1.0, 0.10, e)
+    w, h = max(2, int(crop.width * sc)), max(2, int(crop.height * sc))
+    m = crop.resize((w, h), Image.BILINEAR).rotate(-25 * e, expand=True, resample=Image.BILINEAR)
+    m = m.point(lambda v: int(v * (1 - 0.3 * e)))
+    sx, sy = (x0 + x1) / 2, (y0 + y1) / 2
+    tx, ty = BIN[0] * G.SS, (BIN[1] - 70) * G.SS
+    cx = lerp(sx, tx, ease_io(p)); cy = lerp(sy, ty, e) - math.sin(math.pi * p) * 60 * G.SS
+    im.paste(Image.new("RGB", m.size, G.RED), (int(cx - m.width / 2), int(cy - m.height / 2)), m)
 
 def green_strip(im, g, text=None, text_alpha=1.0, size=48):
     if g <= 0: return
@@ -87,11 +135,15 @@ CUE = dict(
     drops=[START["L3"] + 0.12 + 0.28 * i for i in range(8)],
     glow=Wfind("L3", "gaps", 0),
     gaps_label=Wfind("L3", "scrap"),
+    bin_in=Wfind("L3", "those"), scrap_go=Wfind("L3", "become") + 0.05,
     slide=Wfind("L4", "smartly"), rotate=Wfind("L4", "rotating"),
     squares=[Wfind("L4", "even") + 0.05, Wfind("L4", "even") + 0.70, Wfind("L4", "even") + 1.35],
     strip=Wfind("L4", "less"),
     nestiq=START["L5"] + Wfind("L5", "nestiq") - START["L5"] - 0.6,
 )
+
+def dp_on(n, t):   # part sits at its loose-row spot (bad nesting), not yet sliding
+    return CUE["drops"][DROP_ORDER.index(n)] + 0.32 <= t < CUE["slide"]
 
 def scene(t, full=True):
     """The one evolving sheet, drawn for absolute time t."""
@@ -99,8 +151,11 @@ def scene(t, full=True):
     im, d = G.canvas()
     a = ease_out((t - CUE["sheet_in"]) / 0.35); G.draw_sheet(d, a, 0.96 + 0.04 * a)
     # red gaps during bad nesting (drawn under the parts), gone once parts start sliding
-    glow = ease_io((t - CUE["glow"]) / 0.4) * (1 - ease_io((t - CUE["slide"]) / 0.4))
-    if glow > 0: gap_glow(im, ROWS, ROWS_ROT, glow, t); d = ImageDraw.Draw(im)
+    back = 1 - ease_io((t - CUE["slide"]) / 0.4)          # a fresh sheet for good nesting
+    left = clamp((t - CUE["scrap_go"]) / 0.12)            # scrap has lifted off the sheet
+    glow = ease_io((t - CUE["glow"]) / 0.4) * back * (1 - left)
+    hole = left * back if full else 0
+    if (glow > 0 or hole > 0) and full: gap_glow(im, glow, t, hole); d = ImageDraw.Draw(im)
     big = ["frame", "rA", "rB", "L1", "L2"]
     for i, n in enumerate(DROP_ORDER):
         # stage 1: wait in the tray
@@ -140,7 +195,11 @@ def scene(t, full=True):
                     e = ease_io(p); pos = (hover[0], lerp(hover[1], PACK[n][1], e)); sc = 1.25 - 0.25 * e
                     if p >= 1: q = clamp((t - ts - 0.75) / 0.2); sc = 1 - 0.04 * math.sin(q * math.pi)
         on_sheet = t >= CUE["drops"][i] + 0.16
-        G.draw_part(d, n, pos, rot, sc, alpha=al, hole=None if on_sheet else G.BG)
+        gone = full and CUE["scrap_go"] + 0.12 <= t < CUE["slide"] + 0.2
+        hole_c = G.BG if (gone or not on_sheet) else (
+            tuple(int(lerp(G.SHEET[c], G.RED[c], 0.55 * glow)) for c in range(3)) if (glow > 0 and n == "frame" and
+            dp_on(n, t)) else None)
+        G.draw_part(d, n, pos, rot, sc, alpha=al, hole=hole_c)
     g = ease_io((t - CUE["strip"]) / 0.5)
     na = ease_io((t - CUE["nestiq"]) / 0.6)
     green_strip(im, g, "Saved", 1 - na, 52)
@@ -154,8 +213,16 @@ def scene(t, full=True):
     lab_y = (G.SY + G.SH * G.U + 100) if full else (G.SY - 70)
     la = ease_out((t - CUE["nesting_label"]) / 0.25) * (1 - ease_io((t - CUE["drops"][0]) / 0.25))
     if la > 0: G.label(im, "Nesting", G.W / 2, lab_y, size=60, alpha=la)
+    if full:
+        fly = (t - CUE["scrap_go"]) / 0.8
+        land = clamp((t - CUE["scrap_go"] - 0.8) / 0.35)
+        lid = clamp((t - CUE["scrap_go"] - 0.35) / 0.2) * (1 - land)
+        wob = math.sin(land * math.pi * 3) * (1 - land) if 0 < land < 1 else 0
+        ba = ease_out((t - CUE["bin_in"]) / 0.3) * (1 - ease_io((t - CUE["slide"]) / 0.3))
+        draw_bin(im, ba, lid, wob)
+        flying_scrap(im, fly)
     ga = ease_out((t - CUE["gaps_label"]) / 0.25) * (1 - ease_io((t - CUE["slide"]) / 0.25))
-    if ga > 0: G.label(im, "Gaps = scrap", G.W / 2, lab_y, size=60, alpha=ga)
+    if ga > 0: G.label(im, "Gaps = scrap", G.W / 2, (G.SY - 90) if full else lab_y, size=60, alpha=ga)
     return G.finish(im)
 
 # ---------------- captions ----------------
@@ -213,7 +280,6 @@ def frame_at(t, face):
     l = line_at(t)
     if l == "L1":
         im = Image.fromarray(face); caption(im, t, 1470)
-        boxed(im, "Video #2", 540, 360)
     elif l == "L5":
         im = Image.new("RGB", (1080, 1920), G.BG); im.paste(scene(t, full=False), (0, 0))
         top = EYE - 400; im.paste(Image.fromarray(face[top:top + 960]), (0, 960)); caption(im, t, 958)
