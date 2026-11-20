@@ -1,0 +1,23 @@
+[
+ {"who":"P","text":"Stacky, how long did GTA Six take to build?","shot":"P"},
+ {"who":"S","text":"About twelve years. Thousands of developers.","shot":"S"},
+ {"who":"P","text":"Hmm. Okay.","shot":"Pclose","pause":0.5},
+ {"who":"P","text":"Let's build GTA Seven.","shot":"P"},
+ {"who":"S","text":"Sorry... what?","shot":"Sclose","pre":0.4},
+ {"who":"P","text":"By Monday. I have a budget.","shot":"wide"},
+ {"who":"S","text":"How much?","shot":"S"},
+ {"who":"P","text":"Five hundred rupees. And this laptop.","shot":"P"},
+ {"who":"S","text":"This laptop opens Chrome in two business days.","shot":"laptop"},
+ {"who":"P","text":"Fine. Smaller. One city?","shot":"P"},
+ {"who":"S","text":"No.","shot":"S"},
+ {"who":"P","text":"One street?","shot":"Pclose"},
+ {"who":"S","text":"No.","shot":"Sclose"},
+ {"who":"P","text":"One car?","shot":"P"},
+ {"who":"S","text":"One auto rickshaw. It only turns left.","shot":"S","pre":0.5},
+ {"who":"P","text":"Ship it.","shot":"Pclose"},
+ {"who":"S","text":"Shipped. It is honking. At nothing.","shot":"auto"},
+ {"who":"P","text":"Honestly? That's how every product starts.","shot":"wide"},
+ {"who":"S","text":"Small. Ugly. Shipped.","shot":"Shappy"},
+ {"who":"P","text":"Okay... now GTA Eight?","shot":"Pclose","pre":0.3},
+ {"who":"S","text":"Goodnight, Prashant.","shot":"Sclose","pre":0.6,"post":0.6}
+]

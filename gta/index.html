@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Nunito;src:url(fonts/Nunito.woff2) format('woff2');font-weight:200 1000}
+html,body{margin:0;background:#000;overflow:hidden}
+#wrap{position:relative;width:1080px;height:1920px}
+canvas{display:block}
+#cap{position:absolute;left:90px;right:90px;top:560px;text-align:center;font:800 64px/1.18 Nunito,sans-serif;color:#fff;
+ text-shadow:0 4px 0 rgba(0,0,0,.55),0 0 18px rgba(0,0,0,.7),0 0 4px #000;letter-spacing:.2px;transform-origin:50% 50%}
+#fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body><div id="wrap"><div id="fade"></div><div id="cap"></div></div>
+<script type="module" src="main.js"></script></body></html>
