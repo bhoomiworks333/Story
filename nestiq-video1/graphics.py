@@ -59,15 +59,19 @@ def poly_px(name, pos, rot=0, scale=1.0):
         out.append(pts)
     return out
 
-def draw_part(d, name, pos, rot=0, scale=1.0, alpha=1.0, base=None, fill=ORANGE):
+def draw_part(d, name, pos, rot=0, scale=1.0, alpha=1.0, base=None, fill=ORANGE, hole=None):
     if alpha <= 0: return
     col = tuple(int(b + (c - b) * alpha) for c, b in zip(fill, base or SHEET))
     edge = tuple(int(b + (c - b) * alpha) for c, b in zip(ORANGE_EDGE, base or SHEET))
     for pts in poly_px(name, pos, rot, scale):
         d.polygon(pts, fill=col, outline=edge, width=2 * SS)
-    if name == "frame":                  # punch the hole back to sheet colour
-        x, y = pos; a, b = u2p(x + hx, y + hy); c, e = u2p(x + hx + hw, y + hy + hh)
-        d.rectangle([a, b, c, e], fill=SHEET, outline=edge, width=2 * SS)
+    if name == "frame":                  # punch the hole, transformed like the part itself
+        w, h = 10, 6; a = math.radians(rot); ca, sa = math.cos(a), math.sin(a)
+        pts = []
+        for x, y in [(hx, hy), (hx + hw, hy), (hx + hw, hy + hh), (hx, hy + hh)]:
+            dx, dy = (x - w / 2) * scale, (y - h / 2) * scale
+            pts.append(u2p(pos[0] + w / 2 + dx * ca - dy * sa, pos[1] + h / 2 + dx * sa + dy * ca))
+        d.polygon(pts, fill=hole or SHEET, outline=edge, width=2 * SS)
 
 def canvas():
     im = Image.new("RGB", (W * SS, H * SS), BG)
