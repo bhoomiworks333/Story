@@ -10,7 +10,7 @@ def resample(a, sr):
     if sr == SR: return a
     x = np.linspace(0, len(a) - 1, int(len(a) * SR / sr)); return np.interp(x, np.arange(len(a)), a)
 for L in LINES:
-    a, sr = sf.read(f"vo/l{L['i']:02d}.wav"); a = resample(a, sr)
+    a, sr = sf.read(L['file']); a = a.mean(1) if a.ndim > 1 else a; a = resample(a, sr)
     a = a / (np.max(np.abs(a)) + 1e-9) * .8
     put(vo, L['start'], a)
 tt = lambda d: np.arange(int(d * SR)) / SR

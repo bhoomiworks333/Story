@@ -238,19 +238,19 @@ function buildPrashant() {
 const P = buildPrashant(); scene.add(P.root);
 P.root.position.set(-.75, .1, -.15); P.root.rotation.y = .38;
 
-// ---------- Stacky (AlfaStack-purple cube buddy) ----------
+// ---------- Stacky (orange cube AI buddy) ----------
 function buildStacky() {
   const root = new THREE.Group(); const bob = new THREE.Group(); root.add(bob);
   const S = .62;
-  const body = mesh(new RoundedBoxGeometry(S, S * .9, S * .85, 6, .15), std('#996eff', { roughness: .55 }), bob, [0, S * .45 + .07, 0]);
+  const body = mesh(new RoundedBoxGeometry(S, S * .9, S * .85, 6, .15), std('#d97757', { roughness: .55, emissive: '#d9573a', emissiveIntensity: .12 }), bob, [0, S * .45 + .07, 0]);
   // subtle stack stripes (nod to the logo)
-  for (const y of [-.12, .02]) mesh(new RoundedBoxGeometry(S * 1.005, .018, S * .855, 2, .009), std('#7f55ec', { roughness: .6 }), body, [0, y - .1, 0], [0, 0, 0], [1, 1, 1], false);
-  for (const [x, z] of [[-.18, -.14], [.18, -.14], [-.18, .14], [.18, .14]]) mesh(new THREE.CapsuleGeometry(.045, .03, 4, 8), std('#7a4fe6'), bob, [x, .05, z]);
+  for (const y of [-.12, .02]) mesh(new RoundedBoxGeometry(S * 1.005, .018, S * .855, 2, .009), std('#c4623f', { roughness: .6 }), body, [0, y - .1, 0], [0, 0, 0], [1, 1, 1], false);
+  for (const [x, z] of [[-.18, -.14], [.18, -.14], [-.18, .14], [.18, .14]]) mesh(new THREE.CapsuleGeometry(.045, .03, 4, 8), std('#b85a3a'), bob, [x, .05, z]);
   const arms = [];
-  for (const s of [-1, 1]) arms.push(mesh(new THREE.CapsuleGeometry(.045, .07, 4, 8), std('#8a60f5'), body, [s * (S / 2 + .02), -.06, .05], [0, 0, s * .5]));
+  for (const s of [-1, 1]) arms.push(mesh(new THREE.CapsuleGeometry(.045, .07, 4, 8), std('#cf6b4a'), body, [s * (S / 2 + .02), -.06, .05], [0, 0, s * .5]));
   // antenna
   const ant = new THREE.Group(); body.add(ant); ant.position.set(.08, S * .45, 0);
-  mesh(new THREE.CylinderGeometry(.01, .012, .14, 6), std('#5c3bb8'), ant, [0, .07, 0]);
+  mesh(new THREE.CylinderGeometry(.01, .012, .14, 6), std('#8a4128'), ant, [0, .07, 0]);
   const bulb = mesh(new THREE.SphereGeometry(.035, 12, 8), glow('#ffd36e', 2.5), ant, [0, .16, 0], [0, 0, 0], [1, 1, 1], false);
   const face = new THREE.Group(); body.add(face); face.position.set(0, .03, S * .425 + .002);
   const black = std('#0b0910', { roughness: .2 });
